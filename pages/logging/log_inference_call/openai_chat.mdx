@@ -1,0 +1,100 @@
+# OpenAI Chat Completions
+
+### Supported Models
+
+- gpt-3.5-turbo
+- gpt-4
+
+### Log via Python SDK
+
+```python
+import openai
+from magik.logger import log_open_ai_chat_response
+
+def log_llm_response():
+	model="gpt-3.5-turbo"
+	user_query = "What is the pricing structure of Stripe's payment gateway?"
+	messages = [
+	    {
+		"role": "system",
+		"content": ...
+	    },
+	    ...
+	]
+
+
+	# Ground truth data - log as much structured data as possible
+	#
+	# This data can be referenced in your test cases.
+	# The more structured data you can pass here, the more granular the tests we can write.
+	context = {
+		"product_name": "Stripe",
+		"product_description": {...},
+		"pricing": {...},
+		"help_data": {...}
+	}
+
+
+	# Your LLM inference call + some code to get response times
+	start_time = time.time()
+	chat_completion = openai.ChatCompletion.create(model=model, messages=messages)
+	end_time = time.time()
+	response_time_ms = int((end_time - start_time) * 1000)
+
+
+	# Log data to Magik Server
+	# ---
+	log_open_ai_chat_response(
+	    prompt_slug="customer_support",
+	    messages=messages,
+	    model=model,
+	    completion=chat_completion,
+	    context=context,
+	    response_time=response_time_ms,
+	    customer_id="stripe",
+	    customer_user_id="shiv@magiklabs.app",
+	    session_id="c45g-1234-s6g4-43d3",
+	    user_query=user_query,
+ 	    environment="production"
+	)
+...
+```
+
+[See Example on Github →](#)
+
+### Log via API Request
+
+**Method**: `POST`
+
+**Endpoint**: `https://api.magiklabs.app/api/v1/log/prompt/openai-chat`
+
+**Request Body**
+
+```json
+{
+    // Prompt identifier
+    prompt_slug: "customer_support",
+    // Messages array sent to OpenAI
+    prompt_messages: messages,
+    // Model ID used for inference (ex: gpt-3.5-turbo)
+    model: model,
+    // OpenAI chat completion object
+    completion: chatCompletion,
+    // your ground truth data object
+    context: context,
+    // response time in milliseconds
+    response_time: responseTimeMs,
+    // your customer ID (business)
+    customer_id: "stripe",
+    // your customer user ID (business user)
+    customer_user_id: "shiv@magiklabs.app",
+    // your session or conversation ID
+    session_id: "c45g-1234-s6g4-43d3",
+    // the user's query (for chat applications)
+    user_query: user_query,
+    // "production" or "development"
+    environment: "production"
+}
+```
+
+[See Example on Github →](#)

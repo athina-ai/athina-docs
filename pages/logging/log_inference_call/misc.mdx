@@ -1,0 +1,95 @@
+# Other Language models
+
+### Supported Models
+
+- any non-OpenAI model
+
+### Log via Python SDK
+
+```python
+def log_llm_response():
+    user_query = "What is the pricing structure of Stripe's payment gateway?"
+    prompt = f"You are an AI... Human: {user_query}"
+
+
+    # Ground truth data - log as much structured data as possible
+    #
+    # This data can be referenced in your test cases.
+    # The more structured data you can pass here, the more granular the tests we can write.
+    context = {
+        "user_query": user_query,
+        "user_id": "123-abc-456-xyz",
+        "product_name": "Stripe",
+        "product_description": {...},
+        "pricing": {...}
+        "help_data": {...}
+    }
+
+
+    # Your inference call
+    llm_response = ... # Response output string from the LLM
+
+
+    # Extract these values from the langchain response
+    prompt_tokens = ...   # int
+    completion_tokens = ...   # int
+    total_tokens = ...   # int
+    response_time = ...  # int representing milliseconds
+
+
+    # Log data to Magik Server
+    log_generic_response(
+        prompt_slug='customer-support-query',
+        prompt=prompt,
+        model=model,
+        llm_response=llm_response,
+        response_time=response_time,
+        prompt_tokens=prompt_tokens,
+        completion_tokens=completion_tokens,
+        total_tokens=total_tokens,
+        context=context,
+        customer_id="stripe", # identifier for your customer
+        customer_user_id="vitalik@ethereum.org", # identifier for the user interacting with the chatbot
+        user_query=user_query,	# the user's query message to the chatbot
+        session_id="di23m234" # the ID you use to keep track of the conversation / session
+    )
+```
+
+[See Example on Github →](#)
+
+### Log via API Request
+
+**Method**: `POST`
+
+**Endpoint**: `https://api.magiklabs.app/api/v1/log/prompt/openai-chat`
+
+**Request Body**
+
+```json
+{
+    // Prompt identifier
+    prompt_slug: "customer_support",
+    // Messages array sent to OpenAI
+    prompt_messages: messages,
+    // Model ID used for inference (ex: gpt-3.5-turbo)
+    model: model,
+    // OpenAI chat completion object
+    completion: chatCompletion,
+    // your ground truth data object
+    context: context,
+    // response time in milliseconds
+    response_time: responseTimeMs,
+    // your customer ID (business)
+    customer_id: "stripe",
+    // your customer user ID (business user)
+    customer_user_id: "shiv@magiklabs.app",
+    // your session or conversation ID
+    session_id: "c45g-1234-s6g4-43d3",
+    // the user's query (for chat applications)
+    user_query: user_query,
+    // "production" or "development"
+    environment: "production"
+}
+```
+
+[See Example on Github →](#)

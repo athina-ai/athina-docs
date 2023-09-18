@@ -1,15 +1,11 @@
 {
   "index": "Introduction",
-  "another": "Another Page",
-  "advanced": "Advanced (A Folder)",
-  "about": {
-    "title": "About",
-    "type": "page"
-  },
+  "logging": "Log your data",
+  "evals": "Evals",
+  "preset_evals": "Prebuilt Evals",
+  "platform": "Cloud Platform",
   "contact": {
     "title": "Contact ↗",
-    "type": "page",
-    "href": "https://twitter.com/shuding_",
-    "newWindow": true
+    "type": "page"
   }
 }

@@ -1,0 +1,52 @@
+### Bad Retrieval
+
+**Use cases:** Most RAG Applications like Chatbots, Knowledge Assistants, Copilots, etc
+
+One of the most common causes for a bad output is bad input. For RAG applications, this usually means a bad retrieval.
+
+Typically for retrieval, you might do a cosine similarity search to the user’s query.
+
+However, similar ≠ relevance.
+
+Often, your retrieved data might not be _relevant_ to the user’s query.
+
+Sometimes, it might be _relevant_, but might not contain the _answer_ to the user’s query.
+
+We use an LLM grader (GPT-4) to figure out if the retrieved data is relevant and has enough information to answer the query.
+
+### Faithfulness
+
+**Use cases:** Most RAG Applications like Chatbots, Knowledge Assistants, Copilots, etc
+
+Another common problem with RAG applications is when the response is not “faithful” to the context.
+
+**Retrieved Context:**
+
+```
+Query: How much equity does Y Combinator take?
+
+Retrieved Context:
+We‘ve already been working on our startup for a while. Is Y Combinator appropriate for us?
+Yes. While the majority of the YC batch.
+
+Response: 5-7%
+```
+
+**How did it get to 5-7%?**
+
+This wasn’t mentioned in the context. So, we can say that this response was “unfaithful” to the context.
+
+This is particularly common when the LLM decides to use it’s pre-trained knowledge instead of using knowledge from the retrieved context.
+
+### Answer Relevance
+
+**Use cases:** Q&A Bots
+
+User asks a question, and your LLM gives an irrelevant answer.
+
+**Example:**
+
+```jsx
+Query: Which spaceship landed on the moon?
+Response: Neil Armstrong was the first man to set foot on the moon in 1969
+```

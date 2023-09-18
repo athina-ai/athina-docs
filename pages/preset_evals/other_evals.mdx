@@ -1,0 +1,69 @@
+### Language Mismatch
+
+`Engine: gpt-3.5-turbo`
+
+Detect when the LLM response is in a different language to the user’s query
+
+### Sensitive Data Leak
+
+`Engine: gpt-3.5-turbo`
+
+Detect when user query or LLM response contains any personally identifiable information.
+
+Example: names, emails, phone numbers, social security numbers, credit card information, etc
+
+You can configure evals for different types of PII leak.
+
+### Eval Explanation: Content Moderation
+
+`OpenAI`
+
+Uses OpenAI’s content moderation endpoint to determine if a response is harmful, toxic, violent, threatening or sexual.
+
+Eval thresholds can be configured.
+
+### LLM Grader
+
+`Engine: gpt-3.5-turbo`
+
+Since you're trying to make sense of unstructured text, an LLM is often the best way to evaluate if your outputs are good or bad.
+
+For example, you could have an LLM grader check if your AI-powered customer support agent adheres to your refund policy or not.
+
+We can help you write great evals using LLMs.
+
+### Prompt Injection Attacks
+
+[Coming Soon]
+
+### Common Mistakes
+
+[Coming Soon]
+
+### Restricted Keywords
+
+`String Match`
+
+Detect when your LLM output contains certain kinds of keywords
+
+### Eval: Critical Keywords
+
+`String Match`
+
+Detect when your LLM output is missing critical keywords
+
+### Hallucinated Link
+
+`Regex` `HTTP`
+
+If your LLM response contains a link, we will check if the link is invalid (404).
+
+No LLM, just good old regex + HTTP request.
+
+### Hallucinated Email
+
+`Engine: gpt-3.5-turbo | Regex`
+
+If your LLM response contains an email that was not a part of your provided context, it is likely a hallucinated email.
+
+…

@@ -1,0 +1,6 @@
+{
+    "rag_evals": "RAG Evals",
+    "summarization_eval": "Summarization Q&A",
+    "other_evals": "More Evals",
+    "faq": "FAQs"
+}

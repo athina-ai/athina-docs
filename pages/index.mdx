@@ -1,11 +1,33 @@
-# Introduction
- 
-Welcome to Nextra! This is a basic docs template. You can use it as a starting point for your own project :)
+# Introduction to Magik
 
-## What is Nextra?
+Magik is an evaluation framework and production monitoring platform for your LLM-powered app.
 
-A **simple**, **powerful** and **flexible** site generation framework with everything you love from Next.js.
+We run evals on your production LLM outputs to:
 
-## Documentation
+- Flag potential errors
+- Minimize hallucinations
+- Improve accuracy
+- Measure your app's performance
+- Gain confidence in your LLM responses.
 
-The documentation is available at [https://nextra.site](https://nextra.site).
+<img src="/analytics.png" />
+
+### What is the problem we are solving?
+
+Reliability is one of the biggest challenges for people trying to build production grade apps using LLMs.
+
+LLMs are non-deterministic by nature. This makes it very hard to measure how good the output is.
+
+Eyeballing the responses from an LLM can work in development, but it’s not a great solution.
+
+**In production, it’s impossible to eyeball thousands of responses.**
+
+This means you have very little visibility into how your AI is performing in the wild.
+
+For example, if you have lots of production usage:
+
+- How do you know when your LLM app is hallucinating?
+- How do you know how often it’s producing a critically bad output?
+- How do you know how well it's really performing?
+- How do you know what kind of responses your users are seeing?
+- If you can’t measure it, how do you improve the accuracy?

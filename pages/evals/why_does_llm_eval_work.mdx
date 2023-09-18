@@ -1,0 +1,7 @@
+### Why does these evaluations work if the original LLM response is itself inaccurate?
+
+Your prompt is usually quite long and might contain a lot of conditions, rules, and data needed to provide a good answer.
+
+On the contrary, the LLM evaluation prompt is very simple. The LLM is being asked to solve a _much_ simpler question, which is usually very easy for LLMs, and therefore it can be expected to work consistently most of the time.
+
+We can also run the same grading prompt multiple times to detect flakiness and discard flaky results.

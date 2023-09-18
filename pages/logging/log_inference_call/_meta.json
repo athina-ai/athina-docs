@@ -1,0 +1,7 @@
+{
+    "openai_chat": "OpenAI Chat Completion",
+    "openai_completion": "OpenAI Completion",
+    "anthropic_claude": "Anthropic Claude",
+    "langchain": "Langchain",
+    "misc": "Any other language model"
+}
