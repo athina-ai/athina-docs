@@ -4,6 +4,11 @@
   "evals": "Evals",
   "preset_evals": "Prebuilt Evals",
   "platform": "Cloud Platform",
+  "blog": {
+    "title": "Blog ↗",
+    "type": "page",
+    "href": "https://magik.ghost.io"
+  },
   "contact": {
     "title": "Contact ↗",
     "type": "page"
