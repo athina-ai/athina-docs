@@ -3,7 +3,13 @@
 ### Supported Models
 
 - gpt-3.5-turbo
+- gpt-3.5-turbo-0613
+- gpt-3.5-turbo-16k
+- gpt-3.5-turbo-16k-0613
 - gpt-4
+- gpt-4-0613
+- gpt-4-32k
+- gpt-4-32k-0613
 
 ### Log via Python SDK
 
@@ -60,8 +66,6 @@ def log_llm_response():
 ...
 ```
 
-[See Example on Github →](#)
-
 ### Log via API Request
 
 **Method**: `POST`
@@ -77,22 +81,22 @@ def log_llm_response():
     // Messages array sent to OpenAI
     prompt_messages: messages,
     // Model ID used for inference (ex: gpt-3.5-turbo)
-    model: model,
+    language_model_id: language_model_id,
     // OpenAI chat completion object
     completion: chatCompletion,
-    // your ground truth data object
+    // your ground truth data object (OPTIONAL)
     context: context,
-    // response time in milliseconds
+    // response time in milliseconds (OPTIONAL)
     response_time: responseTimeMs,
-    // your customer ID (business)
+    // your customer ID (business) (OPTIONAL)
     customer_id: "stripe",
-    // your customer user ID (business user)
+    // your customer user ID (business user) (OPTIONAL)
     customer_user_id: "shiv@magiklabs.app",
-    // your session or conversation ID
+    // your session or conversation ID (OPTIONAL)
     session_id: "c45g-1234-s6g4-43d3",
-    // the user's query (for chat applications)
+    // the user's query (for chat applications) (OPTIONAL)
     user_query: user_query,
-    // "production" or "development"
+    // "production" or "development" (OPTIONAL)
     environment: "production"
 }
 ```

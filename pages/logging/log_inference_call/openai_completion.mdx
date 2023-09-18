@@ -2,25 +2,91 @@
 
 ### Supported Models
 
-- davinci
-- curie
-- babbage
-- ada
+- text-davinci-003
 
 ### Log via Python SDK
 
 ```python
-from magik import log_openai_completion
+import openai
+from magik.logger import log_open_ai_completion_response
+
+def log_llm_response():
+	model="text-davinci-003"
+	user_query = "What is the pricing structure of Stripe's payment gateway?"
+	prompt = f"You are an AI... Answer the user query. Human: {user_query}"
+
+
+	# Ground truth data - log as much structured data as possible
+	#
+	# This data can be referenced in your test cases.
+	# The more structured data you can pass here, the more granular the tests we can write.
+	context = {
+		"product_name": "Stripe",
+		"product_description": {...},
+		"pricing": {...},
+		"help_data": {...}
+	}
+
+
+	# Your LLM inference call + some code to get response times
+	start_time = time.time()
+	completion = openai.Completion.create(model=model, prompt=prompt)
+	end_time = time.time()
+	response_time_ms = int((end_time - start_time) * 1000)
+
+
+	# Log data to Magik Server
+	# ---
+	log_open_ai_completion_response(
+	    prompt_slug="customer_support",
+	    prompt=prompt,
+	    model=model,
+	    completion=completion,
+	    context=context,
+	    response_time=response_time_ms,
+	    customer_id="stripe",
+	    customer_user_id="shiv@magiklabs.app",
+	    session_id="c45g-1234-s6g4-43d3",
+	    user_query=user_query,
+ 	    environment="production"
+	)
 
 ...
 ```
 
-[See Example on Github →](#)
-
 ### Log via API Request
 
-```bash
-curl [endpoint] [body]
+**Method**: `POST`
+
+**Endpoint**: `https://api.magiklabs.app/api/v1/log/prompt/openai-completion`
+
+**Request Body**
+
+```json
+{
+    // Prompt identifier
+    prompt_slug: "customer_support",
+    // Prompt string
+    prompt_text: "What are some good restaurants in London?",
+    // Model ID used for inference (ex: text-davinci-003)
+    language_model_id: language_model_id,
+    // OpenAI completion object
+    completion: completion,
+    // your ground truth data object (OPTIONAL)
+    context: context,
+    // response time in milliseconds (OPTIONAL)
+    response_time: responseTimeMs,
+    // your customer ID (business) (OPTIONAL)
+    customer_id: "stripe",
+    // your customer user ID (business user) (OPTIONAL)
+    customer_user_id: "shiv@magiklabs.app",
+    // your session or conversation ID (OPTIONAL)
+    session_id: "c45g-1234-s6g4-43d3",
+    // the user's query (for chat applications) (OPTIONAL)
+    user_query: user_query,
+    // "production" or "development" (OPTIONAL)
+    environment: "production"
+}
 ```
 
 [See Example on Github →](#)

@@ -2,7 +2,7 @@
 
 ### Supported Models
 
-- any non-OpenAI model
+- any non-OpenAI and non-meta-llama model
 
 ### Log via Python SDK
 
@@ -30,7 +30,7 @@ def log_llm_response():
     llm_response = ... # Response output string from the LLM
 
 
-    # Extract these values from the langchain response
+    # Extract these values from the LLM response
     prompt_tokens = ...   # int
     completion_tokens = ...   # int
     total_tokens = ...   # int
@@ -41,7 +41,6 @@ def log_llm_response():
     log_generic_response(
         prompt_slug='customer-support-query',
         prompt=prompt,
-        model=model,
         llm_response=llm_response,
         response_time=response_time,
         prompt_tokens=prompt_tokens,
@@ -52,16 +51,15 @@ def log_llm_response():
         customer_user_id="vitalik@ethereum.org", # identifier for the user interacting with the chatbot
         user_query=user_query,	# the user's query message to the chatbot
         session_id="di23m234" # the ID you use to keep track of the conversation / session
+        environment="production"
     )
 ```
-
-[See Example on Github →](#)
 
 ### Log via API Request
 
 **Method**: `POST`
 
-**Endpoint**: `https://api.magiklabs.app/api/v1/log/prompt/openai-chat`
+**Endpoint**: `https://api.magiklabs.app/api/v1/log/prompt/generic`
 
 **Request Body**
 
@@ -69,25 +67,31 @@ def log_llm_response():
 {
     // Prompt identifier
     prompt_slug: "customer_support",
-    // Messages array sent to OpenAI
-    prompt_messages: messages,
-    // Model ID used for inference (ex: gpt-3.5-turbo)
-    model: model,
-    // OpenAI chat completion object
-    completion: chatCompletion,
-    // your ground truth data object
+    // Prompt string
+    prompt_text: "What are some good restaurants in London?",
+    // Model ID used for inference
+    language_model_id: "generic",
+    // LLM Output
+    prompt_response: "Here are some popular restaurants in London...",
+    // your ground truth data object (OPTIONAL)
     context: context,
-    // response time in milliseconds
+    // prompt tokens (OPTIONAL)
+    prompt_tokens: 20
+    // completion tokens (OPTIONAL)
+    completion_tokens: 30
+    // total tokens (OPTIONAL)
+    total_tokens: 50
+    // response time in milliseconds (OPTIONAL)
     response_time: responseTimeMs,
-    // your customer ID (business)
+    // your customer ID (business) (OPTIONAL)
     customer_id: "stripe",
-    // your customer user ID (business user)
+    // your customer user ID (business user) (OPTIONAL)
     customer_user_id: "shiv@magiklabs.app",
-    // your session or conversation ID
+    // your session or conversation ID (OPTIONAL)
     session_id: "c45g-1234-s6g4-43d3",
-    // the user's query (for chat applications)
+    // the user's query (for chat applications) (OPTIONAL)
     user_query: user_query,
-    // "production" or "development"
+    // "production" or "development" (OPTIONAL)
     environment: "production"
 }
 ```

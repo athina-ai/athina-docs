@@ -1,0 +1,57 @@
+# Meta Llama
+
+### Supported Models
+
+- meta-llama/Llama-2-13b
+- meta-llama/Llama-2-13b-chat
+- meta-llama/Llama-2-13b-chat-hf
+- meta-llama/Llama-2-13b-hf
+- meta-llama/Llama-2-70b
+- meta-llama/Llama-2-70b-chat
+- meta-llama/Llama-2-70b-chat-hf
+- meta-llama/Llama-2-70b-hf
+- meta-llama/Llama-2-7b
+- meta-llama/Llama-2-7b-chat
+- meta-llama/Llama-2-7b-chat-hf
+- meta-llama/Llama-2-7b-hf
+
+### Log via API Request
+
+**Method**: `POST`
+
+**Endpoint**: `https://api.magiklabs.app/api/v1/log/prompt/generic`
+
+**Request Body**
+
+```json
+{
+    // Prompt identifier
+    prompt_slug: "customer_support",
+    // Prompt string
+    prompt_text: "What are some good restaurants in London?",
+    // Model ID used for inference (ex: meta-llama/Llama-2-13b)
+    language_model_id: language_model_id,
+    // LLM Output
+    prompt_response: "Here are some popular restaurants in London...",
+    // your ground truth data object (OPTIONAL)
+    context: context,
+    // prompt tokens (OPTIONAL)
+    prompt_tokens: 20
+    // completion tokens (OPTIONAL)
+    completion_tokens: 30
+    // total tokens (OPTIONAL)
+    total_tokens: 50
+    // response time in milliseconds (OPTIONAL)
+    response_time: responseTimeMs,
+    // your customer ID (business) (OPTIONAL)
+    customer_id: "stripe",
+    // your customer user ID (business user) (OPTIONAL)
+    customer_user_id: "shiv@magiklabs.app",
+    // your session or conversation ID (OPTIONAL)
+    session_id: "c45g-1234-s6g4-43d3",
+    // the user's query (for chat applications) (OPTIONAL)
+    user_query: user_query,
+    // "production" or "development" (OPTIONAL)
+    environment: "production"
+}
+```
