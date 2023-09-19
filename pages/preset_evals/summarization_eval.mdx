@@ -1,3 +1,53 @@
 ## Summarization Q&A Evaluator
 
+The goal of text summarization is to craft a concise and comprehensive summary that captures the essential information of the original text, without introducing inaccuracies or hallucinated information. 
+
+*Original Text*
+
+```
+"Magik is a testing framework and production monitoring platform for your LLM app. We started this project because we discovered that reliability of output is one of the biggest challenges for people trying to use LLM apps in production. 
+LLM responses are non-deterministic by nature. This makes it very hard to measure how good the output is. 
+Eyeballing the responses from an LLM can work in development, but it’s not a great solution.
+```
+
+**Correct summary:**
+
+```
+"Magik is a testing and monitoring platform designed for LLM apps, addressing the challenge of output reliability.”
+```
+
+
+
+
+### Non-informativeness
+
+The omission of essential information or the generation of overly generic summaries is a common failure case in text summarization. The essence of a summary lies in its ability to encapsulate the key points of a lengthier text. In the following example, the generated summary is overly generalized, failing to truly capture the core essence of the original content.
+
+*Non-informative summary*
+
+```
+ "Magik is a platform for LLM apps.”
+```
+
+### Contradiction
+
+Another frequent issue with LLM-generated summaries is when the summary contradicts the original document. These contradictions can arise from the LLM misunderstanding the provided information or failing to accurately interpret the relationships between sentences. In the following example, the generated summary incorrectly describes Magik as a company designed for eyeballing. However, Magik is actually a testing framework and production monitoring platform that eliminates the need for manually inspecting LLM responses as described in the original text.
+
+*Contradictory summary*
+
+```
+ "Magik is a platform for eyeballing the responses from an LLM. ”
+```
+
+### Hallucination
+
+A notable challenge with LLMs is their propensity to introduce information in summaries not found in the original documents, a phenomenon termed "hallucination.” The hallucinated information can either be factual, stemming from the LLM's pre-existing knowledge, or entirely fabricated. Regardless of its origin, when an LLM's summary diverges from the original content, it fails to summarize the original document. For instance, while Magik is indeed a YC company, the original document did not specify this. Yet, the LLM incorporated this information based on its prior knowledge.
+
+*Hallucinated Summary* 
+
+```
+"Magik is a YC company for testing and monitoring  LLM apps, addressing the challenge of output reliability.”
+```
+
 You can read more about how this eval works on our [blog post](https://magik.ghost.io/how-to-detect-llm-failure/)
+
