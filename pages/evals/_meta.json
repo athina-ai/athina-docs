@@ -1,5 +1,4 @@
 {
-    "how_do_evals_work": "How do evals work?",
     "eval_architecture": "Architecture of an Eval",
     "custom_evaluators": "Can I write my own evals?",
     "why_does_llm_eval_work": "Why does LLM eval work?"
