@@ -1,1 +1,51 @@
 # Langchain
+
+### Supported Models
+
+- text-davinci-003
+- gpt-3.5-turbo
+- gpt-3.5-turbo-0613
+- gpt-3.5-turbo-16k
+- gpt-3.5-turbo-16k-0613
+- gpt-4
+- gpt-4-0613
+- gpt-4-32k
+- gpt-4-32k-0613
+- meta-llama/Llama-2-13b
+- meta-llama/Llama-2-13b-chat
+- meta-llama/Llama-2-13b-chat-hf
+- meta-llama/Llama-2-13b-hf
+- meta-llama/Llama-2-70b
+- meta-llama/Llama-2-70b-chat
+- meta-llama/Llama-2-70b-chat-hf
+- meta-llama/Llama-2-70b-hf
+- meta-llama/Llama-2-7b
+- meta-llama/Llama-2-7b-chat
+- meta-llama/Llama-2-7b-chat-hf
+- meta-llama/Llama-2-7b-hf
+
+### Log via Python SDK
+
+```python
+from magik.langchain_handler import CallbackHandler
+
+# CallbackHandler takes following arguments in the constructor:
+'''
+prompt_slug: str # prompt identifier
+magik_api_key: Optional[str] = None,
+environment: Optional[str] = 'production',
+session_id: Optional[str] = None,
+customer_id: Optional[str] = None,
+customer_user_id: Optional[str] = None,
+**kwargs: Any, # Any key-value data you want to associate with the LLM calls in a chain
+'''
+handler = CallbackHandler(
+        prompt_slug='customer_query')
+
+chain = LLMChain(
+    llm=OpenAI(
+        openai_api_key=<YOUR OPEN_AI_KEY>, callbacks=[handler]),
+    prompt=chat_prompt,
+)
+print(chain.run('{user_query}', callbacks=[handler]))
+```
