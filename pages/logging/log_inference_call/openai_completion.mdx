@@ -35,7 +35,7 @@ def log_llm_response():
 	response_time_ms = int((end_time - start_time) * 1000)
 
 
-	# Log data to Magik Server
+	# Log data to Athina Server
 	# ---
 	log_open_ai_completion_response(
 	    prompt_slug="customer_support",
@@ -58,7 +58,7 @@ def log_llm_response():
 
 **Method**: `POST`
 
-**Endpoint**: `https://api.magiklabs.app/api/v1/log/prompt/openai-completion`
+**Endpoint**: `https://api.athina.ai/api/v1/log/prompt/openai-completion`
 
 **Request Body**
 

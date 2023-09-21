@@ -13,18 +13,15 @@ const config: DocsThemeConfig = {
           marginRight: "10px",
         }}
       />
-      Magik
+      Athina
     </div>
   ),
   project: {
-    link: "https://github.com/shuding/nextra-docs-template",
-  },
-  chat: {
-    link: "https://discord.com",
+    link: "https://github.com/athina-ai/ariadne",
   },
   docsRepositoryBase: "https://github.com/shuding/nextra-docs-template",
   footer: {
-    text: "Nextra Docs Template",
+    text: "athina.ai",
   },
 };
 

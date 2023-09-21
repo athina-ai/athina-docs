@@ -1,7 +1,7 @@
 {
-  "name": "magik-docs",
+  "name": "athina-docs",
   "version": "0.0.1",
-  "description": "Magik Docs",
+  "description": "Athina Docs",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -9,11 +9,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/magiklabs/magik-docs.git"
+    "url": "git+https://github.com/athina/athina-docs.git"
   },
   "author": "Shiv Sakhuja <shiv@magiklabs.app>",
   "license": "MIT",
-  "homepage": "https://magiklabs.app",
+  "homepage": "https://athina.ai",
   "dependencies": {
     "next": "^13.0.6",
     "nextra": "latest",
