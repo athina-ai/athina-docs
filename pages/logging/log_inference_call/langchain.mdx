@@ -7,7 +7,7 @@ import { Callout } from "nextra/components";
 
 # Langchain
 
-### Supported Models
+### Supported Models (Without Streaming)
 
 - text-davinci-003
 - gpt-3.5-turbo
@@ -30,29 +30,87 @@ import { Callout } from "nextra/components";
 - meta-llama/Llama-2-7b-chat
 - meta-llama/Llama-2-7b-chat-hf
 - meta-llama/Llama-2-7b-hf
+- claude-2
+
+### Supported Models (With Streaming)
+
+- text-davinci-003
+- gpt-3.5-turbo
+- gpt-3.5-turbo-0613
+- gpt-3.5-turbo-16k
+- gpt-3.5-turbo-16k-0613
+- gpt-4
+- gpt-4-0613
+- gpt-4-32k
+- gpt-4-32k-0613
 
 ### Log via Python SDK
 
 ```python
-from magik.langchain_handler import CallbackHandler
+from langchain import LLMChain
+from langchain.chat_models import ChatOpenAI
 
-# CallbackHandler takes the following arguments in the constructor:
+from langchain.prompts.chat import (
+    ChatPromptTemplate,
+    SystemMessagePromptTemplate,
+    HumanMessagePromptTemplate,
+)
+from athina_logger.langchain_handler import CallbackHandler
+
+openai.api_key = 'OPENAI_API_KEY'
+
+AthinaApiKey.set_api_key('ATHINA_API_KEY')
+
+# CallbackHandler takes following arguments in the constructor:
+
 '''
 prompt_slug: str # prompt identifier
-magik_api_key: Optional[str] = None,
 environment: Optional[str] = 'production',
 session_id: Optional[str] = None,
 customer_id: Optional[str] = None,
 customer_user_id: Optional[str] = None,
+external_reference_id: Optional[str] = None
 **kwargs: Any, # Any key-value data you want to associate with the LLM calls in a chain
 '''
-handler = CallbackHandler(
-        prompt_slug='customer_query')
+def test_langchain_streaming():
+    template = '''You are a helpful assistant who generates comma separated lists.
+    A user will pass in a category, and you should generate 5 objects in that category in a comma separated list.
+    ONLY return a comma separated list, and nothing more.'''
+    system_message_prompt = SystemMessagePromptTemplate.from_template(template)
+    human_template = '{text}'
+    human_message_prompt = HumanMessagePromptTemplate.from_template(
+        human_template)
 
-chain = LLMChain(
-    llm=OpenAI(
-        openai_api_key=<YOUR OPEN_AI_KEY>, callbacks=[handler]),
-    prompt=chat_prompt,
-)
-print(chain.run('{user_query}', callbacks=[handler]))
+    chat_prompt = ChatPromptTemplate.from_messages(
+        [system_message_prompt, human_message_prompt])
+    system_template = '''You are a helpful assistant who generates lines about a particular topic'''
+    system_message_prompt = SystemMessagePromptTemplate.from_template(
+        system_template)
+    template = '''Write few lines on the following topic: {text}
+                Your response:'''
+    chat_prompt = ChatPromptTemplate.from_messages(
+        [system_message_prompt, HumanMessagePromptTemplate.from_template(template)])
+    handler = CallbackHandler(prompt_slug='customer_query')
+
+    # without streaming
+    chain1 = LLMChain(
+        llm=ChatOpenAI(
+            openai_api_key='OPENAI_API_KEY', callbacks=[handler]),
+        prompt=chat_prompt,
+    )
+    # with streaming
+    chain2 = LLMChain(
+        llm=ChatOpenAI(
+            openai_api_key='OPENAI_API_KEY', streaming=True, callbacks=[handler]),
+        prompt=chat_prompt,
+    )
+    try:
+        print(chain1.run('India'))
+        print(chain2.run('India'))
+    except Exception as e:
+        print(e)
 ```
+
+## Not using Python?
+
+Reach out to us at hello@athina.ai - we're happy to add support for other stacks as well if we hear from you.

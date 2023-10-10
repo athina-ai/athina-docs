@@ -1,4 +1,5 @@
 {
-    "why_log_data": "Why should I log my inference calls?",
-    "log_inference_call": "Log Inference Calls"
+  "why_log_data": "Why should I log my inference calls?",
+  "log_inference_call": "Log Inference Calls",
+  "user_feedback": "Log user feedback"
 }
