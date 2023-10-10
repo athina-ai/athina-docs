@@ -55,7 +55,7 @@ def log_llm_response():
     try:
         InferenceLogger.log_generic_response(
             prompt_slug="test",
-            prompt="Hello, I'm a human.",
+            prompt=prompt,
             model="generic",
             prompt_response=llm_response,
             prompt_tokens=10, # OPTIONAL
