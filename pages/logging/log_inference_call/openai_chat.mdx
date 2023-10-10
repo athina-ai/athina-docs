@@ -62,6 +62,13 @@ def log_llm_response():
 	# Log data to Athina Server
 	# ---
 	try:
+		"""
+		completion and prompt_response are both optional; however, it is expected atleast one of them is passed
+		ideally pass the completion object; in case access to completion object is not possible, pass the prompt_response
+		which is the text output of the openai chat completion.
+		prompt_tokens, completion_tokens and total_tokens are optional fields. These fields are calculated on athina server's end_time
+		from the completion object. But if the completion object is not passed, then these 3 token counts can be passed separately
+		"""
 		InferenceLogger.log_open_ai_chat_response(
 			prompt_slug="customer_support", # REQUIRED
 			messages=messages, # REQUIRED
@@ -136,5 +143,3 @@ def log_llm_response():
 
 }
 ```
-
-[See Example on Github →](#)

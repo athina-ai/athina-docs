@@ -1,0 +1,126 @@
+import { Callout } from "nextra/components";
+
+<Callout emoji="!!">
+  Make sure you have already completed the [Installation &
+  Setup](../../installation) steps before logging your data.
+</Callout>
+
+# OpenAI Chat Completions with streaming
+
+### Supported Models
+
+- gpt-3.5-turbo
+- gpt-3.5-turbo-0613
+- gpt-3.5-turbo-16k
+- gpt-3.5-turbo-16k-0613
+- gpt-4
+- gpt-4-0613
+- gpt-4-32k
+- gpt-4-32k-0613
+
+### Log via Python SDK
+
+```python
+
+from athina_logger.log_stream_inference.openai_chat_completion_stream import LogOpenAiChatCompletionStreamInference
+from athina_logger.api_key import AthinaApiKey
+from athina_logger.exception.custom_exception import CustomException
+
+AthinaApiKey.set_api_key('ATHINA_API_KEY')
+
+# Using python openai SDK
+def stream_openai_chat_response(user_query, prompt):
+    response = openai.ChatCompletion.create(
+        model='gpt-3.5-turbo',
+        messages=[{"role": "user", "content": prompt}],
+        stream=True,
+    )
+    logger = LogOpenAiChatCompletionStreamInference(
+        prompt_slug="test",
+        messages=[{"role": "user", "content": prompt}],
+        model="gpt-3.5-turbo",
+        context=context, # OPTIONAL
+        response_time=response_time_ms, # OPTIONAL
+        customer_id="stripe", # OPTIONAL
+        customer_user_id="shiv@athina.ai", # OPTIONAL
+        session_id="c45g-1234-s6g4-43d3", # OPTIONAL
+        user_query=user_query, # OPTIONAL
+        environment="production", # OPTIONAL
+        external_reference_id="123", # OPTIONAL; If passed, should be unique across all inference calls
+    )
+
+    # Here are 2 ways to log openai chat streams
+    # OPTION 1
+    try:
+        for chunk in response:
+            logger.collect_stream_inference_by_chunk(chunk)
+    except Exception as e:
+        print(e)
+    try:
+        logger.log_stream_inference()
+    except Exception as e:
+        if isinstance(e, CustomException):
+            print(e.status_code)
+            print(e.message)
+        else:
+            print(e)
+
+    # OPTION 2
+    try:
+        logger.collect_stream_inference(response)
+    except Exception as e:
+        print(e)
+    try:
+        logger.log_stream_inference()
+    except Exception as e:
+        if isinstance(e, CustomException):
+            print(e.status_code)
+            print(e.message)
+        else:
+            print(e)
+
+# Using OpenAI API call and SSE
+def stream_openai_chat_response_with_openai_api(user_query, prompt):
+    reqUrl = 'https://api.openai.com/v1/chat/completions'
+    reqHeaders = {
+        'Accept': 'text/event-stream',
+        'Authorization': 'Bearer ' + 'OPENAI_API_KEY'
+    }
+    reqBody = {
+        "model": "gpt-3.5-turbo",
+         messages=[{"role": "user", "content": prompt}],
+        "stream": True,
+    }
+    request = requests.post(reqUrl, stream=True,
+                            headers=reqHeaders, json=reqBody)
+    logger = LogOpenAiChatCompletionStreamInference(
+        prompt_slug="test",
+        messages=[{"role": "user", "content": prompt}],
+        model="gpt-3.5-turbo",
+        context=context, # OPTIONAL
+        response_time=response_time_ms, # OPTIONAL
+        customer_id="stripe", # OPTIONAL
+        customer_user_id="shiv@athina.ai", # OPTIONAL
+        session_id="c45g-1234-s6g4-43d3", # OPTIONAL
+        user_query=user_query, # OPTIONAL
+        environment="production", # OPTIONAL
+        external_reference_id="123", # OPTIONAL; If passed, should be unique across all inference calls
+    )
+    client = sseclient.SSEClient(request)
+    try:
+        for event in client.events():
+            if event.data != '[DONE]':
+                logger.collect_stream_inference_by_chunk(json.loads(event.data))
+    except Exception as e:
+        print(e)
+
+    try:
+        logger.log_stream_inference()
+    except Exception as e:
+        if isinstance(e, CustomException):
+            print(e.status_code)
+            print(e.message)
+        else:
+            print(e)
+
+```

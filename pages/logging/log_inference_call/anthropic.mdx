@@ -13,6 +13,71 @@ import { Callout } from "nextra/components";
 
 ### Log via Python SDK
 
+```python
+
+from athina_logger.inference_logger import InferenceLogger
+from athina_logger.api_key import AthinaApiKey
+from athina_logger.exception.custom_exception import CustomException
+
+AthinaApiKey.set_api_key('ATHINA_API_KEY')
+
+def log_llm_response():
+    user_query = "What is the pricing structure of Stripe's payment gateway?"
+    prompt = f"You are an AI... Human: {user_query}"
+
+
+    # Ground truth data - log as much structured data as possible
+    #
+    # This data can be referenced in your test cases.
+    # The more structured data you can pass here, the more granular the tests we can write.
+    context = {
+        "user_query": user_query,
+        "user_id": "123-abc-456-xyz",
+        "product_name": "Stripe",
+        "product_description": {...},
+        "pricing": {...}
+        "help_data": {...}
+    }
+
+
+    # Your inference call
+    llm_response = ... # Response output string from the LLM
+
+
+    # Extract these values from the LLM response
+    prompt_tokens = ...   # int
+    completion_tokens = ...   # int
+    total_tokens = ...   # int
+    response_time = ...  # int representing milliseconds
+
+    # Log data to Athina Server
+    try:
+        InferenceLogger.log_generic_response(
+            prompt_slug="test",
+            prompt="Hello, I'm a human.",
+            model="claude-2",
+            prompt_response=llm_response,
+            prompt_tokens=10, # OPTIONAL
+            completion_tokens=10, # OPTIONAL
+            total_tokens=30, # OPTIONAL
+            response_time=response_time, # OPTIONAL
+            external_reference_id="abc", # OPTIONAL
+            context=context, # OPTIONAL
+            customer_id="stripe", # identifier for your customer # OPTIONAL
+            customer_user_id="vitalik@ethereum.org", # identifier for the user interacting with the chatbot # OPTIONAL
+            user_query=user_query,	# the user's query message to the chatbot # OPTIONAL
+            session_id="di23m234" # the ID you use to keep track of the conversation / session # OPTIONAL
+            environment="production", # OPTIONAL; default value: production
+            external_reference_id="abc" # OPTIONAL; unique across all inference calls
+        )
+    except Exception as e:
+        if isinstance(e, CustomException):
+            print(e.status_code)
+            print(e.message)
+        else:
+            print(e)
+```
+
 ### Log via API Request
 
 **Method**: `POST`
@@ -29,8 +94,8 @@ import { Callout } from "nextra/components";
     prompt_slug: "customer_support",
     // Prompt string
     prompt_text: "What are some good restaurants in London?",
-    // Model ID used for inference (ex: meta-llama/Llama-2-13b)
-    language_model_id: language_model_id, # claude-2
+    // Model ID used for inference (claude-2)
+    language_model_id: language_model_id,
     // LLM Output
     prompt_response: "Here are some popular restaurants in London...",
     // your ground truth data object (OPTIONAL)
@@ -51,7 +116,7 @@ import { Callout } from "nextra/components";
     session_id: "c45g-1234-s6g4-43d3",
     // the user's query (for chat applications) (OPTIONAL)
     user_query: user_query,
-    // "production" or "development" (OPTIONAL)
+    // "production" or "development" (OPTIONAL); default value: production
     environment: "production",
     // unique external identifier; should be unique across all inference calls
 	external_reference_id: "abc",
