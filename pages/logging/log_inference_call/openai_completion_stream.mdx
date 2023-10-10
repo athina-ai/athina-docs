@@ -29,7 +29,7 @@ def stream_openai_completion_response(user_query, prompt):
         stream=True,
     )
     logger = LogOpenAiCompletionStreamInference(
-        prompt_slug="test",
+        prompt_slug="customer_query",
         prompt=prompt,
         model="text-davinci-003",
         context=context, # OPTIONAL
@@ -39,7 +39,7 @@ def stream_openai_completion_response(user_query, prompt):
         session_id="c45g-1234-s6g4-43d3", # OPTIONAL
         user_query=user_query, # OPTIONAL
         environment="production", # OPTIONAL
-        external_reference_id="123", # OPTIONAL; If passed, should be unique across all inference calls
+        external_reference_id="5e838eaf-7dd0-4b6f-a32c-26110dd54e58", # OPTIONAL; If passed, should be unique across all inference calls
     )
 
     # Here are 2 ways to log openai chat streams
@@ -87,7 +87,7 @@ def stream_openai_completion_response_with_openai_api(user_query, prompt):
     request = requests.post(reqUrl, stream=True,
                             headers=reqHeaders, json=reqBody)
     logger = LogOpenAiCompletionStreamInference(
-        prompt_slug="test",
+        prompt_slug="customer_query",
         prompt=prompt,
         model="text-davinci-003",
         context=context, # OPTIONAL
@@ -97,7 +97,7 @@ def stream_openai_completion_response_with_openai_api(user_query, prompt):
         session_id="c45g-1234-s6g4-43d3", # OPTIONAL
         user_query=user_query, # OPTIONAL
         environment="production", # OPTIONAL
-        external_reference_id="123", # OPTIONAL; If passed, should be unique across all inference calls
+        external_reference_id="5e838eaf-7dd0-4b6f-a32c-26110dd54e58", # OPTIONAL; If passed, should be unique across all inference calls
     )
     client = sseclient.SSEClient(request)
     try:
@@ -117,3 +117,7 @@ def stream_openai_completion_response_with_openai_api(user_query, prompt):
             print(e)
 
 ```
+
+## Not using Python?
+
+Reach out to us at hello@athina.ai - we're happy to add support for other stacks as well if we hear from you.

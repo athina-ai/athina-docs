@@ -71,16 +71,15 @@ def log_llm_response():
             prompt_response=llm_response,
             prompt_tokens=10, # OPTIONAL
             completion_tokens=10, # OPTIONAL
-            total_tokens=30, # OPTIONAL
+            total_tokens=20, # OPTIONAL
             response_time=response_time, # OPTIONAL
-            external_reference_id="abc", # OPTIONAL
             context=context, # OPTIONAL
             customer_id="stripe", # identifier for your customer # OPTIONAL
             customer_user_id="vitalik@ethereum.org", # identifier for the user interacting with the chatbot # OPTIONAL
             user_query=user_query,	# the user's query message to the chatbot # OPTIONAL
             session_id="di23m234" # the ID you use to keep track of the conversation / session # OPTIONAL
             environment="production", # OPTIONAL; default value: production
-            external_reference_id="abc" # OPTIONAL; unique across all inference calls
+            external_reference_id="5e838eaf-7dd0-4b6f-a32c-26110dd54e58" # OPTIONAL; unique across all inference calls
         )
     except Exception as e:
         if isinstance(e, CustomException):
@@ -131,6 +130,10 @@ def log_llm_response():
     // "production" or "development" (OPTIONAL); default value: production
     environment: "production",
     // unique external identifier; should be unique across all inference calls
-	external_reference_id: "abc",
+	external_reference_id: "5e838eaf-7dd0-4b6f-a32c-26110dd54e58",
 }
 ```
+
+## Not using Python?
+
+Reach out to us at hello@athina.ai - we're happy to add support for other stacks as well if we hear from you.

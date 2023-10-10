@@ -90,7 +90,7 @@ def test_langchain_streaming():
                 Your response:'''
     chat_prompt = ChatPromptTemplate.from_messages(
         [system_message_prompt, HumanMessagePromptTemplate.from_template(template)])
-    handler = CallbackHandler(prompt_slug='test')
+    handler = CallbackHandler(prompt_slug='customer_query')
 
     # without streaming
     chain1 = LLMChain(
@@ -110,3 +110,7 @@ def test_langchain_streaming():
     except Exception as e:
         print(e)
 ```
+
+## Not using Python?
+
+Reach out to us at hello@athina.ai - we're happy to add support for other stacks as well if we hear from you.

@@ -17,9 +17,9 @@ AthinaApiKey.set_api_key('ATHINA_API_KEY')
 def user_feedback_test():
     try:
         user_feedback.UserFeedback.log_user_feedback(
-            external_reference_id="abc",
-            user_feedback=1,
-            user_feedback_comment="test" # OPTIONAL
+            external_reference_id="5e838eaf-7dd0-4b6f-a32c-26110dd54e58",
+            user_feedback=-1,
+            user_feedback_comment="Bot mentioned a product that doesn't exist" # OPTIONAL
         )
     except Exception as e:
         if isinstance(e, CustomException):
@@ -31,7 +31,7 @@ def user_feedback_test():
 
 ### Log via API Request
 
-**Method**: `POST`
+**Method**: `PATCH`
 
 **Endpoint**: `https://api.athina.ai/api/v1/promptRun/user-feedback`
 
@@ -41,8 +41,8 @@ def user_feedback_test():
 
 ```json
 {
-  "external_reference_id": "bhv",
-  "user_feedback": 1,
-  "user_feedback_comment": "this is a user feedback"
+  "external_reference_id": "5e838eaf-7dd0-4b6f-a32c-26110dd54e58",
+  "user_feedback": -1,
+  "user_feedback_comment": "Bot mentioned a product that doesn't exist"
 }
 ```

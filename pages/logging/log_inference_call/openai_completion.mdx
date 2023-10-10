@@ -67,7 +67,7 @@ def log_llm_response():
 			session_id="c45g-1234-s6g4-43d3", # OPTIONAL
 			user_query=user_query, # OPTIONAL
 			environment="production", # OPTIONAL
-			external_reference_id="123", # OPTIONAL; If passed, should be unique across all inference calls
+			external_reference_id="5e838eaf-7dd0-4b6f-a32c-26110dd54e58", # OPTIONAL; If passed, should be unique across all inference calls
 			prompt_tokens=10, # OPTIONAL
 			completion_tokens=20, # OPTIONAL
 			total_tokens=30 # OPTIONAL
@@ -119,7 +119,7 @@ def log_llm_response():
     // "production" or "development" (OPTIONAL)
     environment: "production",
 	// unique external identifier; should be unique across all inference calls
-	external_reference_id: "abc",
+	external_reference_id: "5e838eaf-7dd0-4b6f-a32c-26110dd54e58",
 	// tokens used in the prompt (OPTIONAL)
 	prompt_tokens: 10,
 	// tokens used in the completion response (OPTIONAL)
@@ -128,3 +128,7 @@ def log_llm_response():
 	total_tokens: 30
 }
 ```
+
+## Not using Python?
+
+Reach out to us at hello@athina.ai - we're happy to add support for other stacks as well if we hear from you.
