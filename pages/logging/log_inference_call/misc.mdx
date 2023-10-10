@@ -1,3 +1,10 @@
+import { Callout } from "nextra/components";
+
+<Callout emoji="!!">
+  Make sure you have already completed the [Installation &
+  Setup](../../installation) steps before logging your data.
+</Callout>
+
 # Other Language models
 
 ### Supported Models
@@ -37,7 +44,7 @@ def log_llm_response():
     response_time = ...  # int representing milliseconds
 
 
-    # Log data to Magik Server
+    # Log data to Athina Server
     log_generic_response(
         prompt_slug='customer-support-query',
         prompt=prompt,
@@ -59,7 +66,9 @@ def log_llm_response():
 
 **Method**: `POST`
 
-**Endpoint**: `https://api.magiklabs.app/api/v1/log/prompt/generic`
+**Endpoint**: `https://api.athina.ai/api/v1/log/prompt/generic`
+
+**Headers**: `magik-api-key`: YOUR_MAGIK_API_KEY
 
 **Request Body**
 
@@ -86,7 +95,7 @@ def log_llm_response():
     // your customer ID (business) (OPTIONAL)
     customer_id: "stripe",
     // your customer user ID (business user) (OPTIONAL)
-    customer_user_id: "shiv@magiklabs.app",
+    customer_user_id: "shiv@athina.ai",
     // your session or conversation ID (OPTIONAL)
     session_id: "c45g-1234-s6g4-43d3",
     // the user's query (for chat applications) (OPTIONAL)

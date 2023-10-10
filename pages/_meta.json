@@ -1,5 +1,6 @@
 {
   "index": "Introduction",
+  "installation": "Installation",
   "logging": "Logging",
   "evals": "Evals",
   "preset_evals": "Prebuilt Evals",
@@ -7,7 +8,7 @@
   "blog": {
     "title": "Blog ↗",
     "type": "page",
-    "href": "https://magik.ghost.io"
+    "href": "https://blog.athina.ai"
   },
   "contact": {
     "title": "Contact ↗",

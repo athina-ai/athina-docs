@@ -1,3 +1,10 @@
+import { Callout } from "nextra/components";
+
+<Callout emoji="!!">
+  Make sure you have already completed the [Installation &
+  Setup](../../installation) steps before logging your data.
+</Callout>
+
 # OpenAI Chat Completions
 
 ### Supported Models
@@ -15,7 +22,11 @@
 
 ```python
 import openai
-from magik.logger import log_open_ai_chat_response
+from athina_logger.inference_logger import InferenceLogger
+from athina_logger.api_key import AthinaApiKey
+from athina_logger.exception.custom_exception import CustomException
+
+AthinaApiKey.set_api_key('ATHINA_API_KEY')
 
 def log_llm_response():
 	model="gpt-3.5-turbo"
@@ -48,21 +59,33 @@ def log_llm_response():
 	response_time_ms = int((end_time - start_time) * 1000)
 
 
-	# Log data to Magik Server
+	# Log data to Athina Server
 	# ---
-	log_open_ai_chat_response(
-	    prompt_slug="customer_support",
-	    messages=messages,
-	    model=model,
-	    completion=chat_completion,
-	    context=context,
-	    response_time=response_time_ms,
-	    customer_id="stripe",
-	    customer_user_id="shiv@magiklabs.app",
-	    session_id="c45g-1234-s6g4-43d3",
-	    user_query=user_query,
- 	    environment="production"
-	)
+	try:
+		InferenceLogger.log_open_ai_chat_response(
+			prompt_slug="customer_support", # REQUIRED
+			messages=messages, # REQUIRED
+			model=model, # REQUIRED
+			completion=chat_completion, # OPTIONAL
+			prompt_response="Pricing structure of Stripe's payment gateway is as follows..." # OPTIONAL
+			context=context, # OPTIONAL
+			response_time=response_time_ms, # OPTIONAL
+			customer_id="stripe", # OPTIONAL
+			customer_user_id="shiv@athina.ai", # OPTIONAL
+			session_id="c45g-1234-s6g4-43d3", # OPTIONAL
+			user_query=user_query, # OPTIONAL
+			environment="production", # OPTIONAL
+			external_reference_id="123", # OPTIONAL; If passed, should be unique across all inference calls
+			prompt_tokens=10, # OPTIONAL
+			completion_tokens=20, # OPTIONAL
+			total_tokens=30 # OPTIONAL
+		)
+	 except Exception as e:
+        if isinstance(e, CustomException):
+            print(e.status_code)
+            print(e.message)
+        else:
+            print(e)
 ...
 ```
 
@@ -70,7 +93,9 @@ def log_llm_response():
 
 **Method**: `POST`
 
-**Endpoint**: `https://api.magiklabs.app/api/v1/log/prompt/openai-chat`
+**Endpoint**: `https://api.athina.ai/api/v1/log/prompt/openai-chat`
+
+**Headers**: `athina-api-key`: YOUR_ATHINA_API_KEY
 
 **Request Body**
 
@@ -82,8 +107,10 @@ def log_llm_response():
     prompt_messages: messages,
     // Model ID used for inference (ex: gpt-3.5-turbo)
     language_model_id: language_model_id,
-    // OpenAI chat completion object
+    // OpenAI chat completion object (OPTIONAL)
     completion: chatCompletion,
+	// OpenAI chat completion prompt response text (OPTIONAL)
+	prompt_response: "this is openai chat completion response in text"
     // your ground truth data object (OPTIONAL)
     context: context,
     // response time in milliseconds (OPTIONAL)
@@ -91,13 +118,22 @@ def log_llm_response():
     // your customer ID (business) (OPTIONAL)
     customer_id: "stripe",
     // your customer user ID (business user) (OPTIONAL)
-    customer_user_id: "shiv@magiklabs.app",
+    customer_user_id: "shiv@athina.ai",
     // your session or conversation ID (OPTIONAL)
     session_id: "c45g-1234-s6g4-43d3",
     // the user's query (for chat applications) (OPTIONAL)
     user_query: user_query,
     // "production" or "development" (OPTIONAL)
-    environment: "production"
+    environment: "production",
+	// unique external identifier; should be unique across all inference calls
+	external_reference_id: "abc",
+	// tokens used in the prompt (OPTIONAL)
+	prompt_tokens: 10,
+	// tokens used in the completion response (OPTIONAL)
+	completion_tokens: 20,
+	// total tokens -> prompt_tokens + completion_tokens (OPTIONAL)
+	total_tokens: 30
+
 }
 ```
 

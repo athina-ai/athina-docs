@@ -1,3 +1,10 @@
+import { Callout } from "nextra/components";
+
+<Callout emoji="!!">
+  Make sure you have already completed the [Installation &
+  Setup](../../installation) steps before logging your data.
+</Callout>
+
 # Langchain
 
 ### Supported Models
@@ -30,6 +37,7 @@
 from magik.langchain_handler import CallbackHandler
 
 # CallbackHandler takes following arguments in the constructor:
+
 '''
 prompt_slug: str # prompt identifier
 magik_api_key: Optional[str] = None,

@@ -5,22 +5,13 @@ import { Callout } from "nextra/components";
   Setup](../../installation) steps before logging your data.
 </Callout>
 
-# Meta Llama
+# Anthropic
 
 ### Supported Models
 
-- meta-llama/Llama-2-13b
-- meta-llama/Llama-2-13b-chat
-- meta-llama/Llama-2-13b-chat-hf
-- meta-llama/Llama-2-13b-hf
-- meta-llama/Llama-2-70b
-- meta-llama/Llama-2-70b-chat
-- meta-llama/Llama-2-70b-chat-hf
-- meta-llama/Llama-2-70b-hf
-- meta-llama/Llama-2-7b
-- meta-llama/Llama-2-7b-chat
-- meta-llama/Llama-2-7b-chat-hf
-- meta-llama/Llama-2-7b-hf
+- claude-2
+
+### Log via Python SDK
 
 ### Log via API Request
 
@@ -28,7 +19,7 @@ import { Callout } from "nextra/components";
 
 **Endpoint**: `https://api.athina.ai/api/v1/log/prompt/generic`
 
-**Headers**: `magik-api-key`: YOUR_MAGIK_API_KEY
+**Headers**: `athina-api-key`: YOUR_ATHINA_API_KEY
 
 **Request Body**
 
@@ -39,7 +30,7 @@ import { Callout } from "nextra/components";
     // Prompt string
     prompt_text: "What are some good restaurants in London?",
     // Model ID used for inference (ex: meta-llama/Llama-2-13b)
-    language_model_id: language_model_id,
+    language_model_id: language_model_id, # claude-2
     // LLM Output
     prompt_response: "Here are some popular restaurants in London...",
     // your ground truth data object (OPTIONAL)
@@ -61,6 +52,8 @@ import { Callout } from "nextra/components";
     // the user's query (for chat applications) (OPTIONAL)
     user_query: user_query,
     // "production" or "development" (OPTIONAL)
-    environment: "production"
+    environment: "production",
+    // unique external identifier; should be unique across all inference calls
+	external_reference_id: "abc",
 }
 ```
