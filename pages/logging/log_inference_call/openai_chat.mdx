@@ -114,6 +114,8 @@ def log_llm_response():
     prompt_messages: messages,
     // Model ID used for inference (ex: gpt-3.5-turbo)
     language_model_id: language_model_id,
+	// functions parameter for function call feature in chat completion
+	functions: functions
     // OpenAI chat completion object (OPTIONAL)
     completion: chatCompletion,
 	// OpenAI chat completion prompt response text (OPTIONAL)
@@ -142,6 +144,31 @@ def log_llm_response():
 	total_tokens: 30
 
 }
+```
+
+**Sample functions field in the request body (only available in the HTTP request; not in python SDK for now)**
+
+```json
+functions: [
+    {
+      "name": "get_current_weather",
+      "description": "Get the current weather in a given location",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "location": {
+            "type": "string",
+            "description": "The city and state, e.g. San Francisco, CA"
+          },
+          "unit": {
+            "type": "string",
+            "enum": ["celsius", "fahrenheit"]
+          }
+        },
+        "required": ["location"]
+      }
+    }
+  ]
 ```
 
 ## Not using Python?
