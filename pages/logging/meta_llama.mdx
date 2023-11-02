@@ -5,16 +5,28 @@ import { Callout } from "nextra/components";
   Setup](../../installation) steps before logging your data.
 </Callout>
 
-# Anthropic
+# Meta Llama
 
 ### Supported Models
 
-- claude-2
+- `meta-llama/Llama-2-13b`
+- `meta-llama/Llama-2-13b-chat`
+- `meta-llama/Llama-2-13b-chat-hf`
+- `meta-llama/Llama-2-13b-hf`
+- `meta-llama/Llama-2-70b`
+- `meta-llama/Llama-2-70b-chat`
+- `meta-llama/Llama-2-70b-chat-hf`
+- `meta-llama/Llama-2-70b-hf`
+- `meta-llama/Llama-2-7b`
+- `meta-llama/Llama-2-7b-chat`
+- `meta-llama/Llama-2-7b-chat-hf`
+- `meta-llama/Llama-2-7b-hf`
 
 ### Log via Python SDK
 
 ```python
 
+import openai
 from athina_logger.inference_logger import InferenceLogger
 from athina_logger.api_key import AthinaApiKey
 from athina_logger.exception.custom_exception import CustomException
@@ -53,9 +65,9 @@ def log_llm_response():
     # Log data to Athina Server
     try:
         InferenceLogger.log_generic_response(
-            prompt_slug="customer_support",
-            prompt=prompt,
-            model="claude-2",
+            prompt_slug="test",
+            prompt="Hello, I'm a human.",
+            model="meta-llama/Llama-2-13b", # one of the supported meta llama models from above list
             prompt_response=llm_response,
             prompt_tokens=10, # OPTIONAL
             completion_tokens=10, # OPTIONAL
@@ -93,7 +105,7 @@ def log_llm_response():
     prompt_slug: "customer_support",
     // Prompt string
     prompt_text: "What are some good restaurants in London?",
-    // Model ID used for inference (claude-2)
+    // Model ID used for inference (ex: meta-llama/Llama-2-13b)
     language_model_id: language_model_id,
     // LLM Output
     prompt_response: "Here are some popular restaurants in London...",

@@ -1,24 +1,39 @@
 import { Callout } from "nextra/components";
 
-<Callout emoji="!!">
-  Make sure you have already completed the [Installation &
-  Setup](../../installation) steps before logging your data.
-</Callout>
-
 # OpenAI Chat Completions
 
-### Supported Models
+<Callout emoji="!!">
+  If you are using python, we would highly recommend that you use [this logging
+  method](./openai_chat_python) instead.
+</Callout>
 
-- gpt-3.5-turbo
-- gpt-3.5-turbo-0613
-- gpt-3.5-turbo-16k
-- gpt-3.5-turbo-16k-0613
-- gpt-4
-- gpt-4-0613
-- gpt-4-32k
-- gpt-4-32k-0613
+##### Supported Models
 
-### Log via Python SDK
+- `gpt-3.5-turbo`
+- `gpt-3.5-turbo-0613`
+- `gpt-3.5-turbo-16k`
+- `gpt-3.5-turbo-16k-0613`
+- `gpt-4`
+- `gpt-4-0613`
+- `gpt-4-32k`
+- `gpt-4-32k-0613`
+
+---
+
+### Log Via Python SDK
+
+##### Install the Python SDK
+
+Run `pip install athina-logger`
+
+##### Set Athina API key
+
+```python
+# Initialize the Athina API key somewhere in your code
+AthinaApiKey.set_api_key(os.getenv('ATHINA_API_KEY'))
+```
+
+##### Log Inference Calls
 
 ```python
 import openai
@@ -26,29 +41,19 @@ from athina_logger.inference_logger import InferenceLogger
 from athina_logger.api_key import AthinaApiKey
 from athina_logger.exception.custom_exception import CustomException
 
-AthinaApiKey.set_api_key('ATHINA_API_KEY')
-
 def log_llm_response():
-	model="gpt-3.5-turbo"
-	user_query = "What is the pricing structure of Stripe's payment gateway?"
+	# Prompt Messages Array
 	messages = [
 	    {
-		"role": "system",
-		"content": ...
+			"role": "system",
+			"content": ...
 	    },
-	    ...
+		...
 	]
 
-
-	# Ground truth data - log as much structured data as possible
-	#
-	# This data can be referenced in your test cases.
-	# The more structured data you can pass here, the more granular the tests we can write.
+	# Retrieved data from your RAG system
 	context = {
-		"product_name": "Stripe",
-		"product_description": {...},
-		"pricing": {...},
-		"help_data": {...}
+		"information": retrieved_context
 	}
 
 
@@ -62,30 +67,19 @@ def log_llm_response():
 	# Log data to Athina Server
 	# ---
 	try:
-		"""
-		completion and prompt_response are both optional; however, it is expected atleast one of them is passed
-		ideally pass the completion object; in case access to completion object is not possible, pass the prompt_response
-		which is the text output of the openai chat completion.
-		prompt_tokens, completion_tokens and total_tokens are optional fields. These fields are calculated on athina server's end_time
-		from the completion object. But if the completion object is not passed, then these 3 token counts can be passed separately
-		"""
 		InferenceLogger.log_open_ai_chat_response(
 			prompt_slug="customer_support", # REQUIRED
+			user_query=user_query, # OPTIONAL, highly recommended for Q&A apps
 			messages=messages, # REQUIRED
 			model=model, # REQUIRED
 			completion=chat_completion, # OPTIONAL
-			prompt_response="Pricing structure of Stripe's payment gateway is as follows..." # OPTIONAL
 			context=context, # OPTIONAL
 			response_time=response_time_ms, # OPTIONAL
-			customer_id="stripe", # OPTIONAL
-			customer_user_id="shiv@athina.ai", # OPTIONAL
-			session_id="c45g-1234-s6g4-43d3", # OPTIONAL
-			user_query=user_query, # OPTIONAL
+			customer_id="stripe", # OPTIONAL - Your customer's internal ID
+			customer_user_id="shiv@athina.ai", # OPTIONAL - Your end user's internal ID
+			session_id="c45g-1234-s6g4-43d3", # OPTIONAL - Your internal session / conversation ID
 			environment="production", # OPTIONAL
-			external_reference_id="5e838eaf-7dd0-4b6f-a32c-26110dd54e58", # OPTIONAL; If passed, should be unique across all inference calls
-			prompt_tokens=10, # OPTIONAL
-			completion_tokens=20, # OPTIONAL
-			total_tokens=30 # OPTIONAL
+			external_reference_id="5e838eaf-7dd0-4b6f-a32c-26110dd54e58", # OPTIONAL, your internal unique identifier to track the inference call
 		)
 	 except Exception as e:
         if isinstance(e, CustomException):
@@ -95,6 +89,14 @@ def log_llm_response():
             print(e)
 ...
 ```
+
+- If you do not have access to the `completion` response object from OpenAI, then pass the following fields instead:
+  - `prompt_response`: generated response from OpenAI as a raw string
+  - `prompt_tokens`: integer value representing the token count of your prompt
+  - `completion_tokens`: integer value representing the token count of your completion response
+  - `total_tokens`: prompt_tokens + completion_tokens
+
+---
 
 ### Log via API Request
 

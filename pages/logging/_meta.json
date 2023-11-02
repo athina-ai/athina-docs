@@ -1,5 +1,11 @@
 {
-  "why_log_data": "Why should I log my inference calls?",
-  "log_inference_call": "Log Inference Calls",
-  "user_feedback": "Log user feedback"
+  "openai_chat_python": "OpenAI Chat - Python",
+  "openai_chat": "OpenAI Chat - Manual",
+  "openai_chat_stream": "OpenAI Chat - Streaming",
+  "openai_completion": "OpenAI Completion",
+  "openai_completion_stream": "OpenAI Completion - Streaming",
+  "langchain": "Langchain",
+  "anthropic": "Anthropic",
+  "meta_llama": "Meta Llama",
+  "misc": "Any other language model"
 }

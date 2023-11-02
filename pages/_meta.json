@@ -1,6 +1,6 @@
 {
   "index": "Introduction",
-  "installation": "Installation",
+  "quickstart": "Quick Start",
   "logging": "Logging",
   "evals": "Evals",
   "preset_evals": "Prebuilt Evals",
