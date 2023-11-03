@@ -87,6 +87,17 @@ Any OpenAI chat completion model (ex: `gpt-3.5-turbo`) _as long as you are not u
         response_time: Optional[int] = None
     ```
 
+
+    ##### Q. Is this SDK going to make a proxy request to OpenAI through Athina?
+
+    Nope! We know how important your OpenAI inference call is, so we don't want to interfere with that or increase response times.
+
+    Instead, we simply make an logging API request to Athina, which is separate from your OpenAI request.
+
+    ##### Q. Will this SDK increase my latency?
+
+    Nope! The logging call is being made in a background thread as a fire and forget request, so there is almost no additional latency (< 5ms).
+
   </Tabs.Tab>
   
   <Tabs.Tab>
@@ -255,7 +266,7 @@ Any OpenAI chat completion model (ex: `gpt-3.5-turbo`) _as long as you are not u
 
     **Method**: `POST`
 
-    **Endpoint**: `https://api.athina.ai/api/v1/log/prompt/openai-chat`
+    **Endpoint**: `https://log.athina.ai/api/v1/log/prompt/openai-chat`
 
     **Headers**: `athina-api-key`: YOUR_ATHINA_API_KEY
 
