@@ -16,6 +16,7 @@
   "homepage": "https://athina.ai",
   "dependencies": {
     "next": "^13.0.6",
+    "next-mdx-remote": "^4.4.1",
     "nextra": "latest",
     "nextra-theme-docs": "latest",
     "react": "^18.2.0",
