@@ -95,7 +95,6 @@ def test_langchain_streaming():
     chat_prompt = ChatPromptTemplate.from_messages(
         [system_message_prompt, HumanMessagePromptTemplate.from_template(template)])
     handler = CallbackHandler(prompt_slug='customer_query')
-    # handler = CallbackHandler() Without any prompt_slug
 
     # without streaming
     chain1 = LLMChain(
