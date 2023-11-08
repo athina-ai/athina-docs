@@ -65,10 +65,10 @@ def log_llm_response():
     # Log data to Athina Server
     try:
         InferenceLogger.log_generic_response(
+            prompt_slug="test",
             prompt="Hello, I'm a human.",
             model="meta-llama/Llama-2-13b", # one of the supported meta llama models from above list
             prompt_response=llm_response,
-            prompt_slug="customer_support", # OPTIONAL; default value: default
             prompt_tokens=10, # OPTIONAL
             completion_tokens=10, # OPTIONAL
             total_tokens=20, # OPTIONAL
@@ -101,7 +101,7 @@ def log_llm_response():
 
 ```json
 {
-    // Prompt identifier (OPTIONAL); default value: default
+    // Prompt identifier
     prompt_slug: "customer_support",
     // Prompt string
     prompt_text: "What are some good restaurants in London?",

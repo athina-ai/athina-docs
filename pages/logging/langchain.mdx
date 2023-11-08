@@ -14,12 +14,10 @@ import { Callout } from "nextra/components";
 - `gpt-3.5-turbo-0613`
 - `gpt-3.5-turbo-16k`
 - `gpt-3.5-turbo-16k-0613`
-- `gpt-3.5-turbo-1106`
 - `gpt-4`
 - `gpt-4-0613`
 - `gpt-4-32k`
 - `gpt-4-32k-0613`
-- `gpt-4-1106-preview`
 - `meta-llama/Llama-2-13b`
 - `meta-llama/Llama-2-13b-chat`
 - `meta-llama/Llama-2-13b-chat-hf`
@@ -41,12 +39,10 @@ import { Callout } from "nextra/components";
 - `gpt-3.5-turbo-0613`
 - `gpt-3.5-turbo-16k`
 - `gpt-3.5-turbo-16k-0613`
-- `gpt-3.5-turbo-1106`
 - `gpt-4`
 - `gpt-4-0613`
 - `gpt-4-32k`
 - `gpt-4-32k-0613`
-- `gpt-4-1106-preview`
 
 ### Log via Python SDK
 
@@ -68,7 +64,7 @@ AthinaApiKey.set_api_key('ATHINA_API_KEY')
 # CallbackHandler takes following arguments in the constructor:
 
 '''
-prompt_slug: Optional[str] = 'default', # prompt identifier
+prompt_slug: str # prompt identifier
 environment: Optional[str] = 'production',
 session_id: Optional[str] = None,
 customer_id: Optional[str] = None,
@@ -95,7 +91,6 @@ def test_langchain_streaming():
     chat_prompt = ChatPromptTemplate.from_messages(
         [system_message_prompt, HumanMessagePromptTemplate.from_template(template)])
     handler = CallbackHandler(prompt_slug='customer_query')
-    # handler = CallbackHandler() Without any prompt_slug
 
     # without streaming
     chain1 = LLMChain(
