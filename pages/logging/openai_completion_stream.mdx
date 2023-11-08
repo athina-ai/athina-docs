@@ -30,7 +30,7 @@ def stream_openai_completion_response(user_query, prompt):
     logger = LogOpenAiCompletionStreamInference(
         prompt=prompt,
         model="text-davinci-003",
-        prompt_slug="customer_query", # OPTIONAL
+        prompt_slug="customer_query",
         context=context, # OPTIONAL
         response_time=response_time_ms, # OPTIONAL
         customer_id="stripe", # OPTIONAL
@@ -88,7 +88,7 @@ def stream_openai_completion_response_with_openai_api(user_query, prompt):
     logger = LogOpenAiCompletionStreamInference(
         prompt=prompt,
         model="text-davinci-003",
-        prompt_slug="customer_query", # OPTIONAL
+        prompt_slug="customer_query",
         context=context, # OPTIONAL
         response_time=response_time_ms, # OPTIONAL
         customer_id="stripe", # OPTIONAL

@@ -57,7 +57,7 @@ def log_llm_response():
             prompt=prompt,
             model="generic",
             prompt_response=llm_response,
-            prompt_slug="customer_support", # OPTIONAL; default value: default
+            prompt_slug="customer_support",
             prompt_tokens=10, # OPTIONAL
             completion_tokens=20, # OPTIONAL
             total_tokens=30, # OPTIONAL
@@ -90,7 +90,7 @@ def log_llm_response():
 
 ```json
 {
-    // Prompt identifier (OPTIONAL); default value: default
+    // Prompt identifier (OPTIONAL); default value: "default"
     prompt_slug: "customer_support",
     // Prompt string
     prompt_text: "What are some good restaurants in London?",

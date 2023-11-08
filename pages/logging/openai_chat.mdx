@@ -173,7 +173,7 @@ Any OpenAI chat completion model (ex: `gpt-3.5-turbo`) _as long as you are not u
         logger = LogOpenAiChatCompletionStreamInference(
             messages=[{"role": "user", "content": prompt}],
             model="gpt-3.5-turbo",
-            prompt_slug="test", # OPTIONAL
+            prompt_slug="test",
             context=context, # OPTIONAL
             response_time=response_time_ms, # OPTIONAL
             customer_id="stripe", # OPTIONAL
@@ -235,7 +235,7 @@ Any OpenAI chat completion model (ex: `gpt-3.5-turbo`) _as long as you are not u
             messages=messages,
             model=model,
             completion=completion,
-            prompt_slug="generate_email_v1", # OPTIONAL, identifier for the prompt / version; default value: default
+            prompt_slug="generate_email_v1", # identifier for the prompt / version
             user_query=user_query, # OPTIONAL, highly recommended for RAG Q&A apps - chat message sent by end user
             context=context, # OPTIONAL, highly recommended - retrieved context / ground truth
             response_time=response_time_ms, # OPTIONAL
@@ -292,7 +292,7 @@ Any OpenAI chat completion model (ex: `gpt-3.5-turbo`) _as long as you are not u
     ```json
     {
         ...requestBody,
-        // Prompt identifier (OPTIONAL); default value: default
+        // Prompt identifier (OPTIONAL); default value: "default"
         "prompt_slug": "customer_support",
         // The environment your app is running in: "production", "dev", etc (OPTIONAL)
         "environment": "production",
@@ -310,7 +310,6 @@ Any OpenAI chat completion model (ex: `gpt-3.5-turbo`) _as long as you are not u
         "session_id": "c45g-1234-s6g4-43d3",
         // unique external identifier; should be unique across all inference calls
         "external_reference_id": "5e838eaf-7dd0-4b6f-a32c-26110dd54e58",
-        // tokens used in the prompt (OPTIONAL)
     }
     ```
 
