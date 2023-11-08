@@ -12,10 +12,12 @@ Any OpenAI chat completion model (ex: `gpt-3.5-turbo`) _as long as you are not u
 - `gpt-3.5-turbo-0613`
 - `gpt-3.5-turbo-16k`
 - `gpt-3.5-turbo-16k-0613`
+- `gpt-3.5-turbo-1106`
 - `gpt-4`
 - `gpt-4-0613`
 - `gpt-4-32k`
 - `gpt-4-32k-0613`
+- `gpt-4-1106-preview`
   <br />
   <br />
 
@@ -169,9 +171,9 @@ Any OpenAI chat completion model (ex: `gpt-3.5-turbo`) _as long as you are not u
             stream=True,
         )
         logger = LogOpenAiChatCompletionStreamInference(
-            prompt_slug="test",
             messages=[{"role": "user", "content": prompt}],
             model="gpt-3.5-turbo",
+            prompt_slug="test", # OPTIONAL
             context=context, # OPTIONAL
             response_time=response_time_ms, # OPTIONAL
             customer_id="stripe", # OPTIONAL
@@ -230,10 +232,10 @@ Any OpenAI chat completion model (ex: `gpt-3.5-turbo`) _as long as you are not u
     # ---
     try:
         InferenceLogger.log_open_ai_chat_response(
-            prompt_slug="generate_email_v1", # identifier for the prompt / version
             messages=messages,
             model=model,
             completion=completion,
+            prompt_slug="generate_email_v1", # OPTIONAL, identifier for the prompt / version; default value: default
             user_query=user_query, # OPTIONAL, highly recommended for RAG Q&A apps - chat message sent by end user
             context=context, # OPTIONAL, highly recommended - retrieved context / ground truth
             response_time=response_time_ms, # OPTIONAL
@@ -275,8 +277,6 @@ Any OpenAI chat completion model (ex: `gpt-3.5-turbo`) _as long as you are not u
     The required fields to include in your request body:
     ```json
     {
-        // Prompt identifier
-        "prompt_slug": "customer_support",
         // Model ID used for inference (ex: gpt-3.5-turbo)
         "language_model_id": language_model_id,
         // Messages array sent to OpenAI
@@ -292,6 +292,8 @@ Any OpenAI chat completion model (ex: `gpt-3.5-turbo`) _as long as you are not u
     ```json
     {
         ...requestBody,
+        // Prompt identifier (OPTIONAL); default value: default
+        "prompt_slug": "customer_support",
         // The environment your app is running in: "production", "dev", etc (OPTIONAL)
         "environment": "production",
         // the user's query (for chat applications) (OPTIONAL)
