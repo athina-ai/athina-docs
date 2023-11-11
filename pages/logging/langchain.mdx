@@ -69,6 +69,7 @@ AthinaApiKey.set_api_key('ATHINA_API_KEY')
 
 '''
 prompt_slug: str, # prompt identifier
+user_query: Optional[str] = None,
 environment: Optional[str] = 'production',
 session_id: Optional[str] = None,
 customer_id: Optional[str] = None,
@@ -94,7 +95,7 @@ def test_langchain_streaming():
                 Your response:'''
     chat_prompt = ChatPromptTemplate.from_messages(
         [system_message_prompt, HumanMessagePromptTemplate.from_template(template)])
-    handler = CallbackHandler(prompt_slug='customer_query')
+    handler = CallbackHandler(prompt_slug='customer_query', user_query='Write few lines on the following topic: OpenAI')
 
     # without streaming
     chain1 = LLMChain(
@@ -109,8 +110,8 @@ def test_langchain_streaming():
         prompt=chat_prompt,
     )
     try:
-        print(chain1.run('India'))
-        print(chain2.run('India'))
+        print(chain1.run('OpenAI'))
+        print(chain2.run('OpenAI'))
     except Exception as e:
         print(e)
 ```
