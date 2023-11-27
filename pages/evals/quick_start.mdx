@@ -14,7 +14,6 @@ If you are using the python SDK, then can set the API keys like this:
 
 ```python
 from athina.keys import AthinaApiKey, OpenAiApiKey
-from athina.runner.run import EvalRunner
 
 OpenAiApiKey.set_key(os.getenv('OPENAI_API_KEY'))
 AthinaApiKey.set_key(os.getenv('ATHINA_API_KEY'))
@@ -22,4 +21,10 @@ AthinaApiKey.set_key(os.getenv('ATHINA_API_KEY'))
 
 If you are using the CLI, then run `athina init`, and enter the API keys when prompted.
 
-3. That's it! Now you can get started [running evals](/evals/running_evals/intro)
+3. That's it! Now you can run evals like this.
+
+```python
+DoesResponseAnswerQuery().run(query=query, response=response)
+```
+
+For more details, see this guide on [running evals](/evals/running_evals/run_single_eval).
