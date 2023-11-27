@@ -1,0 +1,61 @@
+import { Callout } from "nextra/components";
+
+### Context Contains Enough Information
+
+[Github](https://github.com/athina-ai/athina-evals/blob/main/athina/evals/llm/context_contains_enough_information/evaluator.py)
+
+### Info
+
+This evaluator checks if the retrieved context contains enough information to answer the user's query.
+
+**Required Args**
+
+- `query`: The query, ideally in a question format.
+- `context`: The retrieved data that should contain the required information to answer the user's query
+
+**Default Engine:** `gpt-4`
+
+---
+
+### Example
+
+<Callout type='infos'>
+- **Query:** How much equity does Y Combinator take?
+- **Retrieved Context:** YC invests $500,000 in 200 startups twice a year.
+
+</Callout>
+
+<Callout type='error'>
+**Eval Result**
+- **Result:** Fail
+- **Explanation:** The context mentions that YC invests $500,000 but it does not mention how much equity they take, which is what the query is asking about.
+
+</Callout>
+
+---
+
+### Run the eval on a dataset
+
+1. Load your data with the `RagLoader`
+
+```python
+# Load the data from CSV, JSON, Athina or Dictionary
+dataset = RagLoader().load_json(json_file)
+```
+
+2. Run the evaluator on your dataset
+
+```python
+# Checks if the context contains enough information to answer the user query provided
+ContextContainsEnoughInformation().run_batch(data=dataset)
+```
+
+### Run the eval on a single datapoint
+
+```python
+# Checks if the context contains enough information to answer the user query provided
+ContextContainsEnoughInformation().run(
+    query=query,
+    context=context
+)
+```

@@ -1,5 +1,9 @@
 {
-    "eval_architecture": "Architecture of an Eval",
+    "intro": "Introduction",
+    "why_athina_evals": "Why Athina Evals",
+    "quick_start": "Quick Start",
+    "running_evals": "Running Evals",
+    "preset_evals": "Preset Evals",
     "custom_evaluators": "Can I write my own evals?",
     "why_does_llm_eval_work": "Why does LLM eval work?"
 }

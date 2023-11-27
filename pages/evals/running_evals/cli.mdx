@@ -1,0 +1,102 @@
+# Running Evals from CLI
+
+You can also use Athina's evals purely from the command line.
+
+Here's how.
+
+#### Initialize
+
+To get started, initialize Athina and enter your OpenAI and Athina API keys.
+
+These will be saved into a file called `athina_config.yml` in your working directory.
+
+```bash
+$ athina init
+```
+
+```
+Enter your OpenAI API key: sk-abcd23jnedi23ndo23n34ind
+Enter your Athina API key: 23idni23nod3QWn2in3d
+Configuration updated successfully. See athina_config.yml for details.
+```
+
+#### View config
+
+To view the config that has been set, you can see the `athina_config.yml` file.
+
+You can also run:
+
+```bash
+$ athina config
+```
+
+```
+{'athina_api_key': '23idni23nod3QWn2in3d', 'openai_api_key': 'sk-abcd23jnedi23ndo23n34ind'}
+```
+
+#### List available evals
+
+```bash
+$ athina list
+```
+
+```
+- ContextContainsEnoughInformation
+- CustomGrader
+- DoesResponseAnswerQuery
+- Faithfulness
+```
+
+#### Run an eval on a single datapoint
+
+```
+$ athina run Faithfulness \
+context="Neil Armstrong was the first man on the moon." \
+response="The Apollo 11 was the first spaceship to land on the moon."
+```
+
+```json
+{}
+```
+
+#### Run an eval on a dataset
+
+```
+$ athina run Faithfulness --json data=data
+```
+
+```json
+{}
+```
+
+#### Run an eval suite on a dataset
+
+To run an eval suite, you need to add your eval suite configuration to the athina.yml file.
+
+```yml
+eval_suites:
+  rag_evals:
+    evals:
+      ContextContainsEnoughInformation:
+        model: gpt-4
+      Faithfulness:
+        model: gpt-4
+      DoesResponseAnswerQuery:
+        model: gpt-4
+      CustomGrader:
+        name: "no_action"
+        model: gpt-3.5-turbo
+        grading_criteria: "If response claims to have taken an action, then fail. Otherwise pass."
+      CustomGrader:
+        name: "no_refund"
+        model: gpt-3.5-turbo
+        grading_criteria: "If response offers or promises a refund, then fail. Otherwise pass."
+```
+
+```
+$ athina run Faithfulness --json data=data
+```
+
+```json
+{}
+```

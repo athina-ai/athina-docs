@@ -1,7 +1,41 @@
-### Why does these evaluations work if the original LLM response is itself inaccurate?
+import { Callout } from "nextra/components";
 
-Your prompt is usually quite long and might contain a lot of conditions, rules, and data needed to provide a good answer.
+# Why use LLMs as evaluators?
 
-On the contrary, the LLM evaluation prompt is very simple. The LLM is being asked to solve a _much_ simpler question, which is usually very easy for LLMs, and therefore it can be expected to work consistently most of the time.
+#### Why not use traditional metrics like BLEU and ROUGE?
 
+Traditional evaluation metrics like BLEU and ROUGE have some value, but they also have major limitations:
+
+- **They require a reference to compare against**: While you may have such ground truth data in your development dataset, you will never have this in production.
+
+- **Traditional metrics will not offer any reasoning capabilities** Most developers are now using LLMs for much more complex use cases than can be evaluated by traditional methods.
+
+In contrast, LLM evaluators:
+
+- **Can perform complex and nuanced tasks that include reasoning capabilities**
+- **Come a lot closer to human-in-the-loop level of accuracy**
+
+Intuitively, this makes sense. The best tool we have for handling reasoning tasks on large pieces of text are LLMs.
+So why would you use anything else for evals?
+
+---
+
+#### Why does these LLM evals work if my inference response was inaccurate?
+
+<Callout type="info" emoji="💡">
+  **TLDR:** Binary classification is usually a much easier task than your
+  generation
+</Callout>
+
+**The evaluation task is very different from the task you are asking your LLM to perform.**
+
+**Your application's inference task might be quite complex.** It likely includes a lot of conditions, rules, and data needed to provide a good answer.
+It might be generating a long response with a fair degree of complexity.
+
+**On the contrary, the LLM evaluation task is very simple.**
+The LLM is being asked to solve a _much_ simpler question, which is usually fairly easy for powerful LLM models.
+
+For example, the LLM is performing a simple task like `Does the provided context {context} contain the answer to this question: {query}`
+
+Since the eval is performing a much simpler task, it can be expected to work consistently most of the time
 We can also run the same grading prompt multiple times to detect flakiness and discard flaky results.

@@ -1,0 +1,59 @@
+import { Callout } from "nextra/components";
+
+### Does Response Answer Query
+
+[Github](https://github.com/athina-ai/athina-evals/blob/main/athina/evals/llm/does_response_answer_query/evaluator.py)
+
+### Info
+
+This evaluator checks if the response answer's the query sufficiently.
+
+**Required Args**
+
+- `query`: The query, ideally in a question format.
+- `response`: The LLM generated response.
+
+**Default Engine:** `gpt-4`
+
+---
+
+### Example
+
+<Callout type='infos'>
+- **Query:** Which spaceship landed on the moon first?
+- **Response:** Neil Armstrong was the first man to set foot on the moon in 1969
+
+</Callout>
+
+<Callout type='error'>
+**Eval Result**
+- **Result:** Fail
+- **Explanation:** The query is asking which spaceship landed on the moon first, but the response only mentions the name of the astronaut, and does not say anything about the name of the spaceship.
+
+</Callout>
+
+---
+
+### Run the eval on a dataset
+
+1. Load your data with the `RagLoader`
+
+```python
+# Load the data from CSV, JSON, Athina or Dictionary
+dataset = RagLoader().load_json(json_file)
+```
+
+2. Run the evaluator on your dataset
+
+```python
+DoesResponseAnswerQuery().run_batch(data=dataset)
+```
+
+### Run the eval on a single datapoint
+
+```python
+DoesResponseAnswerQuery().run(
+    query=query,
+    response=response
+)
+```

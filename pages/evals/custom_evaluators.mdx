@@ -1,5 +1,56 @@
+import { Callout } from "nextra/components";
+
 # How can I write my own evals?
 
-_Coming soon._
+#### The easiest way (1-line)
 
-Contact shiv@athina.ai if you'd like us to help you write custom evals for your AI app.
+Yes, it's very easy to write a custom eval.
+
+```python
+from athina.evals import LlmEvaluator
+
+# Custom evaluator
+# Checks if the response mentions black holes
+grading_criteria="If the response mentions black holes, then fail. Otherwise pass."
+LlmEvaluator(grading_criteria=grading_criteria).run(response=response)
+```
+
+<Callout type="default" emoji="💡">
+  Note: This format works pretty well for the grading_criteria: _"If X, then
+  fail. Otherwise, pass"_
+</Callout>
+
+### Write your own LLM Eval class
+
+You can extend the `LlmEvaluator` class. See this [example](https://github.com/athina-ai/athina-evals/blob/main/athina/evals/llm/faithfulness/evaluator.py)
+
+This will allow you to:
+
+- Override the system and user prompts.
+- Add custom few-shot examples to improve performance for your use case.
+- Pass custom arguments into your LLM Evaluator.
+
+### What's happening under the hood?
+
+We do a few things behind the scenes to make LLM evaluators work effectively:
+
+- We wrap this prompt inside some [chain-of-thought prompting](https://www.promptingguide.ai/techniques/cot)
+- We ensure the response format is always JSON, and includes a Pass/Fail `result` and `explanation`
+
+### Can I specify my own model?
+
+Currently, we support the following models for running evals (link).
+
+If you'd like to use a different model, contact us at hello@athina.ai.
+
+```python
+from athina.evals import LlmEvaluator
+
+LlmEvaluator(model="gpt-4", grading_criteria=grading_criteria).run(response)
+```
+
+### Can I pass parameters other than the response?
+
+Yes, you can do this by extending the `LlmEvaluator` class.
+
+_We will also support this in our UI soon_

@@ -1,0 +1,62 @@
+import { Callout } from "nextra/components";
+
+### Faithfulness
+
+[Github](https://github.com/athina-ai/athina-evals/blob/main/athina/evals/llm/context_contains_enough_information/evaluator.py)
+
+### Info
+
+This evaluator checks if the LLM-generated response is faithful to the provided context.
+
+For many RAG apps, you want to constrain the response to the context you are providing it (since you know it to be true).
+But sometimes, the LLM might use its pretrained knowledge to generate an answer. This is often the cause of _"Hallucinations"_.
+
+**Required Args**
+
+- `context`: The context that your response should be faithful to
+- `response`: The LLM generated response
+
+**Default Engine:** `gpt-4`
+
+---
+
+### Example
+
+<Callout type='infos'>
+- **Context:** YC invests $500,000 in 200 startups twice a year.
+- **Response:** YC takes 5-7% equity.
+
+</Callout>
+
+<Callout type='error'>
+**Eval Result**
+- **Result:** Fail
+- **Explanation:** The response mentions that YC takes 5-7% equity, but this is not mentioned anywhere in the context.
+
+</Callout>
+
+---
+
+### Run the eval on a dataset
+
+1. Load your data with the `RagLoader`
+
+```python
+# Load the data from CSV, JSON, Athina or Dictionary
+dataset = RagLoader().load_json(json_file)
+```
+
+2. Run the evaluator on your dataset
+
+```python
+Faithfulness().run_batch(data=dataset)
+```
+
+### Run the eval on a single datapoint
+
+```python
+Faithfulness().run(
+    context=context,
+    response=response
+)
+```

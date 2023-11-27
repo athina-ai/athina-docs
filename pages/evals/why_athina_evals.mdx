@@ -1,0 +1,32 @@
+import { Callout } from "nextra/components";
+
+### Why should I use Athina's Eval framework instead of writing my own evals?
+
+You could build your own eval system from scratch, but here's why Athina might be better for you.
+
+- Athina provides you with plug-and-play [preset evals](/evals/preset_evals/rag_evals) that have been well-tested
+- Athina evals can run on both development and production, giving you consistent metrics for evaluating model performance and drift.
+- Athina removes the need for your team to write boilerplate loaders, implement LLMs, normalize data formats, etc
+- Athina offers a modular, extensible framework for writing and running evals
+- Athina calculate analytics like pass rate and flakiness, and allows you to batch run evals against live production data or dev datasets
+
+**Athina's Web Platform is also integrated with our evals framework.**
+
+<img src="/eval_results.png" />
+
+- Athina eval runs automatically write into Athina Dashboard, so you can view results and analytics in a beautiful UI.
+- Athina track your experiments automatically, so you can view a historical record of previous eval runs.
+- Athina calculates analytics segmented at every level possible, so you can view and compare your model performance at **very** granular levels.
+  - _"How is my model performing for queries related to `refunds` using prompt `cs_v2.3` with `gpt-4` `last week`"_
+
+<img src="/athina-analytics-dashboard-26-nov.png" />
+
+<Callout type="info">
+##### The Athina Team is here for you
+
+- We are always improving our eval system.
+- We work closely with our users, and can even help design custom evals
+
+If you want to talk, [book a call](https://cal.com/shiv-athina/30min) with a founder directly.
+
+</Callout>

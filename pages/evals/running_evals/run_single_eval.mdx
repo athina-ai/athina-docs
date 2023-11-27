@@ -1,0 +1,43 @@
+import { Callout } from "nextra/components";
+
+# Running Evals
+
+#### Run an eval on a single datapoint
+
+Running an eval on a single datapoint is very simple.
+
+This might be useful if you are trying to run the eval immediately after inference.
+
+```python
+# Run the answer relevance evaluator
+# Checks if the LLM response answers the user query sufficiently
+DoesResponseAnswerQuery().run(query=query, response=response)
+```
+
+Here's a [notebook](https://github.com/athina-ai/athina-evals/blob/main/examples/run_one.ipynb) you can use to get started.
+
+#### Run an eval on multiple datapoints
+
+Running evals on a batch of datapoints is the most effective way to rapidly iterate as you're developing your model.
+
+Athina makes this very simple as well.
+
+```python
+# Load the data from CSV, JSON, Athina or Dictionary
+dataset = RagLoader().load_json(json_file)
+
+# Run the DoesResponseAnswerQuery evaluator on the dataset
+DoesResponseAnswerQuery(model=eval_model).run_batch(data=dataset)
+```
+
+Here's a [notebook](https://github.com/athina-ai/athina-evals/blob/main/examples/run_batch.ipynb) that you can use to get started.
+
+##### How do I know which parameters to pass to the run function?
+
+Every evaluator has a `REQUIRED_ARGS` property that defines the parameters it expects.
+
+If you pass the wrong parameters, the evaluator will raise a `ValueError` telling you what params you are missing.
+
+For example:, the [`Faithfulness`](https://github.com/athina-ai/athina-evals/blob/main/athina/evals/llm/faithfulness/evaluator.py) evaluator expects `response, context` to be passed in to the `run` method as kwargs.
+
+For our [RAG Evals](../preset_evals/rag_evals), you should use the [RagLoader](https://github.com/athina-ai/athina-evals/blob/main/athina/loaders/rag_loader.py) to load your data. This will ensure the data is in the right format for evals.

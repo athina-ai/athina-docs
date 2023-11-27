@@ -1,5 +1,8 @@
 {
     "rag_evals": "RAG Evals",
+    "ccei": "Context Contains Enough Information",
+    "faithfulness": "Faithfulness",
+    "draq": "Does Response Answer Query",
     "summarization_eval": "Summarization Q&A",
     "other_evals": "More Evals",
     "faq": "FAQs"

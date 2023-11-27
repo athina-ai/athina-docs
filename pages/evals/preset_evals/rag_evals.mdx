@@ -1,0 +1,77 @@
+import { Callout } from "nextra/components";
+
+### Context Contains Enough Information
+
+[Docs](/evals/preset_evals/ccei) | [Github](https://github.com/athina-ai/athina-evals/blob/main/athina/evals/llm/context_contains_enough_information/evaluator.py)
+
+<Callout type='infos'>
+- **Query:** How much equity does Y Combinator take?
+- **Retrieved Context:** YC invests $500,000 in 200 startups twice a year.
+
+</Callout>
+
+<Callout type='error'>
+**Eval Result**
+- **Result:** Fail
+- **Explanation:** The context mentions that YC invests $500,000 but it does not mention how much equity they take, which is what the query is asking about.
+
+</Callout>
+
+One of the most common causes for a bad output is bad input. For RAG applications, this usually means a bad retrieval.
+
+Typically for retrieval, you might do a cosine similarity search to the user’s query.
+
+However, similar ≠ relevance.
+
+Often, your retrieved data might not be _relevant_ to the user’s query.
+
+Sometimes, it might be _relevant_, but might not contain the _answer_ to the user’s query.
+
+We use an LLM grader (GPT-4) to figure out if the retrieved data is relevant and has enough information to answer the query.
+
+### Faithfulness
+
+[Docs](/evals/preset_evals/faithfulness) | [Github](https://github.com/athina-ai/athina-evals/blob/main/athina/evals/llm/faithfulness/evaluator.py)
+
+<Callout type='infos'>
+- **Context:** YC invests $500,000 in 200 startups twice a year.
+- **Response:** YC takes 5-7% equity.
+
+</Callout>
+
+<Callout type='error'>
+**Eval Result**
+- **Result:** Fail
+- **Explanation:** The response mentions that YC takes 5-7% equity, but this is not mentioned anywhere in the context.
+
+</Callout>
+
+Another common problem with RAG applications is when the response is not “faithful” to the context.
+
+This is often the cause of "Hallucinations".
+
+The LLM might use its pretrained knowledge to generate an answer.
+
+But for most RAG apps, you want to constrain it to the context you are providing it (since you know it to be true).
+
+### Does Response Answer Query
+
+[Docs](/evals/preset_evals/draq) | [Github](https://github.com/athina-ai/athina-evals/blob/main/athina/evals/llm/does_response_answer_query/evaluator.py)
+
+<Callout type='infos'>
+- **Query:** Which spaceship landed on the moon first?
+- **Response:** Neil Armstrong was the first man to set foot on the moon in 1969
+
+</Callout>
+
+<Callout type='error'>
+**Eval Result**
+- **Result:** Fail
+- **Explanation:** The query is asking which spaceship landed on the moon first, but the response only mentions the name of the astronaut, and does not say anything about the name of the spaceship.
+
+</Callout>
+
+This is a good eval for nearly any Q&A type application. This can help you check if:
+
+- Response is irrelevant or tangential to the query.
+- Response does not sufficiently answer the query.

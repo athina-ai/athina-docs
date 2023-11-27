@@ -1,0 +1,7 @@
+{
+    "loading_data": "Loading Data",
+    "run_single_eval": "Run a single eval",
+    "run_eval_suite": "Run an eval suite",
+    "cli": "Run evals using CLI",
+    "eval_performance": "Improving eval performance"
+}
