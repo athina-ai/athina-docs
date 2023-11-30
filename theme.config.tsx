@@ -1,7 +1,14 @@
 import React from "react";
 import { DocsThemeConfig } from "nextra-theme-docs";
+import ReactGA from "react-ga4";
+import GA from "./components/ga";
 
 const config: DocsThemeConfig = {
+  useNextSeoProps: () => {
+    return {
+      titleTemplate: "%s – Athina",
+    };
+  },
   logo: (
     <div style={{ display: "flex" }}>
       <img
@@ -33,6 +40,16 @@ const config: DocsThemeConfig = {
       />
     </>
   ),
+  main: ({ children }) => {
+    const environment = process.env.NEXT_PUBLIC_ENVIRONMENT;
+    const shouldLogAnalytics = environment !== "local";
+    return (
+      <>
+        {shouldLogAnalytics && <GA />}
+        {children}
+      </>
+    );
+  },
 };
 
 export default config;
