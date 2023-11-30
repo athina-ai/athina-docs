@@ -5,5 +5,7 @@
   "langchain": "Langchain",
   "anthropic": "Anthropic",
   "meta_llama": "Meta Llama",
-  "misc": "Any other language model"
+  "misc": "Any other language model",
+  "grouping_inferences": "Grouped Inferences (Conversations)",
+  "user_feedback": "Logging User Feedback"
 }

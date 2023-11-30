@@ -1,0 +1,17 @@
+import { Callout } from "nextra/components";
+
+# Grouping Inferences
+
+To associate different inference calls into a common conversation, you need to include
+a `session_id` parameter in your inference log.
+
+When you include the `session_id` field, we will automatically group all the inferences from that conversation together,
+so you can view them together on the Inference Detail Page.
+
+_Conversation history is visible on the left panel in the screenshot below._
+
+<img src="/conversation-view.png" />
+
+<Callout type="info">
+  Note: You can also use this to group chained inference calls together.
+</Callout>
