@@ -1,0 +1,84 @@
+import { Callout } from "nextra/components";
+
+### Answer Relevance
+
+_Coming soon_
+
+_This is an [LLM Graded Evaluator](../why_does_llm_eval_work)_
+
+### Info
+
+Checks if the LLM-generated `response` is relevant to the `query`.
+
+This evaluator will return a relevance score to indicate how relevant the response is to the provided query.
+
+**Required Args**
+
+- `query`: The query
+- `response`: The LLM generated response
+
+**Metrics**
+
+- `relevance_score`: float
+  - `minValue`: 0 - represents a completely irrelevant answer
+  - `maxValue`: 1 - represents a perfectly relevant answer
+
+**Default Engine:** `gpt-4`
+
+---
+
+### Low Relevance Example
+
+<Callout type='infos'>
+- **Query:** Who is the president of the United States?
+- **Response:** The capital of the United States is Washington, DC.
+
+</Callout>
+
+<Callout type='error'>
+**Eval Result**
+- **relevance_score:** 0.32 (low relevance)
+- **Explanation:** The response mentions that YC takes 5-7% equity, but this is not mentioned anywhere in the context.
+
+</Callout>
+
+### High Relevance Example
+
+<Callout type='infos'>
+- **Query:** Who was the first person to land on the moon?
+- **Response:** Neil Armstrong, an American astronaut, first set foot on the moon in 1969 on the Apollo 11 mission.
+
+</Callout>
+
+<Callout type='info' emoji='✅'>
+**Eval Result**
+- **relevance_score:** 0.91 (high relevance)
+- **Explanation:** The response mentions that YC takes 5-7% equity, but this is not mentioned anywhere in the context.
+
+</Callout>
+
+---
+
+### Run the eval on a dataset
+
+1. Load your data with the `RagLoader`
+
+```python
+# Load the data from CSV, JSON, Athina or Dictionary
+dataset = RagLoader().load_json(json_file)
+```
+
+2. Run the evaluator on your dataset
+
+```python
+AnswerRelevance().run_batch(data=dataset)
+```
+
+### Run the eval on a single datapoint
+
+```python
+AnswerRelevance().run(
+    context=context,
+    response=response
+)
+```
