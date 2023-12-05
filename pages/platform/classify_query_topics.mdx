@@ -1,0 +1,42 @@
+import { Callout } from "nextra/components";
+
+## Topic Classification
+
+When you log inferences with a `user_query` field, we will automatically run query topic classification against every logged inference.
+
+### Configure your Topics
+
+You can configure your topics in your [Settings](https://app.athina.ai/dashboard) page.
+
+Currently, we will categorize each user query into a single topic label.
+
+So it is best to configure non-overlapping topics.
+
+<Callout>
+**Example Topics**
+
+- Product Question
+- Refunds
+- Order Status
+- Exchanges
+- Complaints
+- Product Availability
+- Shipping
+
+</Callout>
+
+### Explore your data, segmented by topic
+
+When you apply a topic filter on the [Observe](https://app.athina.ai/observe) page or the [Analytics](https://app.athina.ai/dashboard) page, the usage and performance metrics will also update to only include inferences labeled with the selected topic.
+
+This can help you narrow down to only look at inferences that were categorized into a certain topic.
+
+<Callout type="info">
+  **Example:** you may find that your model's pass rate is 85% for Product
+  Questions, but only 68% for queries about Refunds.
+</Callout>
+
+<Callout type="info">
+  **Example:** you may discover that your model's average response time is 1.3s
+  for queries about Shipping, but 5.4s for queries about Product Availability.
+</Callout>
