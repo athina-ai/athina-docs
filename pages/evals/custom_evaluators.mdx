@@ -1,6 +1,8 @@
 import { Callout } from "nextra/components";
 
-# How can I write my own evals?
+# Custom Evals
+
+_How can you write your own evals?_
 
 #### The easiest way (1-line)
 
@@ -37,17 +39,23 @@ We do a few things behind the scenes to make LLM evaluators work effectively:
 - We wrap this prompt inside some [chain-of-thought prompting](https://www.promptingguide.ai/techniques/cot)
 - We ensure the response format is always JSON, and includes a Pass/Fail `result` and `explanation`
 
-### Can I specify my own model?
+### Can I specify a different model?
 
-Currently, we support the following models for running evals (link).
+Yes, you can specify a different model for running evals.
 
-If you'd like to use a different model, contact us at hello@athina.ai.
+Currently, we support the following:
+
+- `gpt-4-1106-preview`
+- `gpt-4`
+- `gpt-3.5-turbo`
 
 ```python
 from athina.evals import LlmEvaluator
 
 LlmEvaluator(model="gpt-4", grading_criteria=grading_criteria).run(response)
 ```
+
+If you'd like to use a different model, contact us at hello@athina.ai.
 
 ### Can I pass parameters other than the response?
 

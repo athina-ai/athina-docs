@@ -3,6 +3,5 @@
     "analytics": "Analytics & Insights",
     "detect_bad_outputs": "Detect Bad Outputs",
     "performance": "Measure Performance",
-    "self_hosted": "Can I Self-Host?",
-    "why_log_data": "Why should I log my inference calls?"
+    "faq": "FAQs"
 }

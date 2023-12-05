@@ -1,0 +1,17 @@
+## Why not use traditional metrics like BLEU and ROUGE?
+
+Traditional evaluation metrics like BLEU and ROUGE have some value, but they also have major limitations:
+
+- **They require a reference to compare against**: While you may have such ground truth data in your development dataset, you will never have this in production.
+
+- **Traditional metrics will not offer any reasoning capabilities** Most developers are now using LLMs for much more complex use cases than can be evaluated by traditional methods.
+
+In contrast, LLM evaluators:
+
+- **Can perform complex and nuanced tasks that include reasoning capabilities**
+- **Come a lot closer to human-in-the-loop level of accuracy**
+
+Intuitively, this makes sense. The best tool we have for handling reasoning tasks on large pieces of text are LLMs.
+So why would you use anything else for evals?
+
+---

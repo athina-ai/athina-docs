@@ -1,0 +1,5 @@
+{
+    "how_we_use_openai_key": "How we use your OpenAI API key",
+    "why_log_data": "Why should I log my inference calls?",
+    "self_hosted": "Can I Self-Host?"
+}
