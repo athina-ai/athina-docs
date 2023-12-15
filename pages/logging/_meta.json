@@ -1,12 +1,13 @@
 {
-  "openai.1.x.x_chat": "OpenAI (1.x.x version) Chat Completion",
-  "openai.0.x.x_chat": "OpenAI (0.x.x version) Chat Completion",
-  "openai.0.x.x_completion": "OpenAI (0.x.x version) Completion",
-  "openai.1.x.x_completion": "OpenAI (1.x.x version) Completion",
+  "openai_chat_1": "OpenAI Chat (1.x)",
+  "openai_chat_0": "OpenAI Chat (0.x)",
+  "openai_completion_1": "OpenAI Completion (1.x)",
+  "openai_completion_0": "OpenAI Completion (0.x)",
   "langchain": "Langchain",
   "anthropic": "Anthropic",
   "meta_llama": "Meta Llama",
   "misc": "Any other language model",
   "grouping_inferences": "Grouped Inferences (Conversations)",
-  "user_feedback": "Logging User Feedback"
+  "user_feedback": "Logging User Feedback",
+  "faq": "FAQs"
 }

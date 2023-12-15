@@ -1,0 +1,5 @@
+## Q. Is this SDK going to make a proxy request to OpenAI through Athina?
+
+Nope! We know how important your OpenAI inference call is, so we don't want to interfere with that or increase response times.
+
+Instead, we simply make a (completely separate) logging API request to Athina, which doesn't interfere with your OpenAI request at all.

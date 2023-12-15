@@ -8,7 +8,7 @@ Sign up for an account at https://app.athina.ai to get an API key.
 
 ### Start Logging
 
-_If you are using OpenAI streaming, or anything other than ChatCompletion, then please follow [this guide](/logging/openai_chat)_
+_If you are using OpenAI streaming, or anything other than ChatCompletion, then please follow [this guide](/logging)_
 
 The easiest way to start logging your inferences is to use our python SDK.
 
@@ -30,8 +30,10 @@ AthinaApiKey.set_api_key(os.getenv('ATHINA_API_KEY'))
 
 **🎉 Inferences made using `openai.ChatCompletion` will now be logged automatically.**
 
-Next, add the relevant metadata to [tag your inferences correctly](logging/openai_chat).
+> You are all set to use [Athina Monitor](/monitoring) now.
 
-### Set Up Evals
+### Next Steps:
 
-See the [evals quick start](/evals/quick_start) guide.
+- Add the relevant metadata to [tag your inferences correctly](/logging).
+- Configure your [query topics](/monitoring/topic_classification).
+- Start developing with [evals](/evals)

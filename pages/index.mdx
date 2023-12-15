@@ -1,33 +1,78 @@
-# Introduction to Athina
+import { Callout } from "nextra/components";
 
-Athina is an evaluation framework and production monitoring platform for your LLM-powered app.
+# Athina AI
 
-We run evals on your production LLM outputs to:
+> ##### Monitoring, Analytics & Evaluations for LLM Developers
 
-- Flag potential errors
-- Minimize hallucinations
-- Improve accuracy
-- Measure your app's performance
-- Gain confidence in your LLM responses.
+Athina is an [evaluation framework](https://github.com.com/athina-ai/athina-evals) and production monitoring platform for your LLM-powered app.
 
-<img src="/athina-dashboard.png" />
+Athina is designed to enhance the performance and reliability of AI applications through real-time monitoring, granular analytics, and plug-and-play evaluations.
 
-### What is the problem we are solving?
+We provide powerful tools (both open-source and closed-source) to assist LLM developers through all stages of the development lifecycle – development, iteration, and production.
 
-Reliability is one of the biggest challenges for people trying to build production grade apps using LLMs.
+_In just 10 minutes, you can start monitoring and evaluating with Athina, allowing you to focus on developing your AI with the best tools on the market._
 
-LLMs are non-deterministic by nature. This makes it very hard to measure how good the output is.
+[Sign Up For Free →](https://app.athina.ai)
 
-Eyeballing the responses from an LLM can work in development, but it’s not a great solution.
+## Monitor
 
-**In production, it’s impossible to eyeball thousands of responses.**
+<img src="/athina-dashboard-3.png" />
 
-This means you have very little visibility into how your AI is performing in the wild.
+[Watch Demo Video →](https://www.loom.com/embed/d9ef2c62e91b46769a39c42bb6669834)
 
-For example, if you have lots of production usage:
+Athina Monitor assists developers in several key areas:
 
-- How do you know when your LLM app is hallucinating?
-- How do you know how often it’s producing a critically bad output?
-- How do you know how well it's really performing?
-- How do you know what kind of responses your users are seeing?
-- If you can’t measure it, how do you improve the accuracy?
+- **Visibility:** By logging prompt-response pairs using our SDK, you get complete visibility into your LLM touchpoints, allowing you to trace through and debug your retrievals and generations.
+- **Usage Analytics:** Athina will keep track of usage metrics like `response time`, `cost`, `token usage`, `feedback`, and more, regardless of which LLM you are using.
+- **Query Topic Classification:** Automatically classify user queries into topics to get detailed insights into popular subjects and AI performance per topic.
+- **Granular Segmentation**: You can segment your usage and performance metrics based on different metadata properties such as customer ID, prompt version, language model ID, topic, and more to slice and dice your metrics.
+
+Here are some examples of how Athina can help you understand your LLM behavior:
+
+<Callout>
+
+- For queries related to `Refunds`, **retrieval accuracy** is only 55%.
+
+- 80% of **user feedback** is negative for customer ID `nike-california-244`
+
+- Your model's **answer relevance** is only 37% for prompt `customer_support/v2.5`
+
+- Your avg. **response time** is 6.7s for gpt-4, and 2.1s for gpt-3.5-turbo
+
+- You are spending an average of **$381.44** per day on OpenAI inferences
+
+</Callout>
+
+## Evaluate
+
+<img src="/eval-reason.png" width={"500px"} />
+
+- **Automated Evaluations:** Utilize prebuilt evaluations to detect hallucinations, bad or inaccurate outputs, and measure model performance quantitatively.
+- **Real-Time Monitoring:** Keep an eye on your production environment and instantly detect when things go wrong.
+- **Flexible Evaluation Framework:** Use prebuilt evals or create custom ones to test your AI under various conditions and scenarios.
+- **Performance Metrics:** Evaluate your AI's performance in production through evaluation metrics, combined with user / grader feedback to pinpoint areas where your model might be underperforming.
+
+## Develop
+
+<img src="/develop-ui-results.png" />
+
+[View on Github →](https://github.com/athina-ai/athina-evals)
+
+- **Preset Evals**: Use our preset evals to start measuring model performance in a few minutes.
+- **Define Custom Evals**: Define custom evaluators in just a few lines of code and run them.
+- **Historical Performance Tracking:** Athina keeps a record of eval runs and performance metrics along with your experimentation parameters, allowing you to run comparisons.
+
+## More Information
+
+For in-depth documentation, please explore the following resources:
+
+- [Monitoring](/monitoring)
+- [Logging](/logging)
+- [Evals](/evals)
+- [Develop Dashboard](/evals/develop_dashboard)
+- [Preset Evaluators](/evals/preset_evals)
+- [Custom Evaluators](/evals/custom_evals)
+
+Our team is constantly improving the evaluation system and works closely with users to ensure the best experience. If you would like personalized assistance or want to discuss custom evaluations, please [schedule a call](https://cal.com/shiv-athina/30min) with one of our founders.
+
+Athina is more than just a monitoring platform; it's a comprehensive suite to supercharge your LLM development lifecycle. Leverage Athina's robust features to build AI applications that stand out due to their reliability and intelligence.

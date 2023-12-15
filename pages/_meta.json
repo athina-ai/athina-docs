@@ -1,10 +1,10 @@
 {
   "index": "Introduction",
-  "quickstart": "Quick Start",
-  "logging": "Logging",
+  "quick_start": "Quick Start",
+  "monitoring": "Monitoring",
   "evals": "Evals",
-  "guides": "Guides",
-  "platform": "Athina Platform",
+  "logging": "Logging",
+  "faq": "FAQs",
   "blog": {
     "title": "Blog ↗",
     "type": "page",

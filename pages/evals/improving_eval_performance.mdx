@@ -1,20 +1,26 @@
 import { Callout } from "nextra/components";
 
-# How can I ensure my evals will perform well?
+## How can I improve the performance / reliability of my evals?
 
-**Use GPT-4** (especially if your eval task requires reasoning capabilities)
+LLM-graded Evals will never be perfect but here are some things you can do to improve their performance, and reduce flakiness.
+
+**1. Use GPT-4** (especially if your eval task requires reasoning capabilities)
 
 - `gpt-4` will perform _much_ better than GPT 3.5 if your eval task is complex.
 - For simple tasks, you can use `gpt-3.5-turbo` or sometimes an even cheaper model.
 
-**Provide custom examples**
+**2. Run the evals multiple times**
+
+Running evals multiple times, and using a majority vote, or discarding inconsistent results will mitigate the flakiness.
+
+**3. Provide custom examples**
 
 Providing some custom few-shot examples suited to your use case are likely to improve the performance of your evals further.
 
-**Set up [custom evals](/evals/custom_evaluators)**
+**4. Set up [custom evals](/evals/custom_evals)**
 
 Using a completely custom eval is likely the best way to tailor your eval to work perfectly for your use case.
 
-**Contact Us**
+**5. Contact Us**
 
 Email us at hello@athina.ai for help setting up a high-performing custom eval suite.

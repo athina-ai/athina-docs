@@ -1,0 +1,5 @@
+## Q. Will the Athina logging SDK increase my latency?
+
+Nope! The logging call is being made in a background thread as a fire and forget request, so there is almost no additional latency (< 5ms).
+
+If you are logging using an API request instead of using the SDK, you should wrap it in a similar fire and forget mechanism to avoid any latency increase.

@@ -24,7 +24,7 @@ const config: DocsThemeConfig = {
     </div>
   ),
   project: {
-    link: "https://github.com/athina-ai/ariadne",
+    link: "https://github.com/athina-ai/athina-evals",
   },
   docsRepositoryBase: "https://github.com/shuding/nextra-docs-template",
   footer: {

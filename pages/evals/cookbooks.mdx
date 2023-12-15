@@ -1,0 +1,25 @@
+## Eval Cookbooks
+
+Here are some cookbooks we've prepared to make it easy to set up and run evals using Athina.
+
+1. [Run a preset eval](https://github.com/athina-ai/athina-evals/blob/main/examples/run_eval.ipynb):
+   This cookbook shows you how to run a single eval on your dataset
+
+2. [Run an eval suite](https://github.com/athina-ai/athina-evals/blob/main/examples/run_eval_suite.ipynb):
+   This cookbook shows you how to run a suite of evals
+
+3. [Run an experiment](https://github.com/athina-ai/athina-evals/blob/main/examples/run_experiment.ipynb)
+   This cookbook shows how to run an eval using Athina, and also log the experiment configuration.
+
+_This is very similar to #1, but you are also describing an `AthinaExperiment` object, so the experiments will be logged to your develop dashboard, along with the metadata and experiment parameters (like prompt)._
+
+4. [Run an eval with a custom grading criteria](https://github.com/athina-ai/athina-evals/blob/main/examples/run_experiment.ipynb)
+
+A custom grading criteria is the easiest way to create your own eval.
+
+These evals take the format:
+_"If X, then fail. Otherwise, pass"_
+
+This gets wrapped inside our CoT prompt, and enforces a JSON output of pass / fail along with a reason.
+
+This is best used for very simple conditional evals (like the one below)

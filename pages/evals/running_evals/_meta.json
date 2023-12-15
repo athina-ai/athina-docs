@@ -1,7 +1,5 @@
 {
-    "run_single_eval": "Run a specific eval",
+    "run_eval": "Run an eval",
     "run_eval_suite": "Run an eval suite",
-    "cli": "Run evals using CLI",
-    "loading_data": "Loading Dataset",
-    "eval_performance": "Improving eval performance"
+    "cli": "Run evals using CLI"
 }

@@ -1,9 +1,11 @@
 {
-    "intro": "Introduction",
-    "why_athina_evals": "Why Athina Evals",
     "quick_start": "Quick Start",
+    "llm_dev_workflows": "LLM Eval Workflows",
+    "why_athina_evals": "Why Athina Evals",
+    "loading_data": "Loading Data for Evals",
     "running_evals": "Running Evals",
     "preset_evals": "Preset Evals",
-    "custom_evaluators": "Can I write my own evals?",
+    "custom_evals": "Custom Evals",
+    "improving_eval_performance": "Improving Eval Performance",
     "faq": "FAQs"
 }

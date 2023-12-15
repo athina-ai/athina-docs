@@ -1,0 +1,116 @@
+import { Callout } from "nextra/components";
+
+# Running Evals
+
+<Callout>
+  The easiest way to get started is to follow this
+  [notebook](https://github.com/athina-ai/athina-evals/blob/main/examples/run_experiment.ipynb).
+</Callout>
+
+#### 1. Configure API Keys
+
+Evals use OpenAI, so you need to configure your OpenAI API key.
+
+If you wish to view the results on [Athina Develop](/develop),
+and maintain a historical record of prompts and experiments you run during your development workflow,
+then you also need an Athina API Key.
+
+```python
+from athina.keys import AthinaApiKey, OpenAiApiKey
+
+OpenAiApiKey.set_key(os.getenv('OPENAI_API_KEY'))
+AthinaApiKey.set_key(os.getenv('ATHINA_API_KEY')) # recommended
+```
+
+#### 2. (Optional) Describe your experiment metadata fields
+
+If you configure an experiment, Athina will keep a historical record of every run along with the eval results.
+
+These metadata fields are only used as identifiers when we save your experiment on Athina Develop.
+
+This helps you search, sort and filter through past experimentation runs on Athina's Dashboard.
+
+This includes your:
+
+- `experiment_name`: (string) The name of your experiment
+- `experiment_description`: (string) A description this iteration of your experiment
+- `language_model_provider`: (string) `openai`
+- `language_model_id`: (string) The language model used for the LLM inference (ex: `gpt-3.5-turbo`)
+- `prompt_template`: (object) A JS object representing the prompt you are sending to the LLM (for example, messages array in OpenAI)
+- `dataset_name`: (string) An identifier for the dataset you are using.
+
+```python
+from athina.interfaces.athina import AthinaExperiment
+
+experiment = AthinaExperiment(
+    experiment_name="ContextRelevance",
+    experiment_description="Checking retrieval scores for YC dataset with a simple zero-shot prompt",
+    language_model_provider="openai",
+    language_model_id="gpt-3.5-turbo",
+    prompt_template=prompt_template,
+    dataset_name="yc_dataset_mini",
+)
+```
+
+#### 3. Load your dataset
+
+[Loading a dataset](./loading_data) is quite straightforward - we support JSON and CSV formats.
+
+```python
+from athina.loaders import RagLoader
+
+# Load the data from CSV, JSON, Athina or Dictionary
+dataset = RagLoader().load_json(json_file)
+```
+
+#### 4. Run an eval on a dataset
+
+Running evals on a batch of datapoints is the most effective way to rapidly iterate as you're developing your model.
+
+```python
+from athina.evals import ContextContainsEnoughInformation
+
+# Run the ContextContainsEnoughInformation evaluator on the dataset
+ContextContainsEnoughInformation(
+    model="gpt-4-1106-preview",
+    max_parallel_evals=5, # optional, speeds up evals
+).configure_experiment(experiment).run_batch(dataset).to_df()
+```
+
+Your results will be printed out as a dataframe that looks like this.
+
+<img src="/develop-results-2.png" />
+
+---
+
+##### How do I know which fields I need in my dataset?
+
+<Callout type="info">
+  For the [RAG Evals](/evals/preset_evals/rag_evals), we need 3 fields: `query`,
+  `context`, and `response`.
+
+For these evals, you should use the [RagLoader](https://github.com/athina-ai/athina-evals/blob/main/athina/loaders/rag_loader.py) to load your data. This will ensure the data is in the right format for evals.
+
+</Callout>
+
+Every evaluator has a `REQUIRED_ARGS` property that defines the parameters it expects.
+
+If you pass the wrong parameters, the evaluator will raise a `ValueError` telling you what params you are missing.
+
+For example:, the [`Faithfulness`](https://github.com/athina-ai/athina-evals/blob/main/athina/evals/llm/faithfulness/evaluator.py) evaluator expects `response` and `context` fields.
+
+---
+
+#### Run an eval on a single datapoint
+
+Running an eval on a single datapoint is very simple.
+
+This might be useful if you are trying to run the eval immediately after inference.
+
+```python
+# Run the answer relevance evaluator
+# Checks if the LLM response answers the user query sufficiently
+DoesResponseAnswerQuery().run(query=query, response=response)
+```
+
+Here's a [notebook](https://github.com/athina-ai/athina-evals/blob/main/examples/run_one.ipynb) you can use to get started.

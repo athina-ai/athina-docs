@@ -6,22 +6,35 @@ For this example, we will consider the `RagLoader`. Other loaders also work simi
 
 You can load data for evals from a CSV, JSON, Python Dictionary, or directly from your logged inferences on Athina.
 
-##### Output Format
-
-The output format will be different for different Loaders.
-
-The `RagLoader` will return a `List[RagDataPoint]` type after you call the load function of choice.
+##### Loading from a JSON file
 
 ```python
-class RagDataPoint(TypedDict):
-    query: str
-    context: str
-    response: str
+from athina.loaders import RagLoader
+
+dataset = RagLoader().load_json(json_filename)
+```
+
+That's all you need to do to load your data!
+
+To view the imported dataset as a pandas DataFrame:
+
+```python
+pd.DataFrame(dataset)
+```
+
+##### Loading from a CSV file
+
+```python
+from athina.loaders import RagLoader
+
+dataset = RagLoader().load_csv(csv_filename)
 ```
 
 ##### Loading from a Python Dictionary
 
 ```python
+from athina.loaders import RagLoader
+
 # Create batch dataset from list of dict objects
 raw_data = [
     {
@@ -44,21 +57,9 @@ raw_data = [
 dataset = RagLoader().load_dict(raw_data)
 ```
 
-##### Loading from a JSON file
-
-```python
-dataset = RagLoader().load_json(json_filename)
-```
-
-##### Loading from a CSV file
-
-```python
-dataset = RagLoader().load_csv(csv_filename)
-```
-
 ##### Loading logged inferences from Athina
 
-Instead of generating inferences, you can just load inferences that you have already [logged to Athina](../logging/openai_chat).
+Instead of generating inferences, you can just load inferences that you have already [logged to Athina](/logging).
 
 ```python
 # Load last 50 logged inferences
@@ -77,4 +78,17 @@ filters = AthinaFilters(
     topic="refunds",
 )
 dataset = RagLoader().load_athina_inferences(filters=filters, limit=100)
+```
+
+##### Output Format
+
+The output format will be different for different Loaders.
+
+The `RagLoader` will return a `List[RagDataPoint]` type after you call the load function of choice.
+
+```python
+class RagDataPoint(TypedDict):
+    query: str
+    context: str
+    response: str
 ```

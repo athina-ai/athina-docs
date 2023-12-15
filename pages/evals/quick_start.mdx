@@ -2,10 +2,10 @@
 
 To get started with Athina Evals:
 
-1. Install the athina-evals package
+1. Install the `athina` package
 
 ```
-pip install athina-evals
+pip install athina
 ```
 
 2. Set your API keys
@@ -24,6 +24,8 @@ If you are using the CLI, then run `athina init`, and enter the API keys when pr
 3. That's it! Now you can run evals like this.
 
 ```python
+from athina.evals import DoesResponseAnswerQuery
+
 DoesResponseAnswerQuery().run(query=query, response=response)
 ```
 

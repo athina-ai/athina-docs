@@ -1,0 +1,121 @@
+import { Callout } from "nextra/components";
+
+# Athina Evals
+
+> Systematically Improve LLM Performance with Eval Driven Development
+
+<br />
+
+<img src="/develop-ui-results.png" />
+
+Athina is an [evaluation framework](https://github.com/athina-ai/athina-evals) designed for LLM developers in any stage from prototype to production to systematically develop, iterate and measure the performance of their LLM application.
+
+<Callout type='infos'>
+**Table of Contents**
+
+- [Introduction](#introduction)
+- [LLM Development Workflows](#typical-llm-development-workflows)
+- [Why Athina Evals?](#why-athina-evals)
+- [Getting Started](#getting-started)
+- [FAQs](#faqs)
+
+</Callout>
+
+## Introduction
+
+Evaluations (evals) play a crucial role in assessing the performance of LLM responses, especially when scaling from prototyping to production.
+
+They are akin to unit tests for LLM applications, allowing developers to:
+
+- Catch and prevent hallucinations and bad outputs
+- Measure the performance of model
+- Run quantifiable experiments against ambiguous, unstructured text data
+- A/B test different models and prompts rapidly
+- Detect regressions before they get to production
+- Monitor production data with confidence
+
+_\*Here's a great [video](https://youtu.be/XGJNo8TpuVA?feature=shared&t=1140) by OpenAI where an AI Engineer explains why and how to use evals._
+
+## Typical LLM Development Workflows
+
+Here's what typical [LLM development workflows](/evals/llm_dev_workflows) look like.
+
+<Callout type='infos'>
+**Demo Stage: The Inspect Workflow 🔎**
+
+_**Manual Inspection**: Single data point analysis._
+
+- Extremely slow dev cycle
+- Low coverage
+- Not scalable beyond initial prototyping.
+
+</Callout>
+
+<Callout type='infos'>
+**MVP Stage: The Eyeball Workflow 👁️👁️**
+
+_**Spreadsheet Analysis**: Multiple data points without ground truth comparison._
+
+- Manual, high-effort, and time-consuming
+- No quantitative metrics
+- No historical record of prompts run
+- You don't have a system to compare the outputs of prompt A vs prompt B
+
+</Callout>
+
+<Callout type='infos'>
+**Iteration Stage: The Golden Dataset Workflow 🌟🌟**
+
+_**Systematic Evaluation**: Using a golden dataset with expected responses._
+
+- Difficult and time consuming to create good evals
+- Requires a mix of manual review + eval metrics
+- You need to create lots of internal tooling
+- No historical record of prompts run
+- Does not capture data variations between your golden dataset and production data
+
+</Callout>
+
+## Why Athina Evals
+
+Athina offers a comprehensive eval system that addresses the limitations of traditional
+workflows by providing a systematic, quantitative approach to model evaluation.
+
+<br />
+
+<img src="/develop-ui-all-requests.png" />
+
+This enables rapid experimentation, performance measurement, and confidence in production monitoring.
+
+- **Plug-and-Play Preset Evals**: Well-tested evals for immediate use.
+- **Custom Evaluators**: Modular and extensible framework makes it very easy to create custom evals.
+- **Consistent Metrics**: Across development and production.
+- **Quick Start**: 5 lines of code to get started.
+- **Advanced Analytics**: Including pass rate, flakiness, and batch runs.
+- **Run from anywhere**: Run evals in development or production, from a Python file, CLI, or Dashboard.
+- **Integrated Web Platform**: For viewing results and tracking experiments.
+
+<Callout type="info">
+**The Athina Team is here for you**
+
+- We are always improving our evals and platform.
+- We work closely with our users, and can even help design custom evals
+
+If you want to talk, [book a call](https://cal.com/shiv-athina/30min) with a founder directly, or send us an email at hello@athina.ai.
+
+</Callout>
+
+## Athina Evals: Getting Started
+
+- [Quick Start](/evals/quick_start)
+- [Preset Evals](/evals/preset_evals)
+- [Loading Data for Evals](/evals/loading_data)
+- [Running Evals](/evals/running_evals)
+- [Improving eval performance](/evals/improving_eval_performance)
+- [Develop Dashboard](/evals/develop_dashboard)
+- [Cookbooks](/evals/cookbooks)
+
+## FAQs
+
+- [Why does LLM eval work?](/evals/faq/why_does_llm_eval_work)
+- [Why not use traditional metrics?](/evals/faq/why_not_use_traditional_metrics)
