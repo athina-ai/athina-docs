@@ -128,6 +128,7 @@ Any OpenAI chat completion model (ex: `gpt-3.5-turbo`) _as long as you are not u
     ##### 4. Call the logging function
 
     ```python
+    from athina_logger.log_stream_inference.openai_chat_completion_stream import LogOpenAiChatCompletionStreamInference
 
     # Using python openai SDK
     def stream_openai_chat_response(user_query, prompt):

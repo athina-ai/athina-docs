@@ -1,8 +1,8 @@
 {
   "openai.1.x.x_chat": "OpenAI (1.x.x version) Chat Completion",
   "openai.0.x.x_chat": "OpenAI (0.x.x version) Chat Completion",
-  "openai_completion": "OpenAI Completion",
-  "openai_completion_stream": "OpenAI Completion - Streaming",
+  "openai.0.x.x_completion": "OpenAI (0.x.x version) Completion",
+  "openai.1.x.x_completion": "OpenAI (1.x.x version) Completion",
   "langchain": "Langchain",
   "anthropic": "Anthropic",
   "meta_llama": "Meta Llama",
