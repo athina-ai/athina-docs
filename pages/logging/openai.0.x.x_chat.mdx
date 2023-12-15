@@ -1,0 +1,360 @@
+import { Tabs } from "nextra/components";
+
+# OpenAI Chat Completion
+
+_If you're using OpenAI chat completions in Python, you can get set up in just **2 minutes**_
+
+##### Supported Models
+
+Any OpenAI chat completion model (ex: `gpt-3.5-turbo`) _as long as you are not using streaming_
+
+- `gpt-3.5-turbo`
+- `gpt-3.5-turbo-0613`
+- `gpt-3.5-turbo-16k`
+- `gpt-3.5-turbo-16k-0613`
+- `gpt-3.5-turbo-1106`
+- `gpt-4`
+- `gpt-4-0613`
+- `gpt-4-32k`
+- `gpt-4-32k-0613`
+- `gpt-4-1106-preview`
+  <br />
+  <br />
+
+<Tabs items={["Python Wrapper (Recommended)", "Python (Streaming)", "Python (Manual)", "API Request"]}>
+  <Tabs.Tab>
+    ##### 1. Install the Python SDK
+
+    Run `pip install athina-logger`
+
+    ##### 2. Import Athina Logger
+
+    Replace your `import openai` with this:
+
+    ```python
+    from athina_logger.api_key import AthinaApiKey
+    from athina_logger.athina_meta import AthinaMeta
+    from athina_logger.openai_wrapper import openai
+
+    openai.api_key = os.getenv('OPENAI_API_KEY')
+    ```
+
+    ##### 3. Set Athina API key
+
+    ```python
+    # Initialize the Athina API key somewhere in your code
+    AthinaApiKey.set_api_key(os.getenv('ATHINA_API_KEY'))
+    ```
+
+    ##### 4. Use OpenAI ChatCompletion request as you do normally
+
+    ```python
+    # Use openai.ChatCompletion just as you would normally
+    # Add fields to AthinaMeta for better segmentation of your data
+    openai.ChatCompletion.create(
+        model="gpt-4",
+        messages=messages,
+        stream=False,
+        athina_meta=AthinaMeta(
+            prompt_slug="yc_rag_v1",
+            user_query="How much funding does Y Combinator provide?", # For RAG Q&A systems, log the user's query
+            context={"information": retrieved_documents} # Your retrieved documents
+            session_id=session_id, # Conversation ID
+            customer_id=customer_id, # Your Customer's ID
+            customer_user_id=customer_id, # Your End User's ID
+            environment=environment, # Environment (production, staging, dev, etc)
+            external_reference_id="ext_ref_123456",
+        ),
+    )
+    ```
+
+    ---
+
+    ### Frequently Asked Questions
+
+    ##### Q. What is AthinaMeta
+
+    _The `AthinaMeta` fields are used for segmentation of your data on the dashboard. All these fields are optional, but highly recommended._
+
+    ```python
+    class AthinaMeta:
+        prompt_slug: Optional[str] = None
+        context: Optional[dict] = None
+        customer_id: Optional[dict] = None
+        customer_user_id: Optional[dict] = None
+        session_id: Optional[dict] = None
+        user_query: Optional[dict] = None
+        environment: Optional[dict] = None
+        external_reference_id: Optional[dict] = None
+        customer_id: Optional[str] = None
+        customer_user_id: Optional[str] = None
+        response_time: Optional[int] = None
+    ```
+
+
+    ##### Q. Is this SDK going to make a proxy request to OpenAI through Athina?
+
+    Nope! We know how important your OpenAI inference call is, so we don't want to interfere with that or increase response times.
+
+    Instead, we simply make an logging API request to Athina, which is separate from your OpenAI request.
+
+    ##### Q. Will this SDK increase my latency?
+
+    Nope! The logging call is being made in a background thread as a fire and forget request, so there is almost no additional latency (< 5ms).
+
+  </Tabs.Tab>
+  
+  <Tabs.Tab>
+    ##### 1. Install the Python SDK
+
+    Run `pip install athina-logger`
+
+     ##### 2. Import Athina Logger
+
+    ```python
+    from athina_logger.api_key import AthinaApiKey
+    import openai
+
+    openai.api_key = os.getenv('OPENAI_API_KEY')
+    ```
+
+    ##### 3. Set Athina API key
+
+    ```python
+    # Initialize the Athina API key somewhere in your code
+    AthinaApiKey.set_api_key(os.getenv('ATHINA_API_KEY'))
+    ```
+
+    ##### 4. Call the logging function
+
+    ```python
+
+    # Using python openai SDK
+    def stream_openai_chat_response(user_query, prompt):
+        response = openai.ChatCompletion.create(
+            model='gpt-3.5-turbo',
+            messages=[{"role": "user", "content": prompt}],
+            stream=True,
+        )
+        logger = LogOpenAiChatCompletionStreamInference(
+            messages=[{"role": "user", "content": prompt}],
+            model="gpt-3.5-turbo",
+            prompt_slug="test",
+            context=context, # OPTIONAL
+            response_time=response_time_ms, # OPTIONAL
+            customer_id="stripe", # OPTIONAL
+            customer_user_id="shiv@athina.ai", # OPTIONAL
+            session_id="c45g-1234-s6g4-43d3", # OPTIONAL
+            user_query=user_query, # OPTIONAL
+            environment="production", # OPTIONAL
+            external_reference_id="5e838eaf-7dd0-4b6f-a32c-26110dd54e58", # OPTIONAL; If passed, should be unique across all inference calls
+        )
+    ```
+
+    ##### 5. Collect the streaming responses
+    There are 2 ways to collect openai chat streams
+
+    **Option 1: Collect automatically from response**
+    ```python
+    try:
+        logger.collect_stream_inference(response)
+        logger.log_stream_inference()
+    except Exception as e:
+        if isinstance(e, CustomException):
+            print(e.status_code)
+            print(e.message)
+        else:
+            print(e)
+    ```
+
+    **Option 2: Collect individually by chunk**
+    ```python
+    try:
+        for chunk in response:
+            logger.collect_stream_inference_by_chunk(chunk)
+        logger.log_stream_inference()
+    except Exception as e:
+        if isinstance(e, CustomException):
+            print(e.status_code)
+            print(e.message)
+        else:
+            print(e)
+    ```
+
+  </Tabs.Tab>
+
+  <Tabs.Tab>
+    ##### 1. Install the Python SDK
+
+    Run `pip install athina-logger`
+
+    ##### 2. Import Athina Logger
+    ```python
+    from athina_logger.api_key import AthinaApiKey
+    import openai
+
+    openai.api_key = os.getenv('OPENAI_API_KEY')
+    ```
+
+
+    ##### 3. Set Athina API key
+
+    ```python
+    # Initialize the Athina API key somewhere in your code
+    AthinaApiKey.set_api_key(os.getenv('ATHINA_API_KEY'))
+    ```
+
+    ##### 4. Log data to Athina Server
+    ```python
+
+    # Context object - this is source / truth data to compare against for evaluations
+    # For RAG apps, this would be the retrieved data from your vector DB
+    context = {
+        "information": retrieved_documents
+    }
+
+    # Your LLM inference call + some code to get response times
+    start_time = time.time()
+
+    messages = [{ "role": "system", "content": "..." }]
+    model = "gpt-3.5-turbo"
+    completion = openai.ChatCompletion.create(model=model, messages=messages)
+
+    end_time = time.time()
+    response_time_ms = int((end_time - start_time) * 1000)
+
+    try:
+        InferenceLogger.log_open_ai_chat_response(
+            messages=messages,
+            model=model,
+            completion=completion,
+            prompt_slug="generate_email_v1", # identifier for the prompt / version
+            user_query=user_query, # OPTIONAL, highly recommended for RAG Q&A apps - chat message sent by end user
+            context=context, # OPTIONAL, highly recommended - retrieved context / ground truth
+            response_time=response_time_ms, # OPTIONAL
+            customer_id="nike_1234", # OPTIONAL - Your customer's internal ID
+            customer_user_id="shiv@athina.ai", # OPTIONAL - Your end user's internal ID
+            session_id="c45g-1234-s6g4-43d3", # OPTIONAL - Your internal session / conversation ID
+            environment="production", # OPTIONAL
+            external_reference_id="5e838eaf-7dd0-4b6f-a32c-26110dd54e58", # OPTIONAL, your internal unique identifier to track this specific inference call
+        )
+    except Exception as e:
+        if isinstance(e, CustomException):
+            print(e.status_code)
+            print(e.message)
+        else:
+            print(e)
+    ```
+
+    - If you do not have access to the `completion` response object from OpenAI, then pass the following fields instead:
+    - `prompt_response`: generated response from OpenAI as a raw string
+    - `prompt_tokens`: integer value representing the token count of your prompt
+    - `completion_tokens`: integer value representing the token count of your completion response
+    - `total_tokens`: prompt_tokens + completion_tokens
+
+    ---
+
+  </Tabs.Tab>
+
+  <Tabs.Tab>
+    ### Log via API Request
+
+    **Method**: `POST`
+
+    **Endpoint**: `https://log.athina.ai/api/v1/log/prompt/openai-chat`
+
+    **Headers**: `athina-api-key`: YOUR_ATHINA_API_KEY
+
+    **Request Body**
+
+    The required fields to include in your request body:
+    ```json
+    {
+        // Model ID used for inference (ex: gpt-3.5-turbo)
+        "language_model_id": language_model_id,
+        // Messages array sent to OpenAI
+        "prompt_messages": messages,
+        // OpenAI chat completion object
+        "completion": chatCompletion,
+    }
+    ```
+
+    Optionally, you can also add the following fields for better segmentation on the dashboard
+
+
+    ```json
+    {
+        ...requestBody,
+        // Prompt identifier (OPTIONAL); default value: "default"
+        "prompt_slug": "customer_support",
+        // The environment your app is running in: "production", "dev", etc (OPTIONAL)
+        "environment": "production",
+        // the user's query (for chat applications) (OPTIONAL)
+        "user_query": user_query,
+        // your ground truth data object (OPTIONAL)
+        "context": context,
+        // response time in milliseconds (OPTIONAL)
+        "response_time": responseTimeMs,
+        // your customer ID (business) (OPTIONAL)
+        "customer_id": "stripe",
+        // your customer user ID (business user) (OPTIONAL)
+        "customer_user_id": "shiv@athina.ai",
+        // your session or conversation ID (OPTIONAL)
+        "session_id": "c45g-1234-s6g4-43d3",
+        // unique external identifier; should be unique across all inference calls
+        "external_reference_id": "5e838eaf-7dd0-4b6f-a32c-26110dd54e58",
+    }
+    ```
+
+    ##### Function Calling
+
+    For function calling, add the function call request and response fields in the HTTP request body as below <br />
+    _Currently, this is only available when logging via API request_
+
+    ```json
+    {
+        ...requestBody,
+        "function_call_request": [
+            {
+                "name": "get_current_weather",
+                "description": "Get the current weather in a given location",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "location": {
+                            "type": "string",
+                            "description": "The city and state, e.g. San Francisco, CA",
+                        },
+                        "unit": {"type": "string", "enum": ["celsius", "fahrenheit"]},
+                    },
+                    "required": ["location"],
+                },
+            }
+        ],
+        "functions": [
+            {
+            "name": "get_current_weather",
+            "description": "Get the current weather in a given location",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                "location": {
+                    "type": "string",
+                    "description": "The city and state, e.g. San Francisco, CA"
+                },
+                "unit": {
+                    "type": "string",
+                    "enum": ["celsius", "fahrenheit"]
+                }
+                },
+                "required": ["location"]
+            }
+            }
+        ]
+    }
+    ```
+
+  </Tabs.Tab>
+
+</Tabs>
+````
