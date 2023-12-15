@@ -1,5 +1,6 @@
 {
-  "openai_chat": "OpenAI Chat Completion",
+  "openai.1.x.x_chat": "OpenAI (1.x.x version) Chat Completion",
+  "openai.0.x.x_chat": "OpenAI (0.x.x version) Chat Completion",
   "openai_completion": "OpenAI Completion",
   "openai_completion_stream": "OpenAI Completion - Streaming",
   "langchain": "Langchain",
