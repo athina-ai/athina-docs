@@ -1,26 +1,38 @@
 import { Callout } from "nextra/components";
 
-# Custom Evals
+## Custom Evals
 
 _How can you write your own evals?_
 
-#### The easiest way (1-line)
+### Custom Grading Criteria (Easy)
 
-Yes, it's very easy to write a custom eval.
+It's very easy to write a custom grading criteria (just 2 lines of code).
 
 ```python
-from athina.evals import LlmEvaluator
+from athina.evals import CustomGrader
 
 # Custom evaluator
 # Checks if the response mentions black holes
 grading_criteria="If the response mentions black holes, then fail. Otherwise pass."
-LlmEvaluator(grading_criteria=grading_criteria).run(response=response)
+CustomGrader(grading_criteria=grading_criteria).run_batch(data=dataset)
 ```
 
 <Callout type="default" emoji="💡">
   Note: This format works pretty well for the grading_criteria: _"If X, then
   fail. Otherwise, pass"_
 </Callout>
+
+<Callout type="info">
+**What's happening under the hood?**
+
+We do a few things behind the scenes to make LLM evaluators work effectively:
+
+- We wrap this prompt inside some [chain-of-thought prompting](https://www.promptingguide.ai/techniques/cot)
+- We ensure the response format is always JSON, and includes a Pass/Fail `result` and `explanation`
+
+</Callout>
+
+---
 
 ### Write your own LLM Eval class
 
@@ -30,20 +42,14 @@ This will allow you to:
 
 - Override the system and user prompts.
 - Add custom few-shot examples to improve performance for your use case.
+- Add custom metrics.
 - Pass custom arguments into your LLM Evaluator.
-
-### What's happening under the hood?
-
-We do a few things behind the scenes to make LLM evaluators work effectively:
-
-- We wrap this prompt inside some [chain-of-thought prompting](https://www.promptingguide.ai/techniques/cot)
-- We ensure the response format is always JSON, and includes a Pass/Fail `result` and `explanation`
 
 ### Can I specify a different model?
 
 Yes, you can specify a different model for running evals.
 
-Currently, we support the following:
+Currently, we support the following OpenAI models:
 
 - `gpt-4-1106-preview`
 - `gpt-4`
