@@ -44,6 +44,8 @@ But sometimes, the LLM might use its pretrained knowledge to generate an answer.
 1. Load your data with the `RagLoader`
 
 ```python
+from athina.loaders import RagLoader
+
 # Load the data from CSV, JSON, Athina or Dictionary
 dataset = RagLoader().load_json(json_file)
 ```
@@ -51,6 +53,8 @@ dataset = RagLoader().load_json(json_file)
 2. Run the evaluator on your dataset
 
 ```python
+from athina.evals import Faithfulness
+
 Faithfulness().run_batch(data=dataset)
 ```
 

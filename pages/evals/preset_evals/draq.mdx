@@ -41,6 +41,8 @@ This evaluator checks if the response answer's the query sufficiently.
 1. Load your data with the `RagLoader`
 
 ```python
+from athina.loaders import RagLoader
+
 # Load the data from CSV, JSON, Athina or Dictionary
 dataset = RagLoader().load_json(json_file)
 ```
@@ -48,12 +50,16 @@ dataset = RagLoader().load_json(json_file)
 2. Run the evaluator on your dataset
 
 ```python
+from athina.evals import DoesResponseAnswerQuery
+
 DoesResponseAnswerQuery().run_batch(data=dataset)
 ```
 
 ### Run the eval on a single datapoint
 
 ```python
+from athina.evals import DoesResponseAnswerQuery
+
 DoesResponseAnswerQuery().run(
     query=query,
     response=response

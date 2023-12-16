@@ -41,6 +41,8 @@ This evaluator checks if the retrieved context contains enough information to an
 1. Load your data with the `RagLoader`
 
 ```python
+from athina.loaders import RagLoader
+
 # Load the data from CSV, JSON, Athina or Dictionary
 dataset = RagLoader().load_json(json_file)
 ```
@@ -48,6 +50,8 @@ dataset = RagLoader().load_json(json_file)
 2. Run the evaluator on your dataset
 
 ```python
+from athina.evals import ContextContainsEnoughInformation
+
 # Checks if the context contains enough information to answer the user query provided
 ContextContainsEnoughInformation().run_batch(data=dataset)
 ```
@@ -55,6 +59,8 @@ ContextContainsEnoughInformation().run_batch(data=dataset)
 ### Run the eval on a single datapoint
 
 ```python
+from athina.evals import ContextContainsEnoughInformation
+
 # Checks if the context contains enough information to answer the user query provided
 ContextContainsEnoughInformation().run(
     query=query,
