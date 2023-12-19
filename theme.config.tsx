@@ -2,6 +2,7 @@ import React from "react";
 import { DocsThemeConfig } from "nextra-theme-docs";
 import ReactGA from "react-ga4";
 import GA from "./components/ga";
+import ChatwootWidget from "./components/Chatwoot";
 
 const config: DocsThemeConfig = {
   useNextSeoProps: () => {
@@ -45,6 +46,7 @@ const config: DocsThemeConfig = {
     const shouldLogAnalytics = environment !== "local";
     return (
       <>
+        <ChatwootWidget />
         {shouldLogAnalytics && <GA />}
         {children}
       </>
