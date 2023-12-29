@@ -10,11 +10,16 @@ _If you're using OpenAI completions in Python, you can get set up in just **2 mi
 
 <Tabs
   items={[
-    "Python (Streaming)",
-    "Python (Manual)",
     "API Request",
+    "Python (Streaming)",
   ]}
 >
+  <Tabs.Tab>
+    ### Log via API Request
+
+    See instructions [here](/logging/log_via_api).
+
+  </Tabs.Tab>
   <Tabs.Tab>
   ##### Install the Python SDK
 
@@ -118,137 +123,6 @@ _If you're using OpenAI completions in Python, you can get set up in just **2 mi
     		else:
     			print(e)
 
-    ```
-
-  </Tabs.Tab>
-  <Tabs.Tab>
-
-    ##### Install the Python SDK
-
-    Run `pip install athina-logger`
-
-    ##### Log via Python SDK
-
-    ```python
-    from openai import OpenAI
-    from athina_logger.inference_logger import InferenceLogger
-    from athina_logger.api_key import AthinaApiKey
-    from athina_logger.exception.custom_exception import CustomException
-
-    client = OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
-    AthinaApiKey.set_api_key('ATHINA_API_KEY')
-
-    def log_llm_response():
-    	model="text-davinci-003"
-    	user_query = "What is the pricing structure of Stripe's payment gateway?"
-    	prompt = f"You are an AI... Answer the user query. Human: {user_query}"
-
-
-    	# Ground truth data - log as much structured data as possible
-    	#
-    	# This data can be referenced in your test cases.
-    	# The more structured data you can pass here, the more granular the tests we can write.
-    	context = {
-    		"product_name": "Stripe",
-    		"product_description": {...},
-    		"pricing": {...},
-    		"help_data": {...}
-    	}
-
-
-    	# Your LLM inference call + some code to get response times
-    	start_time = time.time()
-    	completion = client.completions.create(model=model, prompt=prompt)
-    	end_time = time.time()
-    	response_time_ms = int((end_time - start_time) * 1000)
-
-
-    	# Log data to Athina Server
-    	# ---
-    	try:
-    		"""
-    		completion and prompt_response are both optional; however, it is expected atleast one of them is passed
-    		ideally pass the completion object; in case access to completion object is not possible, pass the prompt_response
-    		which is the text output of the openai chat completion.
-    		prompt_tokens, completion_tokens and total_tokens are optional fields. These fields are calculated on athina server's end_time
-    		from the completion object. But if the completion object is not passed, then these 3 token counts can be passed separately
-    		"""
-    		InferenceLogger.log_open_ai_completion_response(
-    			prompt=prompt,
-    			model=model,
-    			completion=completion.model_dump(),
-    			prompt_slug="customer_support",
-    			prompt_response="Pricing structure of Stripe's payment gateway is as follows..." # OPTIONAL
-    			context=context, # OPTIONAL
-    			response_time=response_time_ms, # OPTIONAL
-    			customer_id="stripe", # OPTIONAL
-    			customer_user_id="shiv@athina.ai", # OPTIONAL
-    			session_id="c45g-1234-s6g4-43d3", # OPTIONAL
-    			user_query=user_query, # OPTIONAL
-    			environment="production", # OPTIONAL
-    			external_reference_id="5e838eaf-7dd0-4b6f-a32c-26110dd54e58", # OPTIONAL; If passed, should be unique across all inference calls
-    			prompt_tokens=10, # OPTIONAL
-    			completion_tokens=20, # OPTIONAL
-    			total_tokens=30 # OPTIONAL
-    		)
-    	except Exception as e:
-    		if isinstance(e, CustomException):
-    			print(e.status_code)
-    			print(e.message)
-    		else:
-    			print(e)
-
-    ...
-    ```
-
-  </Tabs.Tab>
-
-  <Tabs.Tab>
-  ### Log via API Request
-
-    **Method**: `POST`
-
-    **Endpoint**: `https://log.athina.ai/api/v1/log/prompt/openai-completion`
-
-    **Headers**: `athina-api-key`: YOUR_ATHINA_API_KEY
-
-    **Request Body**
-
-    ```json
-    {
-    	// Prompt identifier (Optional), default value: "default"
-    	prompt_slug: "customer_support",
-    	// Prompt string
-    	prompt_text: "What are some good restaurants in London?",
-    	// Model ID used for inference (ex: text-davinci-003)
-    	language_model_id: language_model_id,
-    	// OpenAI completion object; completion is openai response
-    	completion: completion.model_dump(),
-    	// OpenAI completion prompt response text (OPTIONAL)
-    	prompt_response: "this is openai chat completion response in text"
-    	// your ground truth data object (OPTIONAL)
-    	context: context,
-    	// response time in milliseconds (OPTIONAL)
-    	response_time: responseTimeMs,
-    	// your customer ID (business) (OPTIONAL)
-    	customer_id: "stripe",
-    	// your customer user ID (business user) (OPTIONAL)
-    	customer_user_id: "shiv@athina.ai",
-    	// your session or conversation ID (OPTIONAL)
-    	session_id: "c45g-1234-s6g4-43d3",
-    	// the user's query (for chat applications) (OPTIONAL)
-    	user_query: user_query,
-    	// "production" or "development" (OPTIONAL)
-    	environment: "production",
-    	// unique external identifier; should be unique across all inference calls
-    	external_reference_id: "5e838eaf-7dd0-4b6f-a32c-26110dd54e58",
-    	// tokens used in the prompt (OPTIONAL)
-    	prompt_tokens: 10,
-    	// tokens used in the completion response (OPTIONAL)
-    	completion_tokens: 20,
-    	// total tokens -> prompt_tokens + completion_tokens (OPTIONAL)
-    	total_tokens: 30
-    }
     ```
 
   </Tabs.Tab>

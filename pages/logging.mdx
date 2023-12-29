@@ -1,21 +1,36 @@
+import { Callout } from "nextra/components";
+
 ## Logging
 
 To get started with Athina's Monitoring, the first step is to start logging your inferences.
 
-Logging instructions may vary slightly, depending on which LLM provider you are using.
+<Callout>
+Logging your inferences is very simple - just a single `POST` request to Athina's logging endpoint.
 
-#### Logging Instructions by Provider
+You should start with these instructions: [Logging via API Request](/logging/log_via_api).
+
+</Callout>
+
+If you are using **OpenAI with streaming**, then follow these instructions:
 
 - [OpenAI Chat Completion (1.x)](/logging/openai_chat_1)
 - [OpenAI Chat Completion (0.x)](/logging/openai_chat_0)
 - [OpenAI Completion (1.x)](/logging/openai_completion_1)
 - [OpenAI Completion (0.x)](/logging/openai_completion_0)
-- [Anthropic](/logging/anthropic)
+
+If you are using **Langchain**, then follow these instructions:
+
 - [Langchain](/logging/langchain)
+
+**For all other models, follow these instructions:**
+
+- [Anthropic](/logging/anthropic)
 - [Meta Llama](/logging/meta_llama)
 - [All Other Models](/logging/misc)
 
-#### FAQs
+---
+
+### FAQs
 
 - [Will Athina logging add additional latency](/logging/faq/logging_latency)
 - [Do I have to use Athina as a proxy for logging](/logging/faq/proxy)

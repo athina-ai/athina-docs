@@ -1,11 +1,22 @@
-import { Callout } from "nextra/components";
+import { Tabs, Callout } from "nextra/components";
 
-<Callout emoji="!!">
-  Make sure you have already completed the [Installation &
-  Setup](../../quickstart) steps before logging your data.
-</Callout>
+<Tabs items={[ "API Request", "Python SDK"]}>
+<Tabs.Tab>
+- **Method**: `PATCH`
+- **Endpoint**: `https://log.athina.ai/api/v1/prompt_run/user-feedback`
+- **Headers**: `athina-api-key`: YOUR_ATHINA_API_KEY
+- **Request Body**
 
-### Log via Python SDK
+```json
+{
+  "external_reference_id": "5e838eaf-7dd0-4b6f-a32c-26110dd54e58",
+  "user_feedback": -1,
+  "user_feedback_comment": "Bot mentioned a product that doesn't exist"
+}
+```
+
+</Tabs.Tab>
+<Tabs.Tab>
 
 ```python
 from athina_logger.feedback import user_feedback
@@ -21,28 +32,29 @@ def user_feedback_test():
             user_feedback=-1,
             user_feedback_comment="Bot mentioned a product that doesn't exist" # OPTIONAL
         )
-    except Exception as e:
-        if isinstance(e, CustomException):
-            print(e.status_code)
-            print(e.message)
-        else:
-            print(e)
+    except CustomException as e:
+        # Handle exception
 ```
 
-### Log via API Request
+</Tabs.Tab>
+</Tabs>
 
-**Method**: `PATCH`
+---
 
-**Endpoint**: `https://log.athina.ai/api/v1/promptRun/user-feedback`
+**External Reference ID**
 
-**Headers**: `athina-api-key`: YOUR_ATHINA_API_KEY
+`external_reference_id`: A reference ID associated to the logged inference. You should have specified this ID when you [logged the inference](/logging).
 
-**Request Body**
+<br />
+**User Feedback**
 
-```json
-{
-  "external_reference_id": "5e838eaf-7dd0-4b6f-a32c-26110dd54e58",
-  "user_feedback": -1,
-  "user_feedback_comment": "Bot mentioned a product that doesn't exist"
-}
-```
+`user_feedback`: The user feedback value. Can be one of the following:
+
+- `1`: 👍 Positive feedback
+- `0`: Neutral feedback
+- `-1`: 👎 Negative feedback
+
+<br />
+**User Feedback Comment**
+
+`user_feedback_comment`: (Optional) The user feedback comment. Can be used to provide additional context to the user feedback.

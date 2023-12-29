@@ -1,4 +1,6 @@
 {
+  "supported_models": "Supported Models",
+  "log_via_api": "Log via API Request",
   "openai_chat_1": "OpenAI Chat (1.x)",
   "openai_chat_0": "OpenAI Chat (0.x)",
   "openai_completion_1": "OpenAI Completion (1.x)",
@@ -6,7 +8,7 @@
   "langchain": "Langchain",
   "anthropic": "Anthropic",
   "meta_llama": "Meta Llama",
-  "misc": "Any other language model",
+  "misc": "All other models",
   "grouping_inferences": "Grouped Inferences (Conversations)",
   "user_feedback": "Logging User Feedback",
   "faq": "FAQs"

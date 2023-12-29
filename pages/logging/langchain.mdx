@@ -1,11 +1,63 @@
-import { Callout } from "nextra/components";
-
-<Callout emoji="!!">
-  Make sure you have already completed the [Installation &
-  Setup](../../quickstart) steps before logging your data.
-</Callout>
+import { Steps } from "nextra/components";
 
 # Langchain
+
+If you're using Langchain, you can log your data to Athina with just a few lines of code.
+
+All you need to do is to add the `CallbackHandler` to your `LLMChain` callbacks.
+
+<Steps>
+
+### Install Athina Logging SDK
+
+`pip install athina-logger`
+
+### Import Athina classes and set API key
+
+```python
+from athina_logger.api_key import AthinaApiKey
+from athina_logger.langchain_handler import CallbackHandler
+
+AthinaApiKey.set_api_key(os.getenv('ATHINA_API_KEY'))
+```
+
+### Instantiate the `CallbackHandler` with Athina metadata properties
+
+```python
+athina_handler = CallbackHandler(
+    prompt_slug='customer-query-prompt/v1',
+    user_query='I would like to get a refund on a pair of shoes I purchased online',
+    environment='production',
+    session_id='1234',
+    customer_id='nike-usa',
+    customer_user_id='tim@apple.com',
+    external_reference_id='your-reference-id',
+    kwargs: Any, # Any key-value data you want to associate with the LLM calls in a chain
+)
+```
+
+- `prompt_slug`: An identifier for the prompt that is being used.
+- `user_query`: The query that the user entered to the LLM.
+- `environment`: The environment in which the LLM is running. For example, `production` or `development`.
+- `session_id`: The session ID of the LLM. This is used to group multiple LLM calls together.
+- `customer_id`: The ID of the customer that is using the LLM.
+- `customer_user_id`: The ID of the user that is using the LLM.
+- `external_reference_id`: The ID of the external reference that is using the LLM.
+- `kwargs`: Any key-value data you want to associate with the LLM calls in a chain.
+
+### Add `CallbackHandler` to `LLMChain` callbacks
+
+```python
+chain = LLMChain(
+    llm=ChatOpenAI(...otherProperties, callbacks=[athina_handler]),
+    prompt=chat_prompt,
+)
+chain.run('OpenAI')
+```
+
+</Steps>
+
+---
 
 ### Supported Models (Without Streaming)
 
@@ -47,64 +99,6 @@ import { Callout } from "nextra/components";
 - `gpt-4-32k`
 - `gpt-4-32k-0613`
 - `gpt-4-1106-preview`
-
-### Log via Python SDK
-
-```python
-from langchain import LLMChain
-from langchain.chat_models import ChatOpenAI
-
-from langchain.prompts.chat import (
-    ChatPromptTemplate,
-    SystemMessagePromptTemplate,
-    HumanMessagePromptTemplate,
-)
-from athina_logger.langchain_handler import CallbackHandler
-
-AthinaApiKey.set_api_key('ATHINA_API_KEY')
-
-# CallbackHandler takes following arguments in the constructor:
-
-'''
-prompt_slug: str, # prompt identifier (REQUIRED)
-user_query: Optional[str] = None,
-environment: Optional[str] = 'production',
-session_id: Optional[str] = None,
-customer_id: Optional[str] = None,
-customer_user_id: Optional[str] = None,
-external_reference_id: Optional[str] = None
-**kwargs: Any, # Any key-value data you want to associate with the LLM calls in a chain
-'''
-def test_langchain():
-    system_template = '''You are a helpful assistant who generates lines about a particular topic'''
-    system_message_prompt = SystemMessagePromptTemplate.from_template(
-        system_template)
-
-
-    template = '''Write few lines on the following topic: {text}
-                Your response:'''
-    chat_prompt = ChatPromptTemplate.from_messages(
-        [system_message_prompt, HumanMessagePromptTemplate.from_template(template)])
-
-    handler = CallbackHandler(prompt_slug='tweet_eval')
-
-    # There are 2 ways to log langchain output
-    # without streaming
-    chain1 = LLMChain(
-        llm=ChatOpenAI(
-        openai_api_key=<OPENAI_API_KEY>, callbacks=[handler]),
-        prompt=chat_prompt,
-    )
-    chain1.run('OpenAI')
-
-    # with streaming
-    chain2 = LLMChain(
-        llm=ChatOpenAI(
-            openai_api_key=<OPENAI_API_KEY>, streaming=True, callbacks=[handler]),
-        prompt=chat_prompt,
-    )
-    chain2.run('OpenAI')
-```
 
 ## Not using Python?
 
