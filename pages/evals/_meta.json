@@ -1,11 +1,12 @@
 {
     "quick_start": "Quick Start",
-    "llm_dev_workflows": "LLM Eval Workflows",
+    "automatic_evals": "Automatic Evals",
     "why_athina_evals": "Why Athina Evals",
-    "loading_data": "Loading Data for Evals",
     "running_evals": "Running Evals",
     "preset_evals": "Preset Evals",
     "custom_evals": "Custom Evals",
+    "loading_data": "Loading Data for Evals",
+    "llm_dev_workflows": "LLM Eval Workflows",
     "improving_eval_performance": "Improving Eval Performance",
     "faq": "FAQs"
 }

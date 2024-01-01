@@ -4,20 +4,24 @@ import { Callout } from "nextra/components";
 
 ##### 1. Load the data
 
-See the instructions on [how to load data](./loading_data) for details
+See the instructions on [how to load data](/evals/loading_data) for details
 
 ```python
+from athina.loaders import RagLoader
+
 dataset = RagLoader().load_dict(raw_data)
 ```
 
 ##### 2. Run the eval suite
 
 ```python
+from athina.evals import ContextContainsEnoughInformation, DoesResponseAnswerQuery, Faithfulness
+
 # Define your eval suite
 eval_suite = [
+    ContextContainsEnoughInformation(),
     DoesResponseAnswerQuery(),
     Faithfulness(),
-    ContextContainsEnoughInformation(),
 ]
 
 # Run the evaluation suite
