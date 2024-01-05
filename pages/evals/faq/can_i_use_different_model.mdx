@@ -1,0 +1,17 @@
+### Can I specify a different model?
+
+Yes, you can specify a different model for running evals.
+
+Currently, we support the following OpenAI models:
+
+- `gpt-4-1106-preview`
+- `gpt-4`
+- `gpt-3.5-turbo`
+
+```python
+from athina.evals import LlmEvaluator
+
+LlmEvaluator(model="gpt-4", grading_criteria=grading_criteria).run(response)
+```
+
+If you'd like to use a different model, contact us at hello@athina.ai.
