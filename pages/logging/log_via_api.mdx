@@ -118,6 +118,19 @@ For function calling, you must also log the following fields:
 }
 ```
 
+#### Tools
+
+For tools, you must log the following field
+
+```json
+{
+  // ...otherFields,
+  "tools": tools // can be any json
+}
+```
+
+We extract tool_calls from the openai completion response and log it in our database
+
 <Callout>
   Tip: To avoid adding any latency to your application, log your inference as a
   fire-and-forget request.
