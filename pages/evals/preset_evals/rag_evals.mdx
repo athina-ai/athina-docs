@@ -1,5 +1,15 @@
 import { Callout } from "nextra/components";
 
+## RAG evals
+
+These evals are very useful for most RAG style applications
+
+They check for 3 things:
+
+- **Context Contains Enough Information:** Does the retrieved context contains enough information to answer the query.
+- **Faithfulness:** Is the response faithful to the context. (Unfaithful responses are correlated with hallucinations)
+- **Does Response Answer Query:** Does the response answer the user's query. Checks for relevance and answer completeness.
+
 ### Context Contains Enough Information
 
 [Docs](/evals/preset_evals/ccei) | [Github](https://github.com/athina-ai/athina-evals/blob/main/athina/evals/llm/context_contains_enough_information/evaluator.py)

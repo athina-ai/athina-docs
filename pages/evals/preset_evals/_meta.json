@@ -1,7 +1,5 @@
 {
     "rag_evals": "RAG Evals",
-    "answer_relevance": "Answer Relevance",
-    "answer_similarity": "Answer Similarity",
     "ccei": "Context Contains Enough Information",
     "faithfulness": "Faithfulness",
     "draq": "Does Response Answer Query",

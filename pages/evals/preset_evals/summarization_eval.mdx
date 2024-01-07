@@ -1,23 +1,28 @@
 import { Callout } from "nextra/components";
 
-### Summary Accuracy
+## Summarization Q&A
 
 _This is an [LLM Graded Evaluator](/evals/faq/why_does_llm_eval_work)_
 
 [Github](https://github.com/athina-ai/athina-evals/blob/main/athina/evals/llm/summary_accuracy/evaluator.py)
 
-### Info
+### ❊ Info
 
 This evaluator checks for inaccuracies or hallucinated information in summaries.
 
 **How does it work**
-This evaluator generates N closed-ended (Y/N/Unknown) questions from the `summary` information.
-A `QuestionAnswerer` LLM is used to answer each question given ONLY the `summary` as context.
-A `QuestionAnswerer` LLM is used to answer each question given ONLY the source `document as context.
+This evaluator compares the information between a source `document` and an LLM-generated `summary`.
 
-If the answer to the question is the same for both contexts, then the summary is considered accurate.
+1. Generates N closed-ended (Y/N/Unknown) questions from the `summary` information.
+2. `QuestionAnswerer` LLM is used to answer each question given ONLY the `summary` as context.
+3. `QuestionAnswerer` LLM is used to answer each question given ONLY the source `document` as context.
+4. Compare the answers from the `summary` and `document` for each question to find contradictions.
+
+<img src="/summarization-eval-diagram.png" />
 
 **Required Args**
+
+Your dataset must contain these fields:
 
 - `document`: The source document that contains the information that should be summarized.
 - `response`: The LLM generated summary of the source document.
@@ -29,6 +34,85 @@ If the answer to the question is the same for both contexts, then the summary is
 - `Agreement Score`: The percentage of questions that had identical answers for both contexts.
 - `Hallucination Score`: The percentage of questions where the summary answered A definitively (Y/N) but the source document answered "Unknown".
 - `Contradiction Score`: The percentage of questions where the summary answered A definitively (Y/N) but the source document answered definitively B (Y/N).
+
+---
+
+### ▷ Run the eval on a single datapoint
+
+```python
+from athina.evals import SummaryAccuracy
+
+# Checks if the context contains enough information to answer the user query provided
+document = "...your source document..."
+response = "...your llm generated summary..."
+SummaryAccuracy().run(document=document, response=response)
+```
+
+---
+
+### ▷ Run the eval on a dataset
+
+1. Load your data with the `RagLoader`
+
+```python
+from athina.loaders import SummaryLoader
+
+# Load the data from CSV, JSON, Athina or Dictionary
+dataset = SummaryLoader().load_json(json_file)
+```
+
+2. Run the evaluator on your dataset
+
+```python
+from athina.evals import SummaryAccuracy
+
+# Checks if the context contains enough information to answer the user query provided
+SummaryAccuracy().run_batch(data=dataset)
+```
+
+---
+
+### ⚙︎ Configuration options
+
+##### `n_questions: int`
+
+Number of questions to generate.
+
+More questions = more accurate, granular evaluations, but it will also mean higher evaluation time, and LLM inference cost.
+
+##### `questions: List[str]`
+
+If you would like to ask custom questions instead of generating the questions, you can provide a list of questions using the constructor argument `questions`.
+
+##### `question_answerer: QuestionAnswerer`
+
+You can also configure which LLM prompting technique to use for answering questions:
+
+- `QuestionAnswererBulk` (faster, cheaper, default): uses a single prompt to answer all the questions.
+
+- `QuestionAnswererChainOfThought` (slower, uses more tokens, better reasoning): will prompt the LLM separately for each question, wrapped in a chain of thought prompt.
+
+- `QuestionAnswererWithRetrieval`: (good for large documents) uses a simple similarity search to narrow-down context.
+
+**Here's an example demonstrating how to use the `QuestionAnswererChainOfThought`:**
+
+```python
+from athina.evals import SummaryAccuracy
+from athina.loaders import SummaryLoader
+from athina.llms.question_answerer_cot import QuestionAnswererChainOfThought
+
+dataset = SummaryLoader().load_json(json_filepath)
+
+# Initialize the question answerer
+question_answerer = QuestionAnswererChainOfThought(model="gpt-4")
+
+# Run summary accuracy evaluation
+SummaryAccuracy(
+    n_questions=10,
+    model="gpt-3.5-turbo",
+    question_answerer=question_answerer,
+).run_batch(dataset).to_df()
+```
 
 ---
 
@@ -74,40 +158,3 @@ In this conversation, Alice, a veterinarian, and Bob discuss Bob's desire to get
 - **Contradiction Score:** 0.2
 
 </Callout>
-
----
-
-### Run the eval on a dataset
-
-1. Load your data with the `RagLoader`
-
-```python
-from athina.loaders import SummaryLoader
-
-# Load the data from CSV, JSON, Athina or Dictionary
-dataset = SummaryLoader().load_json(json_file)
-```
-
-2. Run the evaluator on your dataset
-
-```python
-from athina.evals import SummaryAccuracy
-
-# Checks if the context contains enough information to answer the user query provided
-SummaryAccuracy().run_batch(data=dataset)
-```
-
-That's it
-
-### Configuration options
-
-- `n_questions`: Number of questions to generate.
-
-More questions = more accurate, granular evaluations, but it will also mean higher evaluation time, and LLM inference cost.
-
-- `questions: List[str]`: if you would like to ask custom questions instead of generating the questions
-
-model
-question_answerer
-
-- `questions
