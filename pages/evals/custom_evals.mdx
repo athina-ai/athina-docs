@@ -9,13 +9,13 @@ _How can you write your own evals?_
 It's very easy to write a custom grading criteria (just 2 lines of code).
 
 ```python
-from athina.evals import CustomGrader
+from athina.evals import GradingCriteria
 
-# Custom evaluator
-# Checks if the response mentions black holes
-grading_criteria="If the response mentions black holes, then fail. Otherwise pass."
-CustomGrader(grading_criteria=grading_criteria).run_batch(data=dataset)
+grading_criteria="If the response says to contact customer support, then fail. Otherwise pass."
+GradingCriteria(grading_criteria=grading_criteria).run_batch(data=dataset)
 ```
+
+[See an example notebook →](https://github.com/athina-ai/athina-evals).
 
 <Callout type="default" emoji="💡">
   Note: This format works pretty well for the grading_criteria: _"If X, then
@@ -34,30 +34,37 @@ We do a few things behind the scenes to make LLM evaluators work effectively:
 
 ---
 
-### LLM Evaluator with a Custom Prompt
+### LLM Evaluator with a Completely Custom Prompt
 
-You can also quickly create a new eval with your own custom prompt.
+If you have a more complex evaluation prompt that you would like to run within Athina's framework, we can support that with our `CustomPrompt` class.
 
-- define a `system_message_template` (string), and a `user_message_template` (string).
-
-- initialize the `CustomLlmEval` class.
+- Simply use the `CustomPrompt` class and specify your own `eval_prompt`.
 
 ```python
-# Checks if the LLM response answers the user query sufficiently
-display_name = "FaithfulnessV2"
-required_args = ["query", "response"]
-batch_run_result = CustomLlmEval(
-    display_name=display_name,
-    metric_id=None,
-    required_args=required_args,
+eval_prompt = """
+Think step-by-step.
+
+Based on the provided user query and refund policy, determine if the response adheres to the refund policy.
+
+User Query: {query}
+Refund policy: {context}
+Response: {response}
+"""
+
+batch_run_result = CustomPrompt(
+    display_name="Response must follow refund policy",
+    required_args=["query", "context", "response"],
     model="gpt-4-1106-preview",
-    system_message_template=system_message_template,
-    user_message_template=user_message_template,
-).configure_experiment(experiment=experiment).run_batch(
-    data=dataset,
-    max_parallel_evals=10
-)
+    eval_prompt=eval_prompt,
+).run_batch(data=dataset)
 ```
+
+[See an example notebook →](https://github.com/athina-ai/athina-evals).
+
+<Callout type="default" emoji="💡">
+  Note: Any variables you use in the prompt (for example: `query`, `context`,
+  `response`) will be interpolated from your `dataset`.
+</Callout>
 
 ---
 
@@ -71,27 +78,3 @@ This will allow you to:
 - Add custom few-shot examples to improve performance for your use case.
 - Add custom metrics.
 - Pass custom arguments into your LLM Evaluator.
-
-### Can I specify a different model?
-
-Yes, you can specify a different model for running evals.
-
-Currently, we support the following OpenAI models:
-
-- `gpt-4-1106-preview`
-- `gpt-4`
-- `gpt-3.5-turbo`
-
-```python
-from athina.evals import LlmEvaluator
-
-LlmEvaluator(model="gpt-4", grading_criteria=grading_criteria).run(response)
-```
-
-If you'd like to use a different model, contact us at hello@athina.ai.
-
-### Can I pass parameters other than the response?
-
-Yes, you can do this by extending the `LlmEvaluator` class.
-
-_We will also support this in our UI soon_

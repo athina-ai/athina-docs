@@ -1,0 +1,11 @@
+### Can I run evals in parallel?
+
+Yes, you can run multiple evals in parallel. This will greatly speed up your eval development workflow.
+
+Simply specify the `max_parallel_evals` argument to the `run_batch` method.
+
+```python
+from athina.evals import Faithfulness
+
+Faithfulness(model="gpt-4").run_batch(response, max_parallel_evals=10)
+```

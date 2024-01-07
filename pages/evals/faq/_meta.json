@@ -1,3 +1,6 @@
 {
-    "why_does_llm_eval_work": "Why does LLM eval work?"
+    "why_does_llm_eval_work": "Why does LLM eval work?",
+    "can_i_use_different_model": "Can I use a different model?",
+    "can_i_run_evals_in_parallel": "Can I run evals in parallel?",
+    "why_not_use_traditional_metrics": "Why not use traditional eval metrics?"
 }
