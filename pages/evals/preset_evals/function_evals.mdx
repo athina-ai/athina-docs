@@ -6,7 +6,7 @@ import { Callout } from "nextra/components";
 
 ### ❊ Info
 
-These evaluators run a defined function on the response. 
+These evaluators run a defined function on the response.
 
 **How does it work**
 
@@ -31,7 +31,7 @@ from athina.evals import ContainsAny
 
 # Checks if the response contains any word from the keywords
 response = "Y Combinator (YC) is a well-known startup accelerator based in Silicon Valley, California. Y Combinator is one of the most influential and successful startup accelerators globally."
-ContainsAny(keywords=["YC"]).run(response=response).to_df()
+ContainsAny(keywords=["YC", "startup"]).run(response=response).to_df()
 ```
 
 ---
@@ -42,8 +42,8 @@ ContainsAny(keywords=["YC"]).run(response=response).to_df()
 
 ```python
 from athina.loaders import ResponseLoader
-raw_data = [ 
-    { 
+raw_data = [
+    {
         "response": "I cannot answer this question as prices vary from country to country.",
     },
     {
@@ -69,41 +69,32 @@ ContainsAny(keywords=["star", "meteor"]).run_batch(data=dataset).to_df()
 
 #### Contains Any
 
+Checks if the `response` contains any word from the list of keywords.
+
+**Arguments:**
+
+- `keywords`: `List[str]` List of keywords
+- `case_sensitive`: `Optional[bool]`. Defaults to `False`.
+
 ```python
-from athina.loaders import ResponseLoader
 from athina.evals import ContainsAny
 
-raw_data = [ 
-    { 
-        "response": "I cannot answer this question as prices vary from country to country.",
-    },
-    {
-        "response": "A shooting star is a meteor that burns up in the atmosphere.",
-    }
-]
-# Load the data from CSV, JSON, Athina or Dictionary
-dataset = ResponseLoader().load_dict(raw_data)
-
-# Checks if the context contains enough information to answer the user query provided
-ContainsAny(keywords=["star", "meteor"]).run_batch(data=dataset).to_df()
+ContainsAny(
+    keywords=["star", "meteor"],
+    case_sensitive=False
+).run_batch(data=dataset).to_df()
 ```
 
 #### Regex
 
-```python
-from athina.loaders import ResponseLoader
-from athina.evals import Regex
+Checks if the `response` contains the regex pattern.
 
-raw_data = [ 
-    { 
-        "response": "Contact us at hello@athina.ai to get access to our LLM observability platform",
-    },
-    {
-        "response": "A shooting star is a meteor that burns up in the atmosphere.",
-    }
-]
-# Load the data from CSV, JSON, Athina or Dictionary
-dataset = ResponseLoader().load_dict(raw_data)
+**Arguments:**
+
+- `regex`: `str` Pattern to search for.
+
+```python
+from athina.evals import Regex
 
 # Checks if the context contains enough information to answer the user query provided
 Regex(regex='([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+)').run_batch(data=dataset).to_df()
@@ -113,17 +104,17 @@ Regex(regex='([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+)').run_batch(data=
 
 Following are function evals in our pipeline that will be shortly shipped
 
-* equals
-* contains_all
-* contains_none
-* starts_with
-* ends_with
-* contains_email
-* contains_phone_number
-* contains_link
-* contains_no_invalid_links
-* length_less_than
-* length_greater_than
-* is_json
-* contains_json
-* api_call
+- equals
+- contains_all
+- contains_none
+- starts_with
+- ends_with
+- contains_email
+- contains_phone_number
+- contains_link
+- contains_no_invalid_links
+- length_less_than
+- length_greater_than
+- is_json
+- contains_json
+- api_call
