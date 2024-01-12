@@ -35,10 +35,13 @@ These evals can help you create custom evaluation conditions.
 
 #### Function Evals
 
-These evals do not use an eval model - they are just simple functions.
+Unlike the previous evaluators which used an LLM for grading, function evals do not use an LLM - they just use simple functions. For example the evaluator checks if the 
 
+- Response matches a given [regular expression](/evals/preset_evals/function_evals#regex)
 - Response contains a link
 - Response contains an invalid link
-- Response contains keywords
+- Response [contains keywords](/evals/preset_evals/function_evals#contains-any)
 - Response is missing keywords
-- ...
+- so on and so forth
+
+Head over to the [function evaluators](/evals/preset_evals/function_evals) for further details.

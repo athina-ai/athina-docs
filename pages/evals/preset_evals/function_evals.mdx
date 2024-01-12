@@ -1,0 +1,120 @@
+import { Callout } from "nextra/components";
+
+## Function Based Evaluators
+
+[Github](https://github.com/athina-ai/athina-evals/blob/main/athina/evals/function/wrapper.py)
+
+### ❊ Info
+
+These evaluators run a defined function on the response.
+
+**How does it work**
+
+A function evaluator runs a provided function along with the arguments for this function on the response and return whether the function passed or not.
+
+**Required Args**
+
+Your dataset must contain these fields:
+
+- `response`: The LLM generated response for the user query
+
+**Metrics**
+
+- `Passed`: Boolean(True/False) value specifying whether the function passed or not.
+
+---
+
+### ▷ Run the function eval on a single datapoint
+
+```python
+from athina.evals import ContainsAny
+
+# Checks if the response contains any word from the keywords
+response = "Y Combinator (YC) is a well-known startup accelerator based in Silicon Valley, California. Y Combinator is one of the most influential and successful startup accelerators globally."
+ContainsAny(keywords=["YC", "startup"]).run(response=response).to_df()
+```
+
+---
+
+### ▷ Run the function eval on a dataset
+
+1. Load your data with the `ResponseLoader`
+
+```python
+from athina.loaders import ResponseLoader
+raw_data = [
+    {
+        "response": "I cannot answer this question as prices vary from country to country.",
+    },
+    {
+        "response": "A shooting star is a meteor that burns up in the atmosphere.",
+    }
+]
+# Load the data from CSV, JSON, Athina or Dictionary
+dataset = ResponseLoader().load_dict(raw_data)
+```
+
+2. Run the evaluator on your dataset
+
+```python
+from athina.evals import ContainsAny
+
+# Checks if the context contains enough information to answer the user query provided
+ContainsAny(keywords=["star", "meteor"]).run_batch(data=dataset).to_df()
+```
+
+---
+
+### Following are examples of the various function evaluators we support
+
+#### Contains Any
+
+Checks if the `response` contains any word from the list of keywords.
+
+**Arguments:**
+
+- `keywords`: `List[str]` List of keywords
+- `case_sensitive`: `Optional[bool]`. Defaults to `False`.
+
+```python
+from athina.evals import ContainsAny
+
+ContainsAny(
+    keywords=["star", "meteor"],
+    case_sensitive=False
+).run_batch(data=dataset).to_df()
+```
+
+#### Regex
+
+Checks if the `response` contains the regex pattern.
+
+**Arguments:**
+
+- `regex`: `str` Pattern to search for.
+
+```python
+from athina.evals import Regex
+
+# Checks if the context contains enough information to answer the user query provided
+Regex(regex='([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+)').run_batch(data=dataset).to_df()
+```
+
+---
+
+Following are function evals in our pipeline that will be shortly shipped
+
+- equals
+- contains_all
+- contains_none
+- starts_with
+- ends_with
+- contains_email
+- contains_phone_number
+- contains_link
+- contains_no_invalid_links
+- length_less_than
+- length_greater_than
+- is_json
+- contains_json
+- api_call
