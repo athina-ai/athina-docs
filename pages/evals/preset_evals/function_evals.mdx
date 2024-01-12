@@ -106,7 +106,7 @@ raw_data = [
 dataset = ResponseLoader().load_dict(raw_data)
 
 # Checks if the context contains enough information to answer the user query provided
-Regex(regex="([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+)").run_batch(data=dataset).to_df()
+Regex(regex='([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+)').run_batch(data=dataset).to_df()
 ```
 
 ---
