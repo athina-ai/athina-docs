@@ -1,0 +1,19 @@
+# Does Athina have support for JavaScript / Typescript?
+
+Athina doesn't have a Typescript library at the moment.
+
+But you can still use Athina - here's how.
+
+### Logging / Monitoring
+
+You can log your inferences using a simple [API request](/logging/log_via_api).
+
+### Automatic Evals
+
+Once your inferences are being logged, you can configure [automatic evaluations](/evals/automatic_evals) on the dashboard. (No code needed)
+
+### Programmatic Evals:
+
+You can use the Python SDK to [run evals](/evals/quick_start) regardless of what language your core code is in, as long as you can [load your dataset](/evals/loading_data) through a JSON file.
+
+If you can't (or don't want to) use the Python SDK, you could run **athina-evals** using the [CLI tool](/evals/running_evals/cli).

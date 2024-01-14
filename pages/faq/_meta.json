@@ -1,4 +1,5 @@
 {
     "how_we_use_openai_key": "How we use your OpenAI API key",
-    "self_hosted": "Can I Self-Host?"
+    "self_hosted": "Can I Self-Host?",
+    "typescript_sdk": "Does Athina support JS / TS?"
 }
