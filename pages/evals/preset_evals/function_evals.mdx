@@ -67,6 +67,23 @@ ContainsAny(keywords=["star", "meteor"]).run_batch(data=dataset).to_df()
 
 ### Following are examples of the various function evaluators we support
 
+#### Regex
+
+**Description:**
+Checks if the `response` contains the regex pattern.
+
+**Arguments:**
+
+- `regex`: `str` Pattern to search for.
+
+**Sample Code:**
+
+```python
+from athina.evals import Regex
+
+Regex(regex='([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+)').run_batch(data=dataset).to_df()
+```
+
 #### Contains Any
 
 **Description:**
@@ -78,6 +95,7 @@ Checks if the `response` contains any word from the list of keywords.
 - `case_sensitive`: `Optional[bool]`. Defaults to `False`.
 
 **Sample Code:**
+
 ```python
 from athina.evals import ContainsAny
 
@@ -87,45 +105,34 @@ ContainsAny(
 ).run_batch(data=dataset).to_df()
 ```
 
-#### Regex
-
-**Description:**
-Checks if the `response` contains the regex pattern.
-
-**Arguments:**
-
-- `regex`: `str` Pattern to search for.
-
-**Sample Code:**
-```python
-from athina.evals import Regex
-
-Regex(regex='([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+)').run_batch(data=dataset).to_df()
-```
-
 #### Contains None
 
 **Description:**
 Checks if the `response` does not contain any of the specified substrings.
 
 **Arguments:**
+
 - `keywords`: List of strings - keywords to check for absence in the context.
 
 **Sample Code:**
+
 ```python
 from athina.evals import ContainsNone
 
 ContainsNone(keywords=['abc', '123']).run_batch(data=dataset).to_df()
 ```
+
 #### `Contains`
 
 **Description:**  
 Checks if the `response` contains the specified keyword.
 
 **Arguments:**
+
 - `keyword`: string to check for presence in the response.
 
 **Sample Code:**
+
 ```python
 from athina.evals import Contains
 
@@ -138,10 +145,12 @@ Contains(keyword='test').run_batch(data=dataset).to_df()
 Checks if all the provided keywords are present in the `response`.
 
 **Arguments:**
+
 - `keywords`: List[str] - The list of keywords to search for in the response.
 - `case_sensitive`: bool, optional - If `True`, the comparison is case-sensitive. Defaults to `False`.
 
 **Sample Code:**
+
 ```python
 from athina.evals import ContainsAll
 
@@ -154,9 +163,11 @@ ContainsAll(keywords=['test', 'example']).run_batch(data=dataset).to_df()
 Checks if the `response` contains a valid JSON.
 
 **Arguments:**
+
 - None
 
 **Sample Code:**
+
 ```python
 from athina.evals import ContainsJson
 
@@ -169,28 +180,15 @@ ContainsJson().run_batch(data=dataset).to_df()
 Checks if the `response` contains a valid email address.
 
 **Arguments:**
+
 - None
 
 **Sample Code:**
+
 ```python
 from athina.evals import ContainsEmail
 
 ContainsEmail().run_batch(data=dataset).to_df()
-```
-
-#### `ContainsPhoneNumber`
-
-**Description:**  
-Checks if the `response` contains a valid phone number.
-
-**Arguments:**
-- None
-
-**Sample Code:**
-```python
-from athina.evals import ContainsPhoneNumber
-
-ContainsPhoneNumber().run_batch(data=dataset).to_df()
 ```
 
 #### `IsJson`
@@ -199,9 +197,11 @@ ContainsPhoneNumber().run_batch(data=dataset).to_df()
 Checks if the `response` is a valid JSON.
 
 **Arguments:**
+
 - None
 
 **Sample Code:**
+
 ```python
 from athina.evals import IsJson
 
@@ -214,28 +214,15 @@ IsJson().run_batch(data=dataset).to_df()
 Checks if the `response` is a valid email address.
 
 **Arguments:**
+
 - None
 
 **Sample Code:**
+
 ```python
 from athina.evals import IsEmail
 
 IsEmail().run_batch(data=dataset).to_df()
-```
-
-#### `IsPhoneNumber`
-
-**Description:**  
-Checks if the `response` is a valid phone number.
-
-**Arguments:**
-- None
-
-**Sample Code:**
-```python
-from athina.evals import IsPhoneNumber
-
-IsPhoneNumber().run_batch(data=dataset).to_df()
 ```
 
 #### `ContainsLink`
@@ -244,9 +231,11 @@ IsPhoneNumber().run_batch(data=dataset).to_df()
 Checks if the `response` contains any links.
 
 **Arguments:**
+
 - None
 
 **Sample Code:**
+
 ```python
 from athina.evals import ContainsLink
 
@@ -259,9 +248,11 @@ ContainsLink().run_batch(data=dataset).to_df()
 Checks if the `response` contains valid links.
 
 **Arguments:**
+
 - None
 
 **Sample Code:**
+
 ```python
 from athina.evals import ContainsValidLink
 
@@ -274,9 +265,11 @@ ContainsValidLink().run_batch(data=dataset).to_df()
 Checks if the `response` does not contain any invalid links.
 
 **Arguments:**
+
 - None
 
 **Sample Code:**
+
 ```python
 from athina.evals import NoInvalidLinks
 
@@ -289,15 +282,21 @@ NoInvalidLinks().run_batch(data=dataset).to_df()
 Performs an API call to a specified endpoint and returns the response.
 
 **Arguments:**
+
 - `url`: string - API endpoint to call.
 - `headers`: dict - Headers to include in the API call.
 - `payload`: dict - Body to send with the API call.
 
 **Sample Code:**
+
 ```python
 from athina.evals import ApiCall
 
-ApiCall(url="https://8e714940905f4022b43267e348b8a713.api.mockbin.io/", payload={"evaluator": "custom_api_based_evaluator"}, headers={"Authorization": "Bearer token"}).run_batch(data=dataset).to_df()
+ApiCall(
+    url="https://8e714940905f4022b43267e348b8a713.api.mockbin.io/",
+    payload={"evaluator": "custom_api_based_evaluator"},
+    headers={"Authorization": "Bearer token"}
+).run_batch(data=dataset).to_df()
 ```
 
 #### Equals
@@ -310,6 +309,7 @@ Checks if the `response` is exactly equal to the specified string.
 - `expected_response`: `str` String to compare the response with.
 
 **Sample Code:**
+
 ```python
 from athina.evals import Equals
 
@@ -326,6 +326,7 @@ checks if the `response` starts with the specified substring.
 - `substring`: `str` string to check at the start of the `response`.
 
 **Sample Code:**
+
 ```python
 from athina.evals import StartsWith
 
@@ -342,6 +343,7 @@ checks if the `response` ends with the specified substring.
 - `substring`: `str` string to check at the end of the `response`.
 
 **Sample Code:**
+
 ```python
 from athina.evals import EndsWith
 
@@ -355,9 +357,10 @@ Checks if the length of the `response` is less than a maximum length.
 
 **Arguments:**
 
-- `max_length`: `int` the maximum allowable length for the `response`. 
+- `max_length`: `int` the maximum allowable length for the `response`.
 
 **Sample Code:**
+
 ```python
 from athina.evals import LengthLessThan
 
@@ -371,9 +374,10 @@ Checks if the length of the `response` is more than a minimum length.
 
 **Arguments:**
 
-- `min_length`: `int` the minimum allowable length for the `response`. 
+- `min_length`: `int` the minimum allowable length for the `response`.
 
 **Sample Code:**
+
 ```python
 from athina.evals import LengthGreaterThan
 
