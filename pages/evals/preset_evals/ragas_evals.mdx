@@ -68,6 +68,7 @@ RagasAnswerRelevancy(model=eval_model).run_batch(data=dataset).to_df()
 Checks the factual consistency of the generated llm response against the retrieved context
 
 [RAGAS Docs](https://docs.ragas.io/en/latest/concepts/metrics/faithfulness.html)
+[RAGAS Github](https://github.com/explodinggradients/ragas/blob/main/src/ragas/metrics/_faithfulness.py)
 
 **Required Args**
 
@@ -109,6 +110,7 @@ RagasFaithfulness(model=eval_model).run_batch(data=dataset).to_df()
 Checks how relevant is llm response with respect to the query
 
 [RAGAS Docs](https://docs.ragas.io/en/latest/concepts/metrics/answer_relevance.html)
+[RAGAS Github](https://github.com/explodinggradients/ragas/blob/main/src/ragas/metrics/_answer_relevance.py)
 
 **Required Args**
 
@@ -150,6 +152,7 @@ RagasAnswerRelevancy(model=eval_model).run_batch(data=dataset).to_df()
 Checks how precise is context with respect to the expected response
 
 [RAGAS Docs](https://docs.ragas.io/en/latest/concepts/metrics/context_precision.html)
+[RAGAS Github](https://github.com/explodinggradients/ragas/blob/main/src/ragas/metrics/_context_precision.py)
 
 **Required Args**
 
@@ -191,6 +194,7 @@ RagasContextPrecision(model=eval_model).run_batch(data=dataset).to_df()
 Checks how relevant is context with respect to the user query
 
 [RAGAS Docs](https://docs.ragas.io/en/latest/concepts/metrics/context_relevancy.html)
+[RAGAS Github](https://github.com/explodinggradients/ragas/blob/main/src/ragas/metrics/_context_relevancy.py)
 
 **Required Args**
 
@@ -229,6 +233,7 @@ RagasContextRelevancy(model=eval_model).run_batch(data=dataset).to_df()
 Measures the extent to which the retrieved context aligns with the expected llm response
 
 [RAGAS Docs](https://docs.ragas.io/en/latest/concepts/metrics/context_recall.html)
+[RAGAS Github](https://github.com/explodinggradients/ragas/blob/main/src/ragas/metrics/_context_recall.py)
 
 **Required Args**
 
