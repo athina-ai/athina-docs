@@ -4,5 +4,7 @@
     "faithfulness": "Faithfulness",
     "draq": "Does Response Answer Query",
     "summarization_eval": "Summarization Q&A",
-    "other_evals": "More Evals"
+    "other_evals": "More Evals",
+    "function_evals": "Function Evals",
+    "ragas_evals": "RAGAS"
 }
