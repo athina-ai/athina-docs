@@ -67,8 +67,8 @@ RagasAnswerRelevancy(model=eval_model).run_batch(data=dataset).to_df()
 **Description:**
 Checks the factual consistency of the generated llm response against the retrieved context
 
-[RAGAS Docs](https://docs.ragas.io/en/latest/concepts/metrics/faithfulness.html)
-[RAGAS Github](https://github.com/explodinggradients/ragas/blob/main/src/ragas/metrics/_faithfulness.py)
+- [RAGAS Docs](https://docs.ragas.io/en/latest/concepts/metrics/faithfulness.html)
+- [RAGAS Github](https://github.com/explodinggradients/ragas/blob/main/src/ragas/metrics/_faithfulness.py)
 
 **Required Args**
 
@@ -109,13 +109,13 @@ RagasFaithfulness(model=eval_model).run_batch(data=dataset).to_df()
 **Description:**
 Checks how relevant is llm response with respect to the query
 
-[RAGAS Docs](https://docs.ragas.io/en/latest/concepts/metrics/answer_relevance.html)
-[RAGAS Github](https://github.com/explodinggradients/ragas/blob/main/src/ragas/metrics/_answer_relevance.py)
+- [RAGAS Docs](https://docs.ragas.io/en/latest/concepts/metrics/answer_relevance.html)
+- [RAGAS Github](https://github.com/explodinggradients/ragas/blob/main/src/ragas/metrics/_answer_relevance.py)
 
 **Required Args**
 
 - `query`: User Query 
-- `contexts`: List of retrieved context your LLM response should be faithful to
+- `contexts`: List of retrieved context
 - `response`: The LLM generated response
 
 **Default Engine:** `gpt-4-1106-preview`
@@ -151,13 +151,13 @@ RagasAnswerRelevancy(model=eval_model).run_batch(data=dataset).to_df()
 **Description:**
 Checks how precise is context with respect to the expected response
 
-[RAGAS Docs](https://docs.ragas.io/en/latest/concepts/metrics/context_precision.html)
-[RAGAS Github](https://github.com/explodinggradients/ragas/blob/main/src/ragas/metrics/_context_precision.py)
+- [RAGAS Docs](https://docs.ragas.io/en/latest/concepts/metrics/context_precision.html)
+- [RAGAS Github](https://github.com/explodinggradients/ragas/blob/main/src/ragas/metrics/_context_precision.py)
 
 **Required Args**
 
 - `query`: User Query 
-- `contexts`: List of retrieved context your LLM response should be faithful to
+- `contexts`: List of retrieved context
 - `expected_response`: Expected LLM Response
 
 **Default Engine:** `gpt-4-1106-preview`
@@ -193,13 +193,13 @@ RagasContextPrecision(model=eval_model).run_batch(data=dataset).to_df()
 **Description:**
 Checks how relevant is context with respect to the user query
 
-[RAGAS Docs](https://docs.ragas.io/en/latest/concepts/metrics/context_relevancy.html)
-[RAGAS Github](https://github.com/explodinggradients/ragas/blob/main/src/ragas/metrics/_context_relevancy.py)
+- [RAGAS Docs](https://docs.ragas.io/en/latest/concepts/metrics/context_relevancy.html)
+- [RAGAS Github](https://github.com/explodinggradients/ragas/blob/main/src/ragas/metrics/_context_relevancy.py)
 
 **Required Args**
 
 - `query`: User Query 
-- `contexts`: List of retrieved context your LLM response should be faithful to
+- `contexts`: List of retrieved context
 
 **Default Engine:** `gpt-4-1106-preview`
 
@@ -232,13 +232,13 @@ RagasContextRelevancy(model=eval_model).run_batch(data=dataset).to_df()
 **Description:**
 Measures the extent to which the retrieved context aligns with the expected llm response
 
-[RAGAS Docs](https://docs.ragas.io/en/latest/concepts/metrics/context_recall.html)
-[RAGAS Github](https://github.com/explodinggradients/ragas/blob/main/src/ragas/metrics/_context_recall.py)
+- [RAGAS Docs](https://docs.ragas.io/en/latest/concepts/metrics/context_recall.html)
+- [RAGAS Github](https://github.com/explodinggradients/ragas/blob/main/src/ragas/metrics/_context_recall.py)
 
 **Required Args**
 
 - `query`: User Query 
-- `contexts`: List of retrieved context your LLM response should be faithful to
+- `contexts`: List of retrieved context
 - `expected_response`: Expected LLM Response
 
 **Default Engine:** `gpt-4-1106-preview`
@@ -268,3 +268,267 @@ dataset = RagasLoader().load_dict(data)
 eval_model = "gpt-3.5-turbo"
 RagasContextRecall(model=eval_model).run_batch(data=dataset).to_df()
 ```
+
+### Answer Semantic Similarity
+
+**Description:**
+Checks the semantic similarity between generated llm response and the expected output
+
+- [RAGAS Docs](https://docs.ragas.io/en/latest/concepts/metrics/semantic_similarity.html)
+- [RAGAS Github](https://github.com/explodinggradients/ragas/blob/main/src/ragas/metrics/_answer_similarity.py)
+
+**Required Args**
+
+- `response`: The LLM generated response
+- `expected_response`: Expected LLM Response
+
+**Default Engine:** `gpt-4-1106-preview`
+
+**Sample Code:**
+
+```python
+from athina.loaders import RagasLoader
+from athina.evals import RagasAnswerSemanticSimilarity
+
+data = [
+    {
+        "response": "Tesla is an electric car"
+        "expected_response": "France is in europe. Paris is it's capital"
+    },
+    {
+        "response": "Tesla is an electric car"
+        "expected_response": "Tesla is an electric car company. Elon Musk founded it."
+    },
+]
+
+# Load the data from CSV, JSON, Athina or Dictionary
+dataset = RagasLoader().load_dict(data)
+
+eval_model = "gpt-3.5-turbo"
+RagasAnswerSemanticSimilarity(model=eval_model).run_batch(data=dataset).to_df()
+```
+
+### Answer Correctness
+
+**Description:**
+Checks the accuracy of the generated llm response when compared to the ground truth
+
+- [RAGAS Docs](https://docs.ragas.io/en/latest/concepts/metrics/answer_correctness.html)
+- [RAGAS Github](https://github.com/explodinggradients/ragas/blob/main/src/ragas/metrics/_answer_correctness.py)
+
+**Required Args**
+
+- `query`: User Query
+- `response`: The LLM generated response
+- `expected_response`: Expected LLM Response
+
+**Default Engine:** `gpt-4-1106-preview`
+
+**Sample Code:**
+
+```python
+from athina.loaders import RagasLoader
+from athina.evals import RagasAnswerCorrectness
+
+data = [
+    {
+        "query": "Where is France and what is it's capital?"
+        "response": "Tesla is an electric car"
+        "expected_response": "France is in europe. Paris is it's capital"
+    },
+    {
+        "query": "What is Tesla?"
+        "response": "Tesla is an electric car"
+        "expected_response": "Tesla is an electric car company. Elon Musk founded it."
+    },
+]
+
+# Load the data from CSV, JSON, Athina or Dictionary
+dataset = RagasLoader().load_dict(data)
+
+eval_model = "gpt-3.5-turbo"
+RagasAnswerCorrectness(model=eval_model).run_batch(data=dataset).to_df()
+```
+
+### Coherence
+
+**Description:**
+Checks if the generated llm response presents ideas, information, or arguments in a logical and organized manner
+
+- [RAGAS Docs](https://docs.ragas.io/en/latest/concepts/metrics/critique.html)
+- [RAGAS Github](https://github.com/explodinggradients/ragas/blob/main/src/ragas/metrics/critique.py)
+
+**Required Args**
+
+- `query`: User Query
+- `contexts`: List of retrieved context
+- `response`: The LLM generated response
+- `expected_response`: Expected LLM Response
+
+**Default Engine:** `gpt-4-1106-preview`
+
+**Sample Code:**
+
+```python
+from athina.loaders import RagasLoader
+from athina.evals import RagasCoherence
+
+data = [
+    {
+        "query": "Where is France and what is it's capital?",
+        "contexts": ["France is the country in europe known for delicious cuisine", "Tesla is an electric car", "Elephant is an animal"],
+        "response": "Tesla is an electric car",
+        "expected_response": "France is in europe. Paris is it's capital"
+    },
+    {
+        "query": "What is Tesla? Who founded it?",
+        "contexts": ["Tesla is the electric car company. Tesla is registerd in United States", "Elon Musk founded it"],
+        "response": "France is in western Europe and Paris is its capital",
+        "expected_response": "Tesla is an electric car company. Elon Musk founded it."
+    },
+]
+
+# Load the data from CSV, JSON, Athina or Dictionary
+dataset = RagasLoader().load_dict(data)
+
+eval_model = "gpt-3.5-turbo"
+RagasCoherence(model=eval_model).run_batch(data=dataset).to_df()
+```
+
+### Conciseness
+
+**Description:**
+Checks if the generated response conveys information or ideas clearly and efficiently, without unnecessary or redundant details
+
+- [RAGAS Docs](https://docs.ragas.io/en/latest/concepts/metrics/critique.html)
+- [RAGAS Github](https://github.com/explodinggradients/ragas/blob/main/src/ragas/metrics/critique.py)
+
+**Required Args**
+
+- `query`: User Query
+- `contexts`: List of retrieved context
+- `response`: The LLM generated response
+- `expected_response`: Expected LLM Response
+
+**Default Engine:** `gpt-4-1106-preview`
+
+**Sample Code:**
+
+```python
+from athina.loaders import RagasLoader
+from athina.evals import RagasConciseness
+
+data = [
+    {
+        "query": "Where is France and what is it's capital?",
+        "contexts": ["France is the country in europe known for delicious cuisine", "Tesla is an electric car", "Elephant is an animal"],
+        "response": "Tesla is an electric car",
+        "expected_response": "France is in europe. Paris is it's capital"
+    },
+    {
+        "query": "What is Tesla? Who founded it?",
+        "contexts": ["Tesla is the electric car company. Tesla is registerd in United States", "Elon Musk founded it"],
+        "response": "France is in western Europe and Paris is its capital",
+        "expected_response": "Tesla is an electric car company. Elon Musk founded it."
+    },
+]
+
+# Load the data from CSV, JSON, Athina or Dictionary
+dataset = RagasLoader().load_dict(data)
+
+eval_model = "gpt-3.5-turbo"
+RagasConciseness(model=eval_model).run_batch(data=dataset).to_df()
+```
+
+### Maliciousness
+
+**Description:**
+Checks the potential of generated llm response to harm, deceive, or exploit users
+
+- [RAGAS Docs](https://docs.ragas.io/en/latest/concepts/metrics/critique.html)
+- [RAGAS Github](https://github.com/explodinggradients/ragas/blob/main/src/ragas/metrics/critique.py)
+
+**Required Args**
+
+- `query`: User Query
+- `contexts`: List of retrieved context
+- `response`: The LLM generated response
+- `expected_response`: Expected LLM Response
+
+**Default Engine:** `gpt-4-1106-preview`
+
+**Sample Code:**
+
+```python
+from athina.loaders import RagasLoader
+from athina.evals import RagasMaliciousness
+
+data = [
+    {
+        "query": "Where is France and what is it's capital?",
+        "contexts": ["France is the country in europe known for delicious cuisine", "Tesla is an electric car", "Elephant is an animal"],
+        "response": "Tesla is an electric car",
+        "expected_response": "France is in europe. Paris is it's capital"
+    },
+    {
+        "query": "What is Tesla? Who founded it?",
+        "contexts": ["Tesla is the electric car company. Tesla is registerd in United States", "Elon Musk founded it"],
+        "response": "France is in western Europe and Paris is its capital",
+        "expected_response": "Tesla is an electric car company. Elon Musk founded it."
+    },
+]
+
+# Load the data from CSV, JSON, Athina or Dictionary
+dataset = RagasLoader().load_dict(data)
+
+eval_model = "gpt-3.5-turbo"
+RagasMaliciousness(model=eval_model).run_batch(data=dataset).to_df()
+```
+
+### Harmfulness
+
+**Description:**
+Checks the potential of generated llm response to cause harm to individuals, groups, or society at large
+
+- [RAGAS Docs](https://docs.ragas.io/en/latest/concepts/metrics/critique.html)
+- [RAGAS Github](https://github.com/explodinggradients/ragas/blob/main/src/ragas/metrics/critique.py)
+
+**Required Args**
+
+- `query`: User Query
+- `contexts`: List of retrieved context
+- `response`: The LLM generated response
+- `expected_response`: Expected LLM Response
+
+**Default Engine:** `gpt-4-1106-preview`
+
+**Sample Code:**
+
+```python
+from athina.loaders import RagasLoader
+from athina.evals import RagasHarmfulness
+
+data = [
+    {
+        "query": "Where is France and what is it's capital?",
+        "contexts": ["France is the country in europe known for delicious cuisine", "Tesla is an electric car", "Elephant is an animal"],
+        "response": "Tesla is an electric car",
+        "expected_response": "France is in europe. Paris is it's capital"
+    },
+    {
+        "query": "What is Tesla? Who founded it?",
+        "contexts": ["Tesla is the electric car company. Tesla is registerd in United States", "Elon Musk founded it"],
+        "response": "France is in western Europe and Paris is its capital",
+        "expected_response": "Tesla is an electric car company. Elon Musk founded it."
+    },
+]
+
+# Load the data from CSV, JSON, Athina or Dictionary
+dataset = RagasLoader().load_dict(data)
+
+eval_model = "gpt-3.5-turbo"
+RagasHarmfulness(model=eval_model).run_batch(data=dataset).to_df()
+```
+
+
+
