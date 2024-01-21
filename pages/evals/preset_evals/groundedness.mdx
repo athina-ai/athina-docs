@@ -1,0 +1,95 @@
+import { Callout } from "nextra/components";
+
+## Faithfulness
+
+_This is an [LLM Graded Evaluator](/evals/faq/why_does_llm_eval_work)_
+
+[Github](https://github.com/athina-ai/athina-evals/blob/main/athina/evals/llm/groundedness/evaluator.py) | [Example Notebook](https://github.com/athina-ai/athina-evals/blob/main/examples/groundedness.ipynb)
+
+### ❊ Info
+
+<Callout>
+  Note: this evaluator is very similar to
+  [Faithfulness](/evals/preset_evals/faithfulness) but it returns a metric
+  between 0 and 1.
+</Callout>
+
+This evaluator checks if the LLM-generated response is grounded in the provided context.
+
+For many RAG apps, you want to constrain the response to the context you are providing it (since you know it to be true).
+But sometimes, the LLM might use its pretrained knowledge to generate an answer. This is often the cause of _"Hallucinations"_.
+
+<Callout type="info">
+##### How does it work?
+
+- For every sentence in the `response`, an LLM looks for evidence of that sentence in the `context`.
+- If it finds evidence, it gives that sentence a score of 1. If it doesn't, it gives it a score of 0.
+- The final score is the average of all the sentence scores.
+
+[View the source code on Github →](https://github.com/athina-ai/athina-evals/blob/main/athina/evals/llm/groundedness/evaluator.py)
+
+</Callout>
+
+---
+
+**Default Engine:** `gpt-3.5-turbo`
+
+**Required Args**
+
+- `context`: The context that your response should be grounded to
+- `response`: The LLM generated response
+
+**Metric**:
+
+- `Groundedness`: Number of sentences in the response that are grounded in the context divided by the total number of sentences in the response.
+  - 0: None of the sentences in the response are grounded in the context
+  - 1: All of the sentences in the response are grounded in the context
+
+---
+
+### Example
+
+<Callout type='infos'>
+- **Context:** Y Combinator was founded in March 2005 by Paul Graham and Jessica Livingston as a way to fund startups in batches. YC invests $500,000 in 200 startups twice a year.
+- **Response:** YC was founded by Paul Graham and Jessica Livingston. They invests $500k in 200 startups twice a year. In exchange, they take 7% equity.
+
+</Callout>
+
+<Callout type='error'>
+**Eval Result**
+- **Result:** Fail
+- **Score:** 0.67
+- **Explanation:** There is no evidence of the following sentence in the context:
+    - _"In exchange, they take 7% equity"_
+
+</Callout>
+
+---
+
+### ▷ Run the eval on a dataset
+
+1. Load your data with the `RagLoader`
+
+```python
+from athina.loaders import RagLoader
+
+# Load the data from CSV, JSON, Athina or Dictionary
+dataset = RagLoader().load_json(json_file)
+```
+
+2. Run the evaluator on your dataset
+
+```python
+from athina.evals import Groundedness
+
+Groundedness().run_batch(data=dataset)
+```
+
+### ▷ Run the eval on a single datapoint
+
+```python
+Groundedness().run(
+    context=context,
+    response=response
+)
+```
