@@ -6,5 +6,6 @@
     "summarization_eval": "Summarization Q&A",
     "other_evals": "More Evals",
     "function_evals": "Function Evals",
+    "grounded_evals": "Grounded Evals",
     "ragas_evals": "RAGAS"
 }

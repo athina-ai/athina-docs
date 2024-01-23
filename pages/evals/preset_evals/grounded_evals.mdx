@@ -1,0 +1,115 @@
+import { Callout } from "nextra/components";
+
+## Grounded Evaluators
+
+[Github](https://github.com/athina-ai/athina-evals/blob/main/athina/evals/grounded/wrapper.py)
+
+### ❊ Info
+
+Grounded evaluators are designed to assess the relevance of a response or context based on specific similarity algorithm.
+
+**How does it work**
+
+Grounded evaluators compare a given response to a reference or context, using various similarity measures to determine the degree of relevance or similarity.
+
+**Required Args**
+
+Your dataset must contain these fields:
+
+- `response`: The LLM generated response.
+- `expected_response`: The reference content to compare the response against in case of AnswerSimilarity.
+- `context`: The reference content to compare the response against in case of ContextSimilarity.
+
+**Metrics**
+
+- `SimilarityScore`: A numeric value representing the degree of similarity or relevance.
+
+---
+
+### ▷ Run the AnswerSimilarity evaluator on a single datapoint
+
+```python
+from athina.evals import AnswerSimilarity
+from athina.evals.grounded.similarity import CosineSimilarity
+
+# Checks the similarity between the response and the reference answer
+response = "The capital of France is Paris."
+expected_response = "Paris is the capital of France."
+AnswerSimilarity(comparator=CosineSimilarity()).run(response=response, expected_response=expected_response).to_df()
+```
+
+---
+
+### ▷ Run the function eval on a dataset
+
+1. Load your data with the `Loader`
+
+```python
+from athina.loaders import Loader
+raw_data = [
+    {
+        "response": "Thomas Edison invented the light bulb.",
+        "expected_response": "The light bulb was invented by Thomas Edison."
+    },
+    {
+        "response":  "The capital of France is Paris.",
+        "expected_response": "Paris is the capital of France."
+    }
+]
+# Load the data from CSV, JSON, Athina or Dictionary
+dataset = Loader().load_dict(raw_data)
+```
+
+2. Run the evaluator on your dataset
+
+```python
+from athina.evals import AnswerSimilarity
+from athina.evals.grounded.similarity import CosineSimilarity
+
+# Evaluates the similarity of the response to the expected response
+AnswerSimilarity(comparator=CosineSimilarity()).run_batch(data=dataset).to_df()
+```
+
+---
+
+### Following are examples of the various Grounded evaluators we support
+
+
+#### AnswerSimilarity
+
+**Description:**
+Evaluates the similarity between the generated response and a given expected response.
+
+**Arguments:**
+
+- `comparator`: `Comparator` The similarity measurement function (e.g., CosineSimilarity).
+- `failure_threshold`: `float` The threshold value for determining pass/fail.
+
+**Sample Code:**
+
+```python
+from athina.evals.grounded import AnswerSimilarity
+from athina.evals.grounded.similarity import CosineSimilarity
+
+AnswerSimilarity(comparator=CosineSimilarity(), failure_threshold=0.75).run_batch(data=dataset).to_df()
+```
+
+
+#### ContextSimilarity
+
+**Description:**
+Evaluates the similarity between the generated response and the context.
+
+**Arguments:**
+
+- `comparator`: `Comparator` The similarity measurement function (e.g., CosineSimilarity).
+- `failure_threshold`: `float` The threshold value for determining pass/fail.
+
+**Sample Code:**
+
+```python
+from athina.evals.grounded import ContextSimilarity
+from athina.evals.grounded.similarity import CosineSimilarity
+
+ContextSimilarity(comparator=CosineSimilarity(), failure_threshold=0.75).run_batch(data=dataset).to_df()
+```
