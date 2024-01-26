@@ -28,7 +28,9 @@ import { Callout } from "nextra/components";
 #### Context Precision
 
 **Description:**
-Checks how precise is context with respect to the expected response
+_Evaluates whether all of the ground-truth relevant items present in the contexts are ranked higher or not._
+
+_Ideally all the relevant chunks must appear at the top ranks. This metric is computed using the `query` and the `contexts`, with values ranging between 0 and 1, where higher scores indicate better precision._
 
 - [RAGAS Docs](https://docs.ragas.io/en/latest/concepts/metrics/context_precision.html)
 - [RAGAS Github](https://github.com/explodinggradients/ragas/blob/main/src/ragas/metrics/_context_precision.py)
@@ -72,7 +74,7 @@ RagasContextPrecision(model=eval_model).run_batch(data=dataset).to_df()
 #### Context Relevancy
 
 **Description:**
-Checks how relevant is context with respect to the user query
+_This metric gauges the relevancy of the retrieved context, calculated based on both the `query` and `contexts`_
 
 - [RAGAS Docs](https://docs.ragas.io/en/latest/concepts/metrics/context_relevancy.html)
 - [RAGAS Github](https://github.com/explodinggradients/ragas/blob/main/src/ragas/metrics/_context_relevancy.py)
@@ -113,7 +115,9 @@ RagasContextRelevancy(model=eval_model).run_batch(data=dataset).to_df()
 #### Context Recall
 
 **Description:**
-Measures the extent to which the retrieved context aligns with the expected llm response
+_Context recall measures the extent to which the retrieved context aligns with the annotated answer, treated as the ground truth. It is computed based on the `expected_response` and the retrieved `context`_
+
+_To estimate context recall from the ground truth answer, each sentence in the ground truth answer is analyzed to determine whether it can be attributed to the retrieved context or not. In an ideal scenario, all sentences in the ground truth answer should be attributable to the retrieved context._
 
 - [RAGAS Docs](https://docs.ragas.io/en/latest/concepts/metrics/context_recall.html)
 - [RAGAS Github](https://github.com/explodinggradients/ragas/blob/main/src/ragas/metrics/_context_recall.py)
@@ -157,7 +161,9 @@ RagasContextRecall(model=eval_model).run_batch(data=dataset).to_df()
 #### Faithfulness
 
 **Description:**
-Checks the factual consistency of the generated llm response against the retrieved context
+_This measures the factual consistency of the generated answer against the given context. It is calculated from answer and retrieved context. The answer is scaled to (0,1) range. Higher the better._
+
+_The generated answer is regarded as faithful if all the claims that are made in the answer can be inferred from the given context. To calculate this a set of claims from the generated answer is first identified. Then each one of these claims are cross checked with given context to determine if it can be inferred from given context or not._
 
 - [RAGAS Docs](https://docs.ragas.io/en/latest/concepts/metrics/faithfulness.html)
 - [RAGAS Github](https://github.com/explodinggradients/ragas/blob/main/src/ragas/metrics/_faithfulness.py)
@@ -201,7 +207,11 @@ RagasFaithfulness(model=eval_model).run_batch(data=dataset).to_df()
 #### Answer Relevancy
 
 **Description:**
-Checks how relevant is llm response with respect to the query
+
+_Measures how pertinent the generated `response` is to the given prompt. A lower score is assigned to answers that are incomplete or contain redundant information.
+This metric is computed using the `query` and the LLM generated `response`._
+
+_An answer is deemed relevant when it directly and appropriately addresses the original question. Importantly, our assessment of answer relevance does not consider factuality but instead penalizes cases where the answer lacks completeness or contains redundant details. To calculate this score, the LLM is prompted to generate an appropriate question for the generated answer multiple times, and the mean cosine similarity between these generated questions and the original question is measured. The underlying idea is that if the generated answer accurately addresses the initial question, the LLM should be able to generate questions from the answer that align with the original question._
 
 - [RAGAS Docs](https://docs.ragas.io/en/latest/concepts/metrics/answer_relevance.html)
 - [RAGAS Github](https://github.com/explodinggradients/ragas/blob/main/src/ragas/metrics/_answer_relevance.py)
@@ -245,7 +255,9 @@ RagasAnswerRelevancy(model=eval_model).run_batch(data=dataset).to_df()
 #### Answer Semantic Similarity
 
 **Description:**
-Checks the semantic similarity between generated llm response and the expected output
+_Measures the semantic resemblance between the generated answer and the ground truth. This evaluation is based on the ground truth (`expected_response`) and the LLM generated `response`, with values falling within the range of 0 to 1. A higher score signifies a better alignment between the generated answer and the ground truth._
+
+_Measuring the semantic similarity between answers can offer valuable insights into the quality of the generated response. This evaluation utilizes a cross-encoder model to calculate the semantic similarity score._
 
 - [RAGAS Docs](https://docs.ragas.io/en/latest/concepts/metrics/semantic_similarity.html)
 - [RAGAS Github](https://github.com/explodinggradients/ragas/blob/main/src/ragas/metrics/_answer_similarity.py)
@@ -286,7 +298,9 @@ RagasAnswerSemanticSimilarity(model=eval_model).run_batch(data=dataset).to_df()
 #### Answer Correctness
 
 **Description:**
-Checks the accuracy of the generated llm response when compared to the ground truth
+_The assessment of Answer Correctness involves gauging the accuracy of the generated answer when compared to the ground truth. This evaluation relies on the ground truth and the answer, with scores ranging from 0 to 1. A higher score indicates a closer alignment between the generated `response` and the ground truth `expected_response`, signifying better correctness._
+
+_Answer correctness encompasses two critical aspects: semantic similarity between the generated answer and the ground truth, as well as factual similarity. These aspects are combined using a weighted scheme to formulate the answer correctness score._
 
 - [RAGAS Docs](https://docs.ragas.io/en/latest/concepts/metrics/answer_correctness.html)
 - [RAGAS Github](https://github.com/explodinggradients/ragas/blob/main/src/ragas/metrics/_answer_correctness.py)
@@ -330,7 +344,7 @@ RagasAnswerCorrectness(model=eval_model).run_batch(data=dataset).to_df()
 #### Coherence
 
 **Description:**
-Checks if the generated llm response presents ideas, information, or arguments in a logical and organized manner
+_Checks if the generated `response` presents ideas, information, or arguments in a logical and organized manner._
 
 - [RAGAS Docs](https://docs.ragas.io/en/latest/concepts/metrics/critique.html)
 - [RAGAS Github](https://github.com/explodinggradients/ragas/blob/main/src/ragas/metrics/critique.py)
@@ -377,7 +391,7 @@ RagasCoherence(model=eval_model).run_batch(data=dataset).to_df()
 #### Conciseness
 
 **Description:**
-Checks if the generated response conveys information or ideas clearly and efficiently, without unnecessary or redundant details
+_Checks if the generated `response` conveys information or ideas clearly and efficiently, without unnecessary or redundant details._
 
 - [RAGAS Docs](https://docs.ragas.io/en/latest/concepts/metrics/critique.html)
 - [RAGAS Github](https://github.com/explodinggradients/ragas/blob/main/src/ragas/metrics/critique.py)
@@ -424,7 +438,7 @@ RagasConciseness(model=eval_model).run_batch(data=dataset).to_df()
 #### Maliciousness
 
 **Description:**
-Checks the potential of generated llm response to harm, deceive, or exploit users
+_Checks the potential of the generated `response` to harm, deceive, or exploit users._
 
 - [RAGAS Docs](https://docs.ragas.io/en/latest/concepts/metrics/critique.html)
 - [RAGAS Github](https://github.com/explodinggradients/ragas/blob/main/src/ragas/metrics/critique.py)
@@ -471,7 +485,7 @@ RagasMaliciousness(model=eval_model).run_batch(data=dataset).to_df()
 #### Harmfulness
 
 **Description:**
-Checks the potential of generated llm response to cause harm to individuals, groups, or society at large
+_Checks the potential of the generated `response` to cause harm to individuals, groups, or society at large._
 
 - [RAGAS Docs](https://docs.ragas.io/en/latest/concepts/metrics/critique.html)
 - [RAGAS Github](https://github.com/explodinggradients/ragas/blob/main/src/ragas/metrics/critique.py)
@@ -520,10 +534,15 @@ RagasHarmfulness(model=eval_model).run_batch(data=dataset).to_df()
 If you are logging to Athina, you can configure RAGAS to run automatically against your logs.
 
 1. Navigate to the [Athina Dashboard](https://app.athina.ai/evals/config)
-2. Open the evals page (lightning icon on the left)
+2. Open the **Evals** page (lightning icon on the left)
 3. Click the "New Eval" button on the top right
-4. Select the "RAGAS" tab
+4. Select the **Ragas** tab
 5. Select the eval you want to configure
+
+<br />
+<img src="/ragas-modal-bg.png" />
+
+---
 
 ##### ▷ Run the RAGAS eval on a single datapoint
 
