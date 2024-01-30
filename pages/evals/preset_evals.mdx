@@ -31,7 +31,7 @@ Here are our preset evaluators:
 - [Maliciousness](/evals/preset_evals/ragas_evals#maliciousness)
 - [Harmfulness](/evals/preset_evals/ragas_evals#harmfulness)
 
-<br />
+---
 
 #### Summarization Evals:
 
@@ -39,7 +39,8 @@ These evals are useful for evaluating LLM-powered summarization performance.
 
 - [Summarization Accuracy](/evals/preset_evals/summarization_eval)
 
-<br />
+---
+
 
 #### Custom Evals
 
@@ -47,8 +48,6 @@ These evals can help you create custom evaluation conditions.
 
 - [Grading Criteria](/evals/custom_evals#custom-grading-criteria-easy)
 - [Custom Prompt](/evals/custom_evals#llm-evaluator-with-a-completely-custom-prompt)
-
-<br />
 
 ---
 
@@ -63,4 +62,14 @@ Unlike the previous evaluators which used an LLM for grading, function evals do 
 - Response is [missing keywords](/evals/preset_evals/function_evals#containsall)
 - and more
 
-Head over to the [function evaluators](/evals/preset_evals/function_evals) for further details.
+Head over to the [function evaluators](/evals/preset_evals/function_evals) page for further details.
+
+---
+
+#### Grounded Evals
+
+So far all the previous evaluators are ungrounded - meaning that they do not compare the response against any reference data. Following are evaluators that can compare the LLM generated response against the expected_response or context. For example
+- [Answer similarity](/evals/preset_evals/grounded_evals#answer_similarity)
+- [Context similarity](/evals/preset_evals/grounded_evals#context_similarity)
+
+Head over to the [grounded evaluators](/evals/preset_evals/grounded_evals) page for further details.
