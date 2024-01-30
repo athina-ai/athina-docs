@@ -1,15 +1,23 @@
-# Configure Automatic Evals
+# Automatic Evals
 
-You can configure evals on [Athina Dashboard](https://app.athina.ai/evals/config) to run automatically against [logged inferences](/logging).
+### What is an automatic eval?
 
-The results are visible in the **Evals** tab on the Inference detail (`/observe/inference/:inference_id`) page.
+If you are [logging inferences](/logging) to Athina, you can **configure evals to run automatically against logged inferences**.
+
+Eval results will show up on your dashboard as soon as they start running.
+
+- The metrics from these evals will be used to calculate the [model performance metrics](/monitoring/performance_metrics).
+
+- The evaluation results for each individual inference are visible in the **Evals** tab on the [Inference Trace](/monitoring/inference_trace) page (`/observe/inference/:inference_id`).
 
 <br />
 <img src="/eval-results-2.png" style={{ borderRadius: "8px" }} />
 
-## Tutorial
+---
 
-Here is a step-by-step tutorial on how to configure an eval in **< 15 seconds.**
+### Tutorial: Set up automatic evals in 15 seconds
+
+Here's how you can configure evals on [Athina Dashboard](https://app.athina.ai/evals/config) in **< 15 seconds** to run automatically against [logged inferences](/logging).
 
 <iframe
   src="https://scribehow.com/embed/Configure_Evaluation_on_Athina_AI_Platform__rpFMMrOZR1mDBrBF_bQOMg?as=scrollable"

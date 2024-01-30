@@ -1,0 +1,18 @@
+## Model Performance Metrics
+
+Athina is designed to help you measure your model performance in production.
+
+If you have configured [automatic evals](/evals/automatic_evals) to run against your logged inferences, then your dashboard will automatically populate with a breakdown of your model performance metrics.
+
+Click on the `Performance Metrics` section on the top left of your dashboard to see a breakdown of the model performance metrics.
+
+<img src="/performance-metrics.png" />
+
+### How to interpret Eval Metrics
+
+- Evals may have 1 or more metrics configured.
+- Most metrics will be scored between 0.0 and 1.0, with 1.0 being the best possible score.
+- Boolean metrics will contain a Pass (1.0) / Fail (0.0) result.
+- Numeric metrics will contain a score between 0.0 and 1.0.
+
+**Pass Rate** = The percentage of inferences that passed **all** of the configured boolean evals.
