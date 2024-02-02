@@ -1,0 +1,249 @@
+import { useAmp } from "next/amp";
+import { Callout } from "nextra/components";
+
+## Log via Python SDK (Non-Streaming)
+
+You can log your inference calls to Athina via python sdk. The logging request should be made just after you receive a response from the LLM.
+
+##### 1. Install the Python SDK
+
+Run `pip install athina-logger`
+
+##### 2. Import Athina Logger
+
+```python
+from athina_logger.api_key import AthinaApiKey
+```
+
+##### 3. Import Openai package
+
+```python
+
+# For openai < 1
+
+import openai
+openai.api_key = os.getenv('OPENAI_API_KEY')
+
+# For openai >=1 
+
+from openai import OpenAI
+client = OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
+```
+
+##### 4. Set Athina API key
+
+```python
+AthinaApiKey.set_api_key(os.getenv('ATHINA_API_KEY'))
+```
+
+##### 5. Call the logging Function
+
+```python
+from athina_logger.inference_logger import InferenceLogger
+from athina_logger.exception.custom_exception import CustomException
+
+# For openai < 1 
+response = openai.ChatCompletion.create(
+        model='gpt-4-1106-preview',
+        messages=[{"role": "user", "content": "What is machine learning?"}],
+    )
+
+try:
+    InferenceLogger.log_inference(
+        prompt_slug="sdk_test",
+        prompt=messages,
+        language_model_id="gpt-4-1106-preview",
+        response=response,
+        external_reference_id="abc"
+    )
+except Exception as e:
+    if isinstance(e, CustomException):
+        print(e.status_code)
+        print(e.message)
+    else:
+        print(e)
+
+# For openai > 1
+response = client.chat.completions.create(
+        model='gpt-4-1106-preview',
+        messages=[{"role": "user", "content": "What is machine learning?"}],
+    )
+
+response = response.model_dump() # For openai > 1 version
+
+try:
+    InferenceLogger.log_inference(
+        prompt_slug="sdk_test",
+        prompt=messages,
+        language_model_id="gpt-4-1106-preview",
+        response=response,
+        external_reference_id="abc"
+    )
+except Exception as e:
+    if isinstance(e, CustomException):
+        print(e.status_code)
+        print(e.message)
+    else:
+        print(e)
+```
+
+<Callout>
+  Tip: Include your logging code in a try/catch block to ensure that your
+  application doesn't crash if the logging request fails.
+</Callout>
+
+All the arguments for the InferenceLogger.log_inference() method are:
+
+- `prompt (optional)`: prompt sent to the LLM
+```python
+Expected formats of prompt:
+
+prompt: [{"role": "user", "content": "What is machine learning?"}] # for openai models
+prompt: {"text": "What is maching learning?"} # for other models
+prompt: "what is machine learning?" # for other models
+```
+- `response (optional)`: LLM Response. This can be either a `string` or the `ChatCompletion` response object from OpenAI
+- `prompt_slug (optional)`: Identifier for the prompt used for inference. This is useful for segmenting inference calls by prompt
+```python
+prompt_slug: "customer_query"
+```
+- `language_model_id (optional)`: Language model against which inference is made. Check out all supported models [here](/logging/supported_models)
+```python
+language_model_id: "gpt-4-1106-preview"
+```
+- `functions (optional)`: functions for older versions of openai,
+```python
+functions: [
+  {
+    "name": "get_current_weather",
+    "description": "Get the current weather in a given location",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "location": {
+          "type": "string",
+          "description": "The city and state, e.g. San Francisco, CA"
+        },
+        "unit": {
+          "type": "string",
+          "enum": [
+            "celsius",
+            "fahrenheit"
+          ]
+        }
+      },
+      "required": [
+        "location"
+      ]
+    }
+  }
+]
+```
+- `environment (optional)`: Environment your app is running in (ex: production, staging, etc). This is useful for segmenting inference calls by environment
+```python
+environment: "production"
+```
+- `function_call_response (optional)`: function call for older version of openai
+```python
+function_call_response: {
+  "name": "get_current_weather",
+  "arguments": "{\n  \"location\": \"Boston, MA\"\n}"
+}
+```
+- `tools (optional)`: tools for new versions of openai
+```python
+tools: [
+  {
+    "type": "function",
+    "function": {
+      "name": "getCurrentWeather",
+      "description": "Get the weather in location",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "location": {
+            "type": "string",
+            "description": "The city and state e.g. San Francisco, CA"
+          },
+          "unit": {
+            "type": "string",
+            "enum": [
+              "c",
+              "f"
+            ]
+          }
+        },
+        "required": [
+          "location"
+        ]
+      }
+    }
+  }
+]
+```
+- `tool_calls (optional)`: tool calls for new versions of openai
+```python
+tool_calls: [
+  {
+    "id": "call_abc123",
+    "type": "function",
+    "function": {
+      "name": "get_current_weather",
+      "arguments": "{\n\"location\": \"Boston, MA\"\n}"
+    }
+  }
+]
+```
+If tool_calls field is not present, we extract it from the openai completion response and log it in our database
+- `external_reference_id (optional)`: is useful if you want to associate your own internal identifier with the inference logged to Athina
+```python
+external_reference_id: "5e838eaf-7dd0-4b6f-a32c-26110dd54e58"
+```
+- `customer_id (optional)`: is your customer ID. This is useful for segmenting inference calls by customer
+```python
+customer_id: "stripe"
+```
+- `customer_user_id (optional)`: is the end user ID. This is useful for segmenting inference calls by the end user
+```python
+customer_user_id: "user@gmail.com"
+```
+- `session_id (optional)`: is the session or conversation ID. This is used for grouping different inferences into a conversation or chain. [Read more](/logging/grouping_inferences)
+```python
+session_id: "c45g-1234-s6g4-43d3"
+```
+- `user_query (optional)`:  is the user's query. For conversational applications, this is the user's last message
+```python
+user_query: "what is machine learning?"
+```
+- `context (optional)`: is the context used as information for the prompt. For RAG applications, this is the "retrieved" data. 
+                        You may log context as a string or as an object (dictionary)
+```python
+context: {"information": "Machine learning is a branch of artificial intelligence (AI) and computer science which focuses on the use of data and algorithms to imitate the way that humans learn, gradually improving its accuracy"}
+context: "Machine learning is a branch of artificial intelligence (AI) and computer science which focuses on the use of data and algorithms to imitate the way that humans learn, gradually improving its accuracy"
+```
+<Callout>
+  Tip: For [evals](/evals/preset_evals/rag_evals), you must also log user_query and context
+</Callout>
+
+- `prompt_tokens (optional)`: tokens in the prompt,
+- `completion_tokens (optional)`: tokens in the completion response,
+- `total_tokens (optional)`: prompt_tokens + completion_tokens,
+- `response_time (optional)`:  is the response time in milliseconds. This is useful for segmenting inference calls by response time
+```python
+prompt_tokens: 50
+completion_tokens: 30
+total_tokens: 80
+response_time: 1208
+```
+<Callout>
+    Tip: If you log the entire OpenAI `ChatCompletion` response object to us,
+  we'll automatically extract the token counts and cost.
+</Callout>
+
+- `expected_response (optional)`: is the reference response to compare against for evaluation purposes. This is useful for segmenting inference calls by expected response
+```python
+expected_response: "Machine Learning is a branch of artificial intelligence"
+```
+<Callout>
+    Tip: For grounded evals like [Answer Similarity](/evals/preset_evals/grounded_evals#answer_similarity), you must also log a reference response (string) to compare against.
+</Callout>
