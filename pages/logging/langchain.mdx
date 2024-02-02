@@ -43,7 +43,22 @@ athina_handler = CallbackHandler(
 - `customer_id`: The ID of the customer that is using the LLM.
 - `customer_user_id`: The ID of the user that is using the LLM.
 - `external_reference_id`: The ID of the external reference that is using the LLM.
-- `kwargs`: Any key-value data you want to associate with the LLM calls in a chain.
+- `kwargs`: Any key-value data you want to associate with the LLM calls in a chain. This key-value data will be stored as context in Athina Server
+
+```json
+Sample kwargs: 
+context1 = "Germany is located in central europe"
+context2 = "Berlin is the capital of Germany"
+
+This will be stored as:
+
+{
+    "context1": "Germany is located in central europe",
+    "context2": "Berlin is the capital of Germany"
+}
+
+This will be perceived as retrieved context 
+```
 
 ### Add `CallbackHandler` to `LLMChain` callbacks
 

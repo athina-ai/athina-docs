@@ -1,6 +1,7 @@
 {
   "supported_models": "Supported Models",
   "log_via_api": "Log via API Request",
+  "log_via_python_sdk": "Log via Python SDK (Non-Streaming)",
   "openai_chat_1": "OpenAI Chat (1.x)",
   "openai_chat_0": "OpenAI Chat (0.x)",
   "openai_completion_1": "OpenAI Completion (1.x)",
