@@ -46,7 +46,7 @@ _If you're using OpenAI completions in Python, you can get set up in just **2 mi
     	)
     	logger = LogOpenAiCompletionStreamInference(
     		prompt=prompt,
-    		model="text-davinci-003",
+    		language_model_id="text-davinci-003",
     		prompt_slug="customer_query",
     		context=context, # OPTIONAL
     		response_time=response_time_ms, # OPTIONAL
@@ -99,7 +99,7 @@ _If you're using OpenAI completions in Python, you can get set up in just **2 mi
     							headers=reqHeaders, json=reqBody)
     	logger = LogOpenAiCompletionStreamInference(
     		prompt=prompt,
-    		model="text-davinci-003",
+    		language_model_id="text-davinci-003",
     		prompt_slug="customer_query",
     		context=context, # OPTIONAL
     		response_time=response_time_ms, # OPTIONAL
