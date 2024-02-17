@@ -93,6 +93,25 @@ Optionally, you can also add the following fields for better segmentation on the
 - `session_id` (string) is the session or conversation ID. This is used for grouping different inferences into a conversation or chain. [Read more](/logging/grouping_inferences)
 - `external_reference_id` (string) is useful if you want to associate your own internal identifier with the inference logged to Athina.
 
+##### Custom Attributes
+
+Optionally, you can also log custom attributes with your prompt. You can pass attribute name and attribute value as key-value pair in the `custom_attributes` object.
+
+Note:- A prompt run cannot have duplicate attribute names
+
+```json
+{
+  // ...otherFields,
+  "custom_attributes": {
+    "loggedBy": "John Doe",
+    "age": 24,
+    "isAdmin": true,
+    "references": null
+    //any other attribute to be logged
+  }
+}
+```
+
 ##### Grounded Evals
 
 For grounded evals like [Answer Similarity](/evals/preset_evals/grounded_evals#answer_similarity), you must also log a reference response (string) to compare against:

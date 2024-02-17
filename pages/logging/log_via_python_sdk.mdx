@@ -55,6 +55,10 @@ try:
         language_model_id="gpt-4-1106-preview",
         response=response,
         external_reference_id="abc"
+        custom_attributes={
+                "name": "John Doe"
+                # Your custom attributes
+            }
     )
 except Exception as e:
     if isinstance(e, CustomException):
@@ -78,6 +82,10 @@ try:
         language_model_id="gpt-4-1106-preview",
         response=response,
         external_reference_id="abc"
+        custom_attributes={
+                "name": "John Doe"
+                # Your custom attributes
+            }
     )
 except Exception as e:
     if isinstance(e, CustomException):
@@ -220,6 +228,13 @@ user_query: "what is machine learning?"
 ```python
 context: {"information": "Machine learning is a branch of artificial intelligence (AI) and computer science which focuses on the use of data and algorithms to imitate the way that humans learn, gradually improving its accuracy"}
 context: "Machine learning is a branch of artificial intelligence (AI) and computer science which focuses on the use of data and algorithms to imitate the way that humans learn, gradually improving its accuracy"
+```
+- `custom_attributes (optional)`: custom_attributes is an object (dictionary) where you can log your own custom attributes as key-value pair with the inference.
+```python
+custom_attributes: {
+                "name": "John Doe"
+                # Any other custom_attribute
+            } # OPTIONAL; 
 ```
 <Callout>
   Tip: For [evals](/evals/preset_evals/rag_evals), you must also log user_query and context

@@ -53,6 +53,11 @@ _If you're using OpenAI chat completions in Python, you can get set up in just *
             customer_user_id=customer_id, # Your End User's ID
             environment=environment, # Environment (production, staging, dev, etc)
             external_reference_id="ext_ref_123456",
+            custom_attributes={
+                            "name": "John",
+                            "age": 30,
+                            "city": "New York"
+                        } # Your custom-attributes
         ),
     )
     ```
@@ -78,6 +83,7 @@ _If you're using OpenAI chat completions in Python, you can get set up in just *
         customer_id: Optional[str] = None
         customer_user_id: Optional[str] = None
         response_time: Optional[int] = None
+        custom_attributes: Optional[dict] = None
     ```
 
 
@@ -138,6 +144,9 @@ _If you're using OpenAI chat completions in Python, you can get set up in just *
             user_query=user_query, # OPTIONAL
             environment="production", # OPTIONAL
             external_reference_id="5e838eaf-7dd0-4b6f-a32c-26110dd54e58", # OPTIONAL; If passed, should be unique across all inference calls
+            custom_attributes={
+                "name": "John Doe"
+            } # OPTIONAL;  
         )
     ```
 

@@ -32,6 +32,13 @@ athina_handler = CallbackHandler(
     customer_id='nike-usa',
     customer_user_id='tim@apple.com',
     external_reference_id='your-reference-id',
+    custom_attributes= {
+        "loggedBy": "John Doe",
+        "age": 24,
+        "isAdmin": true,
+        "references": null
+        # any other attribute to be logged
+    }
     kwargs: Any, # Any key-value data you want to associate with the LLM calls in a chain
 )
 ```
@@ -43,10 +50,11 @@ athina_handler = CallbackHandler(
 - `customer_id`: The ID of the customer that is using the LLM.
 - `customer_user_id`: The ID of the user that is using the LLM.
 - `external_reference_id`: The ID of the external reference that is using the LLM.
+- `custom_attributes`: Any key-value data you want to associate with the LLM call
 - `kwargs`: Any key-value data you want to associate with the LLM calls in a chain. This key-value data will be stored as context in Athina Server
 
 ```json
-Sample kwargs: 
+Sample kwargs:
 context1 = "Germany is located in central europe"
 context2 = "Berlin is the capital of Germany"
 
@@ -57,7 +65,7 @@ This will be stored as:
     "context2": "Berlin is the capital of Germany"
 }
 
-This will be perceived as retrieved context 
+This will be perceived as retrieved context
 ```
 
 ### Add `CallbackHandler` to `LLMChain` callbacks
