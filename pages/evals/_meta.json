@@ -8,5 +8,6 @@
     "loading_data": "Loading Data for Evals",
     "llm_dev_workflows": "LLM Eval Workflows",
     "improving_eval_performance": "Improving Eval Performance",
+    "running_evals_with_llama_index": "Running Evals with LlamaIndex",
     "faq": "FAQs"
 }

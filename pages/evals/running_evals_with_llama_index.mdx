@@ -1,0 +1,75 @@
+import { Callout } from "nextra/components";
+
+## Running Evals
+
+### Running RAGAS Evals with LlamaIndex
+
+[RAGAS](/evals/preset_evals/ragas_evals) is a popular library with state-of-the-art evaluation metrics for RAG models. Athina supports evaluating your datasets 
+using RAGAS metrics.
+
+```python
+from athina.loaders import RagasLoader
+from athina.evals import RagasAnswerRelevancy
+
+data = [
+    {
+        "query": "Where is France and what is it's capital?",
+        "contexts": ["France is the country in europe known for delicious cuisine", "Tesla is an electric car", "Elephant is an animal"],
+        "response": "France is in europe. Paris is it's capital"
+    },
+    {
+        "query": "What is Tesla? Who founded it?",
+        "contexts": ["Tesla is the electric car company. Tesla is registerd in United States", "Elon Musk founded it"],
+        "response": "Tesla is an electric car company. Elon Musk founded it."
+    },
+]
+
+# Load the data from CSV, JSON, Athina or Dictionary
+dataset = RagasLoader().load_dict(data)
+
+eval_model = "gpt-3.5-turbo"
+RagasAnswerRelevancy(model=eval_model).run_batch(data=dataset).to_df()
+```
+
+In the above example, retrieved contexts are being explicitly provided in the dataset. In place of this, LlamaIndex's query engine can be sent as a parameter
+in the RagasLoader constructor.
+
+Sample code to create llamaindex query engine
+
+```python
+WikipediaReader = download_loader("WikipediaReader")
+loader = WikipediaReader()
+documents = loader.load_data(pages=['Berlin'])
+vector_index = VectorStoreIndex.from_documents(
+    documents, service_context=ServiceContext.from_defaults(chunk_size=512)
+)
+
+query_engine = vector_index.as_query_engine()
+```
+
+<Callout>
+
+Above query engine is just a sample. One can create any type of query engine using any type of loader and documents index
+
+</Callout>
+
+```python
+data = [
+    {
+        "query": "Where is Berlin?",
+    },
+    {
+        "query": "What is the main cuisine of Rome?",
+    },
+]
+
+dataset = RagasLoader(query_engine=query_engine).load_dict(data)
+pd.DataFrame(dataset)
+
+eval_model = "gpt-3.5-turbo"
+RagasAnswerRelevancy(model=eval_model).run_batch(data=data).to_df()
+```
+
+Your results will be printed out as a dataframe that looks like this.
+
+<img src="/llama_index.png" />
