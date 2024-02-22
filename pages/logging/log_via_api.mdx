@@ -81,6 +81,7 @@ Optionally, you can also add the following fields for better segmentation on the
   "customer_id": "stripe",
   "customer_user_id": "shiv@athina.ai",
   "session_id": "c45g-1234-s6g4-43d3",
+  "cost": 0.01,
   "external_reference_id": "5e838eaf-7dd0-4b6f-a32c-26110dd54e58",
   "expected_response": "Reference response to compare against for evaluation purposes"
 }
@@ -90,6 +91,7 @@ Optionally, you can also add the following fields for better segmentation on the
 - `environment` (string) is the environment your app is running in (ex: `production`, `staging`, etc). This is useful for segmenting inference calls by environment.
 - `customer_id` (string) is your customer ID. This is useful for segmenting inference calls by customer.
 - `customer_user_id` (string) is the end user ID. This is useful for segmenting inference calls by the end user.
+- `cost` (number) is the cost incurred while using the LLm model for the API.
 - `session_id` (string) is the session or conversation ID. This is used for grouping different inferences into a conversation or chain. [Read more](/logging/grouping_inferences)
 - `external_reference_id` (string) is useful if you want to associate your own internal identifier with the inference logged to Athina.
 
