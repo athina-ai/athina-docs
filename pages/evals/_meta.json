@@ -8,5 +8,6 @@
     "loading_data": "Loading Data for Evals",
     "llm_dev_workflows": "LLM Eval Workflows",
     "improving_eval_performance": "Improving Eval Performance",
-    "faq": "FAQs"
+    "faq": "FAQs",
+    "ci_cd_pipeline": "CI/CD Pipeline"
 }

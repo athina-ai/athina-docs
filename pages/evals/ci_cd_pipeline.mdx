@@ -1,0 +1,85 @@
+import { Callout } from "nextra/components";
+
+### Athina in CI/CD Pipelines
+
+You can use Athina evals in your CI/CD pipeline to catch regressions before they get to production. Following is a guide for setting athina-evals in your CI/CD pipeline. 
+
+All codes described here are present in our [GitHub repository](https://github.com/athina-ai/athina-evals-ci/) as well.
+
+### GitHub Actions
+We're going to use GitHub Actions to create our CI/CD pipelines. GitHub Actions allow us to define workflows that are triggered by events (pull request, push, etc.) and execute a series of actions.
+Our GitHub Actions are defined under our repository's `.github/workflows` directory. 
+
+We have defined a workflow for the evals too. The workflow file is named `athina_ci.yml`. The workflow is triggered on every push to the `main` branch.
+
+```yaml
+name: CI with Athina Evals
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  evaluate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt  # Install project dependencies
+          pip install athina  # Install Athina Evals
+
+      - name: Run Athina Evaluation and Validation Script
+        run: python -m evaluations.run_athina_evals
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          ATHINA_API_KEY: ${{ secrets.ATHINA_API_KEY }}
+```
+
+### Athina Evals Script
+The `run_athina_evals.py` script is the entry point for our Athina Evals. It is a simple script that uses the Athina Evals SDK to evaluate and validate the Rag Application. 
+
+For example we are testing if the response from the Rag Application answers the query using the `DoesResponseAnswerQuery` evaluation from athina.
+
+```python
+eval_model = "gpt-3.5-turbo"
+df = DoesResponseAnswerQuery(model=eval_model).run_batch(data=dataset).to_df()
+# Validation: Check if all rows in the dataframe passed the evaluation
+all_passed = df['passed'].all()
+if not all_passed:
+    failed_responses = df[~df['passed']]
+    print(f"Failed Responses: {failed_responses}")
+    raise ValueError("Not all responses passed the evaluation.")
+else:
+    print("All responses passed the evaluation.")
+```
+
+You can also load a golden dataset and run the evaluation on it. 
+
+```python
+with open('evaluations/golden_dataset.jsonl', 'r') as file:
+  raw_data = file.read().split('\n')
+  data = []
+  for item in raw_data:
+    item = json.loads(item)
+    item['context'], item['response'] = app.generate_response(item['query'])
+    data.append(item)
+```
+
+You can also run a suite of evaluations on the dataset. See our examples folder in the [athina-evals](https://github.com/athina-ai/athina-evals/tree/main/examples) repository for more details.
+
+### Secrets
+We are using GitHub Secrets to store our API keys. We have two secrets, `OPENAI_API_KEY` and `ATHINA_API_KEY`.
+You can add these secrets to your repository by navigating to `Settings` > `Secrets` > `New repository secret`.
+
+### Further reading
+We have more examples and details in our [GitHub repository](https://github.com/athina-ai/athina-evals-ci/)
