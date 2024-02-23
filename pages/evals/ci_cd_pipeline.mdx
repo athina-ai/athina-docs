@@ -75,7 +75,25 @@ with open('evaluations/golden_dataset.jsonl', 'r') as file:
     data.append(item)
 ```
 
-You can also run a suite of evaluations on the dataset. See our examples folder in the [athina-evals](https://github.com/athina-ai/athina-evals/tree/main/examples) repository for more details.
+You can also run a suite of evaluations on the dataset.
+  
+```python
+eval_model = "gpt-3.5-turbo"
+eval_suite = [
+  DoesResponseAnswerQuery(model=eval_model),
+  Faithfulness(model=eval_model),
+  ContextContainsEnoughInformation(model=eval_model),
+]
+
+# Run the evaluation suite
+batch_eval_result = EvalRunner.run_suite(
+  evals=eval_suite,
+  data=dataset,
+  max_parallel_evals=2
+)
+
+# Validate the batch_eval_results as you want.
+```
 
 ### Secrets
 We are using GitHub Secrets to store our API keys. We have two secrets, `OPENAI_API_KEY` and `ATHINA_API_KEY`.
