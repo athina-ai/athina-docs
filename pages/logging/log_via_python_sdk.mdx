@@ -54,7 +54,8 @@ try:
         prompt=messages,
         language_model_id="gpt-4-1106-preview",
         response=response,
-        external_reference_id="abc"
+        cost=cost,
+        external_reference_id="abc",
         custom_attributes={
                 "name": "John Doe"
                 # Your custom attributes
@@ -81,7 +82,8 @@ try:
         prompt=messages,
         language_model_id="gpt-4-1106-preview",
         response=response,
-        external_reference_id="abc"
+        external_reference_id="abc",
+        cost=0.0123,
         custom_attributes={
                 "name": "John Doe"
                 # Your custom attributes
@@ -214,6 +216,10 @@ customer_id: "stripe"
 - `customer_user_id (optional)`: is the end user ID. This is useful for segmenting inference calls by the end user
 ```python
 customer_user_id: "user@gmail.com"
+```
+- `cost (optional)`: is the cost incurred for this LLM inference call. Tip: If you log an entire OpenAI completion response to us, we'll automatically calculate the cost.
+```python
+cost: 0.0123
 ```
 - `session_id (optional)`: is the session or conversation ID. This is used for grouping different inferences into a conversation or chain. [Read more](/logging/grouping_inferences)
 ```python
