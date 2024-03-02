@@ -1,0 +1,855 @@
+{
+	"info": {
+		"_postman_id": "d432a879-d2b3-452a-b1f2-700358c2a279",
+		"name": "GraphQL_API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "31961839"
+	},
+	"item": [
+		{
+			"name": "Get Org Details",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "athina-api-key",
+						"value": "{{ATHINA-API-KEY}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "query GetOrg { \n    getOrg {\n        id name max_evals_per_month sampling_percent\n    } \n}",
+						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "{{ATHINA-GRAPHQL-API}}",
+					"host": [
+						"{{ATHINA-GRAPHQL-API}}"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Get Org",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "athina-api-key",
+								"value": "{{ATHINA-API-KEY}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query GetOrg { \n    getOrg {\n        id name max_evals_per_month sampling_percent\n    } \n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{ATHINA-GRAPHQL-API}}",
+							"host": [
+								"{{ATHINA-GRAPHQL-API}}"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Sat, 02 Mar 2024 05:52:50 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "CF-Ray",
+							"value": "85df1f7ccdc95514-DEL"
+						},
+						{
+							"key": "CF-Cache-Status",
+							"value": "DYNAMIC"
+						},
+						{
+							"key": "Strict-Transport-Security",
+							"value": "max-age=15552000; includeSubDomains"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "access-control-allow-credentials",
+							"value": "true"
+						},
+						{
+							"key": "content-security-policy",
+							"value": "default-src 'self';script-src 'self' unpkg.com 'unsafe-inline';style-src 'self' unpkg.com 'unsafe-inline';img-src 'self' raw.githubusercontent.com;base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';object-src 'none';script-src-attr 'none';upgrade-insecure-requests"
+						},
+						{
+							"key": "cross-origin-opener-policy",
+							"value": "same-origin"
+						},
+						{
+							"key": "cross-origin-resource-policy",
+							"value": "same-origin"
+						},
+						{
+							"key": "origin-agent-cluster",
+							"value": "?1"
+						},
+						{
+							"key": "referrer-policy",
+							"value": "no-referrer"
+						},
+						{
+							"key": "rndr-id",
+							"value": "484f1a99-45db-4d4b"
+						},
+						{
+							"key": "x-content-type-options",
+							"value": "nosniff"
+						},
+						{
+							"key": "x-dns-prefetch-control",
+							"value": "off"
+						},
+						{
+							"key": "x-download-options",
+							"value": "noopen"
+						},
+						{
+							"key": "x-frame-options",
+							"value": "SAMEORIGIN"
+						},
+						{
+							"key": "x-permitted-cross-domain-policies",
+							"value": "none"
+						},
+						{
+							"key": "x-render-origin-server",
+							"value": "Render"
+						},
+						{
+							"key": "x-xss-protection",
+							"value": "0"
+						},
+						{
+							"key": "Server",
+							"value": "cloudflare"
+						},
+						{
+							"key": "Content-Encoding",
+							"value": "br"
+						},
+						{
+							"key": "alt-svc",
+							"value": "h3=\":443\"; ma=86400"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"data\": {\n        \"getOrg\": {\n            \"id\": \"athina_demo\",\n            \"name\": \"Athina Demo\",\n            \"max_evals_per_month\": 20000,\n            \"sampling_percent\": 100\n        }\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "GetPrompt Runs Paginated",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "athina-api-key",
+						"value": "{{ATHINA-API-KEY}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "query GetPromptRuns($limit: Int!, $page: Int!) {\n    getPromptRunsByFilters(limit: $limit, page: $page) {\n        id\n        org_id\n        prompt_slug\n        language_model_id\n        prompt_response\n        prompt_tokens\n    }\n}\n",
+						"variables": " {\n    \"limit\": 2,\n    \"page\": 0\n}"
+					}
+				},
+				"url": {
+					"raw": "{{ATHINA-GRAPHQL-API}}",
+					"host": [
+						"{{ATHINA-GRAPHQL-API}}"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "GetPrompt Runs Paginated",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "athina-api-key",
+								"value": "{{ATHINA-API-KEY}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query GetPromptRuns($limit: Int!, $page: Int!) {\n    getPromptRunsByFilters(limit: $limit, page: $page) {\n        id\n        org_id\n        prompt_slug\n        language_model_id\n        prompt_response\n        prompt_tokens\n    }\n}\n",
+								"variables": " {\n    \"limit\": 2,\n    \"page\": 0\n}"
+							}
+						},
+						"url": {
+							"raw": "{{ATHINA-GRAPHQL-API}}",
+							"host": [
+								"{{ATHINA-GRAPHQL-API}}"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Sat, 02 Mar 2024 05:56:04 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "CF-Ray",
+							"value": "85df24370b26f55b-BOM"
+						},
+						{
+							"key": "CF-Cache-Status",
+							"value": "DYNAMIC"
+						},
+						{
+							"key": "Strict-Transport-Security",
+							"value": "max-age=15552000; includeSubDomains"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "access-control-allow-credentials",
+							"value": "true"
+						},
+						{
+							"key": "content-security-policy",
+							"value": "default-src 'self';script-src 'self' unpkg.com 'unsafe-inline';style-src 'self' unpkg.com 'unsafe-inline';img-src 'self' raw.githubusercontent.com;base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';object-src 'none';script-src-attr 'none';upgrade-insecure-requests"
+						},
+						{
+							"key": "cross-origin-opener-policy",
+							"value": "same-origin"
+						},
+						{
+							"key": "cross-origin-resource-policy",
+							"value": "same-origin"
+						},
+						{
+							"key": "origin-agent-cluster",
+							"value": "?1"
+						},
+						{
+							"key": "referrer-policy",
+							"value": "no-referrer"
+						},
+						{
+							"key": "rndr-id",
+							"value": "d2deeae3-5dc0-40d5"
+						},
+						{
+							"key": "x-content-type-options",
+							"value": "nosniff"
+						},
+						{
+							"key": "x-dns-prefetch-control",
+							"value": "off"
+						},
+						{
+							"key": "x-download-options",
+							"value": "noopen"
+						},
+						{
+							"key": "x-frame-options",
+							"value": "SAMEORIGIN"
+						},
+						{
+							"key": "x-permitted-cross-domain-policies",
+							"value": "none"
+						},
+						{
+							"key": "x-render-origin-server",
+							"value": "Render"
+						},
+						{
+							"key": "x-xss-protection",
+							"value": "0"
+						},
+						{
+							"key": "Server",
+							"value": "cloudflare"
+						},
+						{
+							"key": "Content-Encoding",
+							"value": "br"
+						},
+						{
+							"key": "alt-svc",
+							"value": "h3=\":443\"; ma=86400"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"data\": {\n        \"getPromptRunsByFilters\": [\n            {\n                \"id\": \"000033d9-0e1e-4caf-b8f6-5ee72940b7c5\",\n                \"org_id\": \"athina_demo\",\n                \"prompt_slug\": \"closed_qa/v3\",\n                \"language_model_id\": \"gpt-3.5-turbo\",\n                \"prompt_response\": \"Born in Iowa, Asa Wood was a politician and newspaper publisher who later served as a state senator of Nebraska.\",\n                \"prompt_tokens\": 313\n            },\n            {\n                \"id\": \"00332d30-028d-4341-84d8-34ebd20535df\",\n                \"org_id\": \"athina_demo\",\n                \"prompt_slug\": \"closed_qa/v3\",\n                \"language_model_id\": \"gpt-3.5-turbo\",\n                \"prompt_response\": \"IMDB allows users to submit their reviews and ratings.  As the most extensive internet movie database and the 54th most visited website across the planet, the scale of reviews and ratings collected for movies is massive.  IMDB uses various mathematical calculations to determine the rating of movies.  Many users decide whether to spend time and money on a film solely on ratings from IMDB.  Because of IMDB's scale and impact, it is now a subsidiary of Amazon.\",\n                \"prompt_tokens\": 194\n            }\n        ]\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "Get Prompt Runs By Filter - 1",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "athina-api-key",
+						"value": "{{ATHINA-API-KEY}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "query GetPromptRuns($prompt_slug: String!, $limit: Int!, $page: Int!) {\n    getPromptRunsByFilters(prompt_slug: $prompt_slug, limit: $limit, page: $page) {\n        id\n        prompt_slug\n        language_model_id\n        environment\n        prompt_run_topic {\n            topic {\n                label\n            }\n        }\n    }\n} ",
+						"variables": "{\n    \"limit\": 2,\n    \"page\": 0,\n    \"prompt_slug\": \"closed_qa/v3\"\n}"
+					}
+				},
+				"url": {
+					"raw": "{{ATHINA-GRAPHQL-API}}",
+					"host": [
+						"{{ATHINA-GRAPHQL-API}}"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Get Prompt Runs By Filter - 1",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "athina-api-key",
+								"value": "{{ATHINA-API-KEY}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query GetPromptRuns($prompt_slug: String!, $limit: Int!, $page: Int!) {\n    getPromptRunsByFilters(prompt_slug: $prompt_slug, limit: $limit, page: $page) {\n        id\n        prompt_slug\n        language_model_id\n        environment\n        prompt_run_topic {\n            topic {\n                label\n            }\n        }\n    }\n} ",
+								"variables": "{\n    \"limit\": 2,\n    \"page\": 0,\n    \"prompt_slug\": \"closed_qa/v3\"\n}"
+							}
+						},
+						"url": {
+							"raw": "{{ATHINA-GRAPHQL-API}}",
+							"host": [
+								"{{ATHINA-GRAPHQL-API}}"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Sat, 02 Mar 2024 05:59:02 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "CF-Ray",
+							"value": "85df288c7908551a-DEL"
+						},
+						{
+							"key": "CF-Cache-Status",
+							"value": "DYNAMIC"
+						},
+						{
+							"key": "Strict-Transport-Security",
+							"value": "max-age=15552000; includeSubDomains"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "access-control-allow-credentials",
+							"value": "true"
+						},
+						{
+							"key": "content-security-policy",
+							"value": "default-src 'self';script-src 'self' unpkg.com 'unsafe-inline';style-src 'self' unpkg.com 'unsafe-inline';img-src 'self' raw.githubusercontent.com;base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';object-src 'none';script-src-attr 'none';upgrade-insecure-requests"
+						},
+						{
+							"key": "cross-origin-opener-policy",
+							"value": "same-origin"
+						},
+						{
+							"key": "cross-origin-resource-policy",
+							"value": "same-origin"
+						},
+						{
+							"key": "origin-agent-cluster",
+							"value": "?1"
+						},
+						{
+							"key": "referrer-policy",
+							"value": "no-referrer"
+						},
+						{
+							"key": "rndr-id",
+							"value": "c767d3d9-c9ac-4541"
+						},
+						{
+							"key": "x-content-type-options",
+							"value": "nosniff"
+						},
+						{
+							"key": "x-dns-prefetch-control",
+							"value": "off"
+						},
+						{
+							"key": "x-download-options",
+							"value": "noopen"
+						},
+						{
+							"key": "x-frame-options",
+							"value": "SAMEORIGIN"
+						},
+						{
+							"key": "x-permitted-cross-domain-policies",
+							"value": "none"
+						},
+						{
+							"key": "x-render-origin-server",
+							"value": "Render"
+						},
+						{
+							"key": "x-xss-protection",
+							"value": "0"
+						},
+						{
+							"key": "Server",
+							"value": "cloudflare"
+						},
+						{
+							"key": "Content-Encoding",
+							"value": "br"
+						},
+						{
+							"key": "alt-svc",
+							"value": "h3=\":443\"; ma=86400"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"data\": {\n        \"getPromptRunsByFilters\": [\n            {\n                \"id\": \"000033d9-0e1e-4caf-b8f6-5ee72940b7c5\",\n                \"prompt_slug\": \"closed_qa/v3\",\n                \"language_model_id\": \"gpt-3.5-turbo\",\n                \"environment\": \"production\",\n                \"prompt_run_topic\": [\n                    {\n                        \"topic\": {\n                            \"label\": \"History\"\n                        }\n                    }\n                ]\n            },\n            {\n                \"id\": \"00332d30-028d-4341-84d8-34ebd20535df\",\n                \"prompt_slug\": \"closed_qa/v3\",\n                \"language_model_id\": \"gpt-3.5-turbo\",\n                \"environment\": \"production\",\n                \"prompt_run_topic\": [\n                    {\n                        \"topic\": {\n                            \"label\": \"Media\"\n                        }\n                    }\n                ]\n            }\n        ]\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "Get Prompt Runs By Filter - 2",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "athina-api-key",
+						"value": "{{ATHINA-API-KEY}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "query GetPromptRuns($environment: String!, $limit: Int!, $page: Int!) {\n    getPromptRunsByFilters(environment: $environment, limit: $limit, page: $page) {\n        id\n        prompt_slug\n        language_model_id\n        environment\n        prompt_run_topic {\n            topic {\n                label\n            }\n        }\n    }\n}\n",
+						"variables": "{\n    \"limit\": 2,\n    \"page\": 0,\n    \"environment\": \"production\"\n}"
+					}
+				},
+				"url": {
+					"raw": "{{ATHINA-GRAPHQL-API}}",
+					"host": [
+						"{{ATHINA-GRAPHQL-API}}"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Get Prompt Runs By Filter - 2",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "athina-api-key",
+								"value": "{{ATHINA-API-KEY}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query GetPromptRuns($environment: String!, $limit: Int!, $page: Int!) {\n    getPromptRunsByFilters(environment: $environment, limit: $limit, page: $page) {\n        id\n        prompt_slug\n        language_model_id\n        environment\n        prompt_run_topic {\n            topic {\n                label\n            }\n        }\n    }\n}\n",
+								"variables": "{\n    \"limit\": 2,\n    \"page\": 0,\n    \"environment\": \"production\"\n}"
+							}
+						},
+						"url": {
+							"raw": "{{ATHINA-GRAPHQL-API}}",
+							"host": [
+								"{{ATHINA-GRAPHQL-API}}"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Sat, 02 Mar 2024 05:56:32 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "CF-Ray",
+							"value": "85df24e45f8ff55b-BOM"
+						},
+						{
+							"key": "CF-Cache-Status",
+							"value": "DYNAMIC"
+						},
+						{
+							"key": "Strict-Transport-Security",
+							"value": "max-age=15552000; includeSubDomains"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "access-control-allow-credentials",
+							"value": "true"
+						},
+						{
+							"key": "content-security-policy",
+							"value": "default-src 'self';script-src 'self' unpkg.com 'unsafe-inline';style-src 'self' unpkg.com 'unsafe-inline';img-src 'self' raw.githubusercontent.com;base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';object-src 'none';script-src-attr 'none';upgrade-insecure-requests"
+						},
+						{
+							"key": "cross-origin-opener-policy",
+							"value": "same-origin"
+						},
+						{
+							"key": "cross-origin-resource-policy",
+							"value": "same-origin"
+						},
+						{
+							"key": "origin-agent-cluster",
+							"value": "?1"
+						},
+						{
+							"key": "referrer-policy",
+							"value": "no-referrer"
+						},
+						{
+							"key": "rndr-id",
+							"value": "5264e766-e2ff-4f8e"
+						},
+						{
+							"key": "x-content-type-options",
+							"value": "nosniff"
+						},
+						{
+							"key": "x-dns-prefetch-control",
+							"value": "off"
+						},
+						{
+							"key": "x-download-options",
+							"value": "noopen"
+						},
+						{
+							"key": "x-frame-options",
+							"value": "SAMEORIGIN"
+						},
+						{
+							"key": "x-permitted-cross-domain-policies",
+							"value": "none"
+						},
+						{
+							"key": "x-render-origin-server",
+							"value": "Render"
+						},
+						{
+							"key": "x-xss-protection",
+							"value": "0"
+						},
+						{
+							"key": "Server",
+							"value": "cloudflare"
+						},
+						{
+							"key": "Content-Encoding",
+							"value": "br"
+						},
+						{
+							"key": "alt-svc",
+							"value": "h3=\":443\"; ma=86400"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"data\": {\n        \"getPromptRunsByFilters\": [\n            {\n                \"id\": \"000033d9-0e1e-4caf-b8f6-5ee72940b7c5\",\n                \"prompt_slug\": \"closed_qa/v3\",\n                \"language_model_id\": \"gpt-3.5-turbo\",\n                \"environment\": \"production\",\n                \"prompt_run_topic\": [\n                    {\n                        \"topic\": {\n                            \"label\": \"History\"\n                        }\n                    }\n                ]\n            },\n            {\n                \"id\": \"00332d30-028d-4341-84d8-34ebd20535df\",\n                \"prompt_slug\": \"closed_qa/v3\",\n                \"language_model_id\": \"gpt-3.5-turbo\",\n                \"environment\": \"production\",\n                \"prompt_run_topic\": [\n                    {\n                        \"topic\": {\n                            \"label\": \"Media\"\n                        }\n                    }\n                ]\n            }\n        ]\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "Get Prompt Runs With Eval Results",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "athina-api-key",
+						"value": "{{ATHINA-API-KEY}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "query GetPromptRuns($limit: Int!, $page: Int!) {\n  getPromptRunsByFilters(limit: $limit, page: $page) {\n        id \n        prompt_slug \n        language_model_id\n        environment\n        prompt_run_topic {\n            topic {\n                label\n            }\n        }\n        eval_result {\n            id\n            results\n            eval_name\n            eval_description\n            eval_result_metric {\n                value \n                eval_result_id\n                eval_metric {\n                    type\n                    label\n                    description\n                }\n            }\n        }\n    }\n}",
+						"variables": "{\n    \"limit\": 2,\n    \"page\": 0\n}"
+					}
+				},
+				"url": {
+					"raw": "{{ATHINA-GRAPHQL-API}}",
+					"host": [
+						"{{ATHINA-GRAPHQL-API}}"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Get Prompt Runs With Eval Results",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "athina-api-key",
+								"value": "{{ATHINA-API-KEY}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query GetPromptRuns($limit: Int!, $page: Int!) {\n  getPromptRunsByFilters(limit: $limit, page: $page) {\n        id \n        prompt_slug \n        language_model_id\n        environment\n        prompt_run_topic {\n            topic {\n                label\n            }\n        }\n        eval_result {\n            id\n            results\n            eval_name\n            eval_description\n            eval_result_metric {\n                value \n                eval_result_id\n                eval_metric {\n                    type\n                    label\n                    description\n                }\n            }\n        }\n    }\n}",
+								"variables": "{\n    \"limit\": 2,\n    \"page\": 0\n}"
+							}
+						},
+						"url": {
+							"raw": "{{ATHINA-GRAPHQL-API}}",
+							"host": [
+								"{{ATHINA-GRAPHQL-API}}"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Sat, 02 Mar 2024 05:54:22 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "CF-Ray",
+							"value": "85df21babb4389a3-DEL"
+						},
+						{
+							"key": "CF-Cache-Status",
+							"value": "DYNAMIC"
+						},
+						{
+							"key": "Strict-Transport-Security",
+							"value": "max-age=15552000; includeSubDomains"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "access-control-allow-credentials",
+							"value": "true"
+						},
+						{
+							"key": "content-security-policy",
+							"value": "default-src 'self';script-src 'self' unpkg.com 'unsafe-inline';style-src 'self' unpkg.com 'unsafe-inline';img-src 'self' raw.githubusercontent.com;base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';object-src 'none';script-src-attr 'none';upgrade-insecure-requests"
+						},
+						{
+							"key": "cross-origin-opener-policy",
+							"value": "same-origin"
+						},
+						{
+							"key": "cross-origin-resource-policy",
+							"value": "same-origin"
+						},
+						{
+							"key": "origin-agent-cluster",
+							"value": "?1"
+						},
+						{
+							"key": "referrer-policy",
+							"value": "no-referrer"
+						},
+						{
+							"key": "rndr-id",
+							"value": "a1486c3f-8895-4bef"
+						},
+						{
+							"key": "x-content-type-options",
+							"value": "nosniff"
+						},
+						{
+							"key": "x-dns-prefetch-control",
+							"value": "off"
+						},
+						{
+							"key": "x-download-options",
+							"value": "noopen"
+						},
+						{
+							"key": "x-frame-options",
+							"value": "SAMEORIGIN"
+						},
+						{
+							"key": "x-permitted-cross-domain-policies",
+							"value": "none"
+						},
+						{
+							"key": "x-render-origin-server",
+							"value": "Render"
+						},
+						{
+							"key": "x-xss-protection",
+							"value": "0"
+						},
+						{
+							"key": "Server",
+							"value": "cloudflare"
+						},
+						{
+							"key": "Content-Encoding",
+							"value": "br"
+						},
+						{
+							"key": "alt-svc",
+							"value": "h3=\":443\"; ma=86400"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"data\": {\n        \"getPromptRunsByFilters\": [\n            {\n                \"id\": \"000033d9-0e1e-4caf-b8f6-5ee72940b7c5\",\n                \"prompt_slug\": \"closed_qa/v3\",\n                \"language_model_id\": \"gpt-3.5-turbo\",\n                \"environment\": \"production\",\n                \"prompt_run_topic\": [\n                    {\n                        \"topic\": {\n                            \"label\": \"History\"\n                        }\n                    }\n                ],\n                \"eval_result\": [\n                    {\n                        \"id\": \"995acf5e-c089-4bde-9cd2-223b6d9f9665\",\n                        \"results\": [\n                            {\n                                \"failed\": false,\n                                \"reason\": \"The response provides a direct answer to the user's query about who Asa Wood is by giving a brief summary of his background, including his birthplace, career as a politician and newspaper publisher, and his role as a state senator of Nebraska. It covers the aspects of the user's query sufficiently.\",\n                                \"runtime\": 5120\n                            }\n                        ],\n                        \"eval_name\": \"Answer Completeness\",\n                        \"eval_description\": \"Checks if the response answers the user's query completely.\",\n                        \"eval_result_metric\": [\n                            {\n                                \"value\": 1,\n                                \"eval_result_id\": \"995acf5e-c089-4bde-9cd2-223b6d9f9665\",\n                                \"eval_metric\": {\n                                    \"type\": \"boolean\",\n                                    \"label\": \"Passed\",\n                                    \"description\": \"Did the evaluation passed\"\n                                }\n                            }\n                        ]\n                    },\n                    {\n                        \"id\": \"cf5a8775-7fd0-4779-864b-15324b6fb986\",\n                        \"results\": [\n                            {\n                                \"failed\": false,\n                                \"reason\": \"The context provided contains detailed information about Asa Wood, including his full name, birth and death dates, his career as a politician and newspaper publisher, his tenure as a state senator in Nebraska, and other relevant details such as his involvement with the Nebraska Press Association and the Nebraska Historical Society. This information is more than sufficient to answer the user's query about who Asa Wood is.\",\n                                \"runtime\": 3558\n                            }\n                        ],\n                        \"eval_name\": \"Context Sufficiency\",\n                        \"eval_description\": \"Checks if the context contains enough information to answer the user's query\",\n                        \"eval_result_metric\": [\n                            {\n                                \"value\": 1,\n                                \"eval_result_id\": \"cf5a8775-7fd0-4779-864b-15324b6fb986\",\n                                \"eval_metric\": {\n                                    \"type\": \"boolean\",\n                                    \"label\": \"Passed\",\n                                    \"description\": \"Did the evaluation passed\"\n                                }\n                            }\n                        ]\n                    },\n                    {\n                        \"id\": \"67e76591-20f9-453b-890d-47d20617242e\",\n                        \"results\": [\n                            {\n                                \"reason\": \"A response is deemed relevant when it directly and appropriately addresses the original query. Importantly, our assessment of answer relevance does not consider factuality but instead penalizes cases where the response lacks completeness or contains redundant details\",\n                                \"runtime\": 1949\n                            }\n                        ],\n                        \"eval_name\": \"Ragas Answer Relevancy\",\n                        \"eval_description\": \"Measures how pertinent the generated response is to the given prompt.\",\n                        \"eval_result_metric\": [\n                            {\n                                \"value\": 0.9476432805948279,\n                                \"eval_result_id\": \"67e76591-20f9-453b-890d-47d20617242e\",\n                                \"eval_metric\": {\n                                    \"type\": \"numeric\",\n                                    \"label\": \"Ragas Answer Relevancy\",\n                                    \"description\": \"Metric to define how relevant is answer to the user query\"\n                                }\n                            }\n                        ]\n                    },\n                    {\n                        \"id\": \"e2a0058a-eb9d-454e-a31f-13d85ebcb2e0\",\n                        \"results\": [\n                            {\n                                \"reason\": \"This metric is calulated by dividing the number of sentences in context that are relevant for answering the given query by the total number of sentences in the retrieved context\",\n                                \"runtime\": 3806\n                            }\n                        ],\n                        \"eval_name\": \"Ragas Context Relevancy\",\n                        \"eval_description\": \"Measures the relevancy of the retrieved context, calculated based on both the query and contexts.\",\n                        \"eval_result_metric\": [\n                            {\n                                \"value\": 1,\n                                \"eval_result_id\": \"e2a0058a-eb9d-454e-a31f-13d85ebcb2e0\",\n                                \"eval_metric\": {\n                                    \"type\": \"numeric\",\n                                    \"label\": \"Ragas Context Relevancy\",\n                                    \"description\": \"Metric to define how relevant is context with respect to the response\"\n                                }\n                            }\n                        ]\n                    }\n                ]\n            },\n            {\n                \"id\": \"00332d30-028d-4341-84d8-34ebd20535df\",\n                \"prompt_slug\": \"closed_qa/v3\",\n                \"language_model_id\": \"gpt-3.5-turbo\",\n                \"environment\": \"production\",\n                \"prompt_run_topic\": [\n                    {\n                        \"topic\": {\n                            \"label\": \"Media\"\n                        }\n                    }\n                ],\n                \"eval_result\": [\n                    {\n                        \"id\": \"9a8d92cf-6be1-4c62-a939-e4b51342fa0c\",\n                        \"results\": [\n                            {\n                                \"failed\": false,\n                                \"reason\": \"The context provided contains sufficient information for the chatbot to answer the user's query about how IMDb rates movies. It explains that users rate films on a scale from one to ten, and that IMDb uses filters and a weighted mean to display the ratings for each film, series, etc., to prevent ballot stuffing. Although the exact method is not described in detail to avoid circumvention, the context still gives a clear overview of the rating process.\",\n                                \"runtime\": 5380\n                            }\n                        ],\n                        \"eval_name\": \"Context Sufficiency\",\n                        \"eval_description\": \"Checks if the context contains enough information to answer the user's query\",\n                        \"eval_result_metric\": [\n                            {\n                                \"value\": 1,\n                                \"eval_result_id\": \"9a8d92cf-6be1-4c62-a939-e4b51342fa0c\",\n                                \"eval_metric\": {\n                                    \"type\": \"boolean\",\n                                    \"label\": \"Passed\",\n                                    \"description\": \"Did the evaluation passed\"\n                                }\n                            }\n                        ]\n                    },\n                    {\n                        \"id\": \"5506bbf3-9a51-47ee-834b-24b9f0e523de\",\n                        \"results\": [\n                            {\n                                \"reason\": \"A response is deemed relevant when it directly and appropriately addresses the original query. Importantly, our assessment of answer relevance does not consider factuality but instead penalizes cases where the response lacks completeness or contains redundant details\",\n                                \"runtime\": 4278\n                            }\n                        ],\n                        \"eval_name\": \"Ragas Answer Relevancy\",\n                        \"eval_description\": \"Measures how pertinent the generated response is to the given prompt.\",\n                        \"eval_result_metric\": [\n                            {\n                                \"value\": 0.8544199301744669,\n                                \"eval_result_id\": \"5506bbf3-9a51-47ee-834b-24b9f0e523de\",\n                                \"eval_metric\": {\n                                    \"type\": \"numeric\",\n                                    \"label\": \"Ragas Answer Relevancy\",\n                                    \"description\": \"Metric to define how relevant is answer to the user query\"\n                                }\n                            }\n                        ]\n                    },\n                    {\n                        \"id\": \"bd505749-da42-4872-85eb-a3a02439ec33\",\n                        \"results\": [\n                            {\n                                \"failed\": true,\n                                \"reason\": \"The response provides general information about IMDB, its user review system, and its ownership by Amazon, but it does not specifically explain how IMDB rates movies, which was the user's query. The user asked for the method IMDB uses to calculate movie ratings, and the response did not provide details about the rating system or the mathematical calculations mentioned.\",\n                                \"runtime\": 15102\n                            }\n                        ],\n                        \"eval_name\": \"Answer Completeness\",\n                        \"eval_description\": \"Checks if the response answers the user's query completely.\",\n                        \"eval_result_metric\": [\n                            {\n                                \"value\": 0,\n                                \"eval_result_id\": \"bd505749-da42-4872-85eb-a3a02439ec33\",\n                                \"eval_metric\": {\n                                    \"type\": \"boolean\",\n                                    \"label\": \"Passed\",\n                                    \"description\": \"Did the evaluation passed\"\n                                }\n                            }\n                        ]\n                    },\n                    {\n                        \"id\": \"6453906f-a736-4a17-8a8c-f5401dc7ee89\",\n                        \"results\": [\n                            {\n                                \"failed\": true,\n                                \"reason\": \"The response includes several statements that cannot be inferred from the provided context. The context does not mention that IMDb is the most extensive internet movie database, nor does it state that IMDb is the 54th most visited website across the planet. Additionally, the context does not provide information about IMDb's ownership by Amazon. While the context does mention that IMDb allows users to rate films and that these ratings are filtered and weighted, it does not provide any details about the scale of reviews and ratings collected, nor does it discuss the impact of IMDb's ratings on users' decisions to watch films. Therefore, the response contains information that goes beyond what is provided in the context.\",\n                                \"runtime\": 7243\n                            }\n                        ],\n                        \"eval_name\": \"Response Faithfulness\",\n                        \"eval_description\": \"Checks if the response is faithful to the provided context\",\n                        \"eval_result_metric\": [\n                            {\n                                \"value\": 0,\n                                \"eval_result_id\": \"6453906f-a736-4a17-8a8c-f5401dc7ee89\",\n                                \"eval_metric\": {\n                                    \"type\": \"boolean\",\n                                    \"label\": \"Passed\",\n                                    \"description\": \"Did the evaluation passed\"\n                                }\n                            }\n                        ]\n                    },\n                    {\n                        \"id\": \"14dde0b8-5a87-4a46-a52e-1a0d01ff9b86\",\n                        \"results\": [\n                            {\n                                \"reason\": \"This metric is calulated by dividing the number of sentences in context that are relevant for answering the given query by the total number of sentences in the retrieved context\",\n                                \"runtime\": 2872\n                            }\n                        ],\n                        \"eval_name\": \"Ragas Context Relevancy\",\n                        \"eval_description\": \"Measures the relevancy of the retrieved context, calculated based on both the query and contexts.\",\n                        \"eval_result_metric\": [\n                            {\n                                \"value\": 0.8,\n                                \"eval_result_id\": \"14dde0b8-5a87-4a46-a52e-1a0d01ff9b86\",\n                                \"eval_metric\": {\n                                    \"type\": \"numeric\",\n                                    \"label\": \"Ragas Context Relevancy\",\n                                    \"description\": \"Metric to define how relevant is context with respect to the response\"\n                                }\n                            }\n                        ]\n                    }\n                ]\n            }\n        ]\n    }\n}"
+				}
+			]
+		}
+	]
+}

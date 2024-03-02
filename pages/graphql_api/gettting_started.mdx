@@ -1,0 +1,40 @@
+# Getting Started
+
+## Get your API Key
+Firstly you need to get your API key. Head to our [dashboard](https://app.athina.ai) and look under the user icon of navbar to the bottom left. You should find your API Key here. For example
+<img src="/api-key.png" />
+
+## Interactive Playground
+You can use our interactive playground to experiment with queries and see the results. You can find the Interactive Playground [here](https://api.athina.ai/graphql). 
+
+For authentication you can either
+* Log into the dashboard or
+* Use the API key you got from the previous step (Add these to the Request Headers)
+```http
+athina-api-key: "ATHINA_API_KEY"
+```
+
+After you are authenticated, here’s a sample request to get you started:
+```graphql
+query GetOrg { 
+    getOrg {
+        id name max_evals_per_month
+    } 
+}
+```
+
+## Accessing the Schema Documentation
+You can find the Schema Documentation on the left side of the playground interface. This is your go-to resource for understanding the structure of the data you can query.
+Visit our playground at https://api.athina.ai/graphql to explore more!
+
+
+## IntelliSense and Keyboard Shortcuts
+Our playground is equipped with IntelliSense, a handy tool that makes it easier to understand what types of fields you can query. Just press (ctrl + space)!
+
+There are a few more keyboard shortcuts that you can use to make your experience more enjoyable.
+* Prettify Query:  Shift-Ctrl-P (or press the prettify button)
+* Merge Query:  Shift-Ctrl-M (or press the merge button)
+* Run Query:  Ctrl-Enter (or press the play button)
+* Auto Complete:  Ctrl-Space (or just start typing)
+
+You can find more information about the Interactive Playground [here](https://github.com/graphql/graphiql)

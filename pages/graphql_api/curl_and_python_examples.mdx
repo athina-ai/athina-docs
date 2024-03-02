@@ -1,0 +1,137 @@
+# Query the Graph API using cURL or Python
+
+We have provided examples of how to query the Athina AI GraphQL API using cURL and Python. You can use these examples to fetch data from the API and integrate it into your applications. 
+
+Note: The python example uses the `gql` and `aiohttp` libraries to communicate with the API. You can alternatively use just `requests` library to communicate with the API directly as well. 
+The same can be done using any other language that supports HTTP requests and JSON parsing. You can find an example using Node.js towards the end for reference of the same.
+
+## cURL
+To start, let’s make a request via cURL to query data from Athina AI GraphQL API. 
+
+### Fetching Data from the API
+```shell
+# Replace <ATHINA_API_KEY> with your athina api key obtained from the dashboard
+curl --location 'https://api.athina.ai/graphql' \
+--header 'Content-Type: application/json' \
+--header 'athina-api-key: <ATHINA_API_KEY>' \
+--data '{
+    "query": "query GetPromptRuns($limit: Int!) { getPromptRunsByFilters(limit: $limit) { id org_id    prompt_slug    language_model_id    prompt_response prompt_tokens}}",
+    "variables": {
+        "limit": 2,
+        "page": 0
+    }
+}'
+```
+
+### Postman Collection
+You can find <a href="/GraphQL_API.postman_collection.json" download><mark>here</mark></a> an entire postman collection with different types of queries for reference. You can download the collection and import it into your postman application.
+## Python
+
+### Prerequisites
+
+To use the Athina AI GraphQL API, make sure that you have the `gql` and `aiohttp` libraries installed in your Python environment. You can install these packages with the following commands:
+
+```shell
+pip install gql
+pip install aiohttp
+```
+
+### Setting up a GraphQL Client
+
+Here's how to setup a GraphQL client to communicate with the Athina GraphQL API:
+
+```python
+from gql.transport.aiohttp import AIOHTTPTransport
+from gql import gql, Client
+
+url = "https://api.athina.ai/graphql"
+
+# Replace <ATHINA_API_KEY> with your athina api key obtained from the dashboard
+transport = AIOHTTPTransport(url=url, headers={
+    "athina-api-key": "<ATHINA_API_KEY>"
+})
+
+client = Client(transport=transport, fetch_schema_from_transport=True)
+```
+
+In this code:
+
+- `url` is the endpoint of the Athina AI GraphQL API.
+- `AIOHTTPTransport` establishes the connection to the API endpoint.
+- `Client` is a GraphQL client that communicates with the API using the provided transport.
+
+### Fetching Data from the API
+
+Here's how to fetch data from the Athina AI API using GraphQL:
+
+```python
+SIZE = 5
+query = gql(
+    """
+    query GetPromptRuns($limit: Int!, $page: Int!) {
+        getPromptRunsByFilters(limit: $limit, page: $page) {
+            id
+            org_id
+            prompt_slug
+            language_model_id
+            prompt_response
+            prompt_tokens
+        }
+    }
+    """
+)
+result = client.execute(query,
+    variable_values={
+        "limit": SIZE,
+        "page": 0
+    }
+)
+print(len(result["getPromptRunsByFilters"]))
+print(result)
+```
+
+In this code:
+
+- `SIZE` is the number of records fetched per request.
+- `gql` parses the GraphQL query.
+- `client.execute` runs the query and returns the result. The `variable_values` parameter is used to set the `limit` and `page` in the GraphQL query.
+
+The response contains a list of `PromptRun` objects. Each `PromptRun` object contains the following fields: `id`, `org_id`, `prompt_slug`, `language_model_id`, `prompt_response`, and `prompt_tokens`.
+
+## Node.js
+
+### Prerequisites
+
+To use the Athina AI GraphQL API in Node.js, make sure that you have the `request` library installed. You can install these packages with the following commands:
+
+```shell
+npm install request
+```
+
+### Fetching Data from the API
+Here's an example of how to query the Athina AI GraphQL API using Node.js:
+
+```javascript
+var request = require('request');
+// Replace <ATHINA_API_KEY> with your athina api key obtained from the dashboard
+var options = {
+  'method': 'POST',
+  'url': 'https://api.athina.ai/graphql',
+  'headers': {
+    'Content-Type': 'application/json',
+    'athina-api-key': '<ATHINA_API_KEY>'
+  },
+  body: JSON.stringify({
+    "query": "query GetPromptRuns($limit: Int!) { getPromptRunsByFilters(limit: $limit) { id org_id    prompt_slug    language_model_id    prompt_response prompt_tokens}}",
+    "variables": {
+      "limit": 2,
+      "page": 0
+    }
+  })
+
+};
+request(options, function (error, response) {
+  if (error) throw new Error(error);
+  console.log(response.body);
+});
+```
