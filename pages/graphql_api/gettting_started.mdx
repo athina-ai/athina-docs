@@ -1,32 +1,30 @@
 # Getting Started
 
-## Get your API Key
-Firstly you need to get your API key. Head to our [dashboard](https://app.athina.ai) and look under the user icon of navbar to the bottom left. You should find your API Key here. For example
-<img src="/api-key.png" width="500" />
-
-## Interactive Playground
+## Interactive GraphQL Playground
 You can use our interactive playground to experiment with queries and see the results. You can find the Interactive Playground [here](https://api.athina.ai/graphql). 
 
-For authentication you can either
-* Log into the dashboard or
-* Use the API key you got from the previous step (Add these to the Request Headers)
-```http
-athina-api-key: "ATHINA_API_KEY"
-```
+### Authentication
+If you are logged in to the Athina Dashboard (https://app.athina.ai), you should automatically be able to access the GraphQL playground.
 
-After you are authenticated, here’s a sample request to get you started:
+### Explore the GraphQL Schema
+In the left sidebar, click the third icon to open the GraphQL explorer.
+
+This will allow you explore the different queries and fields that you can access.
+<img src='/graphql-explorer.png' />
+
+
+### Sample Request
+Here’s a [sample request](https://api.athina.ai/graphql?query=query+MyQuery+%7B%0A++getPromptRunsByFilters+%7B%0A++++user_query%0A++++prompt_response%0A++%7D%0A%7D) to get you started:
 ```graphql
-query GetOrg { 
-    getOrg {
-        id name max_evals_per_month
-    } 
+query GetMessage {
+  getPromptRunsByFilters {
+    user_query
+    prompt_response
+  }
 }
 ```
 
-## Accessing the Schema Documentation
-You can find the Schema Documentation on the left side of the playground interface. This is your go-to resource for understanding the structure of the data you can query.
-Visit our playground at https://api.athina.ai/graphql to explore more!
-
+To help you get started, we've also curated a [documentation page](./sample_gql_queries) with some more sample queries.
 
 ## IntelliSense and Keyboard Shortcuts
 Our playground is equipped with IntelliSense, a handy tool that makes it easier to understand what types of fields you can query. Just press (ctrl + space)!
