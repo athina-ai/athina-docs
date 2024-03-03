@@ -1,0 +1,167 @@
+# Sample GraphQL Queries
+
+Currently you can query the inference logs and the evaluations for those inferences via the GraphQL API. GraphQL API expects JSON with two essentials things: “query” and “variables”.
+
+Here are some sample queries (along with corresponding variables and response):
+
+**1. Get paginated inference logs:**
+
+```graphql
+query GetPromptRuns($limit: Int!, $page: Int!) {
+  getPromptRunsByFilters(limit: $limit, page: $page) {
+    id
+    org_id
+    prompt_slug
+    language_model_id
+    prompt_response
+    prompt_tokens
+  }
+}
+```
+Variables for the above query:
+```json
+{
+  "limit": 2,
+  "page": 0
+}
+```
+<details>
+
+<summary>Response for the above query:</summary>
+<p></p>
+
+```json
+{
+    "data": {
+        "getPromptRunsByFilters": [
+            {
+                "id": "647dcf49-9f15-492c-af8d-858d43762e18",
+                "org_id": "vivek_local",
+                "prompt_slug": "greetings/v1",
+                "language_model_id": "gpt-4",
+                "prompt_response": "Bonjour, monde",
+                "prompt_tokens": 50
+            },
+            {
+                "id": "6d4ea5a4-ca75-45da-af62-a9556811c604",
+                "org_id": "vivek_local",
+                "prompt_slug": "yc-query/v4",
+                "language_model_id": "gpt-3.5-turbo",
+                "prompt_response": "YC invests $125,000 in every startup in exchange for 7% equity. This is the expected response. Contact us at contact@example.com.",
+                "prompt_tokens": 149
+            }
+        ]
+    }
+}
+```
+</details>
+
+**2. Get evaluations of these inference logs:**
+
+```graphql
+query GetPromptRuns($limit: Int!, $page: Int!) {
+  getPromptRunsByFilters(limit: $limit, page: $page) {
+    id
+    prompt_slug
+    language_model_id
+    environment
+    prompt_run_topic {
+      topic {
+        label
+      }
+    }
+    eval_result {
+      id
+      results
+      eval_name
+      eval_description
+      eval_result_metric {
+        value
+        eval_result_id
+        eval_metric {
+          type
+          label
+          description
+        }
+      }
+    }
+  }
+}
+```
+
+Variables for the above query:
+```json
+{
+  "limit": 1,
+  "page": 0
+}
+```
+
+<details>
+
+<summary>Response for the above query:</summary>
+<p></p>
+
+```json
+{
+  "data": {
+    "getPromptRunsByFilters": [
+      {
+        "id": "aa0e7a55-eb39-4155-b3ef-e6ac7f5b672c",
+        "prompt_slug": "yc-query/v1",
+        "language_model_id": "gpt-3.5-turbo",
+        "environment": "production",
+        "eval_result": [
+          {
+            "id": "c7318999-b127-4be7-839a-584402772cf8",
+            "results": [
+              {
+                "failed": false,
+                "reason": "The response provides a clear answer to the user's query by stating that YC invests $125,000 in every startup in exchange for 7% equity. It covers all aspects of the user's query by specifying the amount of investment and the percentage of equity taken. Additionally, it invites further contact for more information.",
+                "runtime": 2861
+              }
+            ],
+            "eval_name": "Answer Completeness",
+            "eval_description": "Checks if the response is relevant to the user's query",
+            "eval_result_metric": [
+              {
+                "value": 1,
+                "eval_result_id": "c7318999-b127-4be7-839a-584402772cf8",
+                "eval_metric": {
+                  "type": "boolean",
+                  "label": "Passed",
+                  "description": "Did the evaluation pass"
+                }
+              }
+            ]
+          },
+          {
+            "id": "cb7216bc-1b60-45f0-b124-b54ca5cf766a",
+            "results": [
+              {
+                "failed": true,
+                "reason": "regex pattern test1 not found in output",
+                "runtime": 0
+              }
+            ],
+            "eval_name": "Regex check",
+            "eval_description": "Checks if the response matches the provided regex",
+            "eval_result_metric": [
+              {
+                "value": 0,
+                "eval_result_id": "cb7216bc-1b60-45f0-b124-b54ca5cf766a",
+                "eval_metric": {
+                  "type": "boolean",
+                  "label": "Passed",
+                  "description": "Did the evaluation pass"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+</details>

@@ -6,6 +6,7 @@
   "logging": "Logging",
   "datasets": "Datasets",
   "integrations": "Integrations",
+  "graphql_api": "GraphQL API",
   "faq": "FAQs",
   "blog": {
     "title": "Blog ↗",
