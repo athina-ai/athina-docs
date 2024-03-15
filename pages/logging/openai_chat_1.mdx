@@ -57,7 +57,10 @@ _If you're using OpenAI chat completions in Python, you can get set up in just *
                             "name": "John",
                             "age": 30,
                             "city": "New York"
-                        } # Your custom-attributes
+                        }, # Your custom attributes
+            custom_eval_metrics={
+                            "automation_rate": 0.5
+                        } # Your custom eval metrics
         ),
     )
     ```
@@ -84,6 +87,7 @@ _If you're using OpenAI chat completions in Python, you can get set up in just *
         customer_user_id: Optional[str] = None
         response_time: Optional[int] = None
         custom_attributes: Optional[dict] = None
+        custom_eval_metrics: Optional[dict] = None
     ```
 
 
@@ -146,7 +150,10 @@ _If you're using OpenAI chat completions in Python, you can get set up in just *
             external_reference_id="5e838eaf-7dd0-4b6f-a32c-26110dd54e58", # OPTIONAL; If passed, should be unique across all inference calls
             custom_attributes={
                 "name": "John Doe"
-            } # OPTIONAL;  
+            }, # OPTIONAL
+            custom_eval_metrics={
+                "automation_rate": 0.5
+            } # OPTIONAL
         )
     ```
 

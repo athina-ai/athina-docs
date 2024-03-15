@@ -50,16 +50,34 @@ response = openai.ChatCompletion.create(
 
 try:
     InferenceLogger.log_inference(
-        prompt_slug="sdk_test",
-        prompt=messages,
-        language_model_id="gpt-4-1106-preview",
-        response=response,
-        cost=cost,
-        external_reference_id="abc",
-        custom_attributes={
-                "name": "John Doe"
-                # Your custom attributes
-            }
+        prompt: [{"role": "user", "content": "What is machine learning?"}],
+        response: "Machine Learning is a branch of computer science",
+        prompt_slug: "test",
+        language_model_id: "gpt-3.5-turbo",
+        environment: "production",
+        external_reference_id: "5e838eaf-7dd0-4b6f-a32c-26110dd54e58",
+        customer_id: "stripe",
+        customer_user_id: "abc@athina.ai",
+        session_id: "session_1",
+        user_query: "what is machine learning?",
+        prompt_tokens: 10,
+        completion_tokens: 20,
+        total_tokens: 30,
+        response_time: 200,
+        context: {
+          "document": "Machine learning (ML) is a field of study in artificial intelligence concerned with the development and 
+                      study of statistical algorithms that can learn from data and generalize to unseen data, and 
+                      thus perform tasks without explicit instructions"
+        },
+        expected_response: "Machine leaning is a branch of computer science that explores the study and construction of 
+                              algorithms which can learn and make predictions on data.",
+        custom_attributes: {
+          "tag": "science"
+        },
+        custom_eval_metrics: {
+          "automation_rate": 0.5
+        },
+        cost: 0.01,
     )
 except Exception as e:
     if isinstance(e, CustomException):
@@ -78,16 +96,34 @@ response = response.model_dump() # For openai > 1 version
 
 try:
     InferenceLogger.log_inference(
-        prompt_slug="sdk_test",
-        prompt=messages,
-        language_model_id="gpt-4-1106-preview",
-        response=response,
-        external_reference_id="abc",
-        cost=0.0123,
-        custom_attributes={
-                "name": "John Doe"
-                # Your custom attributes
-            }
+        prompt: [{"role": "user", "content": "What is machine learning?"}],
+        response: "Machine Learning is a branch of computer science",
+        prompt_slug: "test",
+        language_model_id: "gpt-3.5-turbo",
+        environment: "production",
+        external_reference_id: "5e838eaf-7dd0-4b6f-a32c-26110dd54e58",
+        customer_id: "stripe",
+        customer_user_id: "abc@athina.ai",
+        session_id: "session_1",
+        user_query: "what is machine learning?",
+        prompt_tokens: 10,
+        completion_tokens: 20,
+        total_tokens: 30,
+        response_time: 200,
+        context: {
+          "document": "Machine learning (ML) is a field of study in artificial intelligence concerned with the development and 
+                      study of statistical algorithms that can learn from data and generalize to unseen data, and 
+                      thus perform tasks without explicit instructions"
+        },
+        expected_response: "Machine leaning is a branch of computer science that explores the study and construction of 
+                              algorithms which can learn and make predictions on data.",
+        custom_attributes: {
+          "tag": "science"
+        },
+        custom_eval_metrics: {
+          "automation_rate": 0.5
+        },
+        cost: 0.01,
     )
 except Exception as e:
     if isinstance(e, CustomException):
@@ -108,22 +144,22 @@ All the arguments for the InferenceLogger.log_inference() method are:
 ```python
 Expected formats of prompt:
 
-prompt: [{"role": "user", "content": "What is machine learning?"}] # for openai models
-prompt: {"text": "What is maching learning?"} # for other models
-prompt: "what is machine learning?" # for other models
+prompt=[{"role": "user", "content": "What is machine learning?"}] # for openai models
+prompt={"text": "What is maching learning?"} # for other models
+prompt="what is machine learning?" # for other models
 ```
 - `response (optional)`: LLM Response. This can be either a `string` or the `ChatCompletion` response object from OpenAI
 - `prompt_slug (optional)`: Identifier for the prompt used for inference. This is useful for segmenting inference calls by prompt
 ```python
-prompt_slug: "customer_query"
+prompt_slug="customer_query"
 ```
 - `language_model_id (optional)`: Language model against which inference is made. Check out all supported models [here](/logging/supported_models)
 ```python
-language_model_id: "gpt-4-1106-preview"
+language_model_id="gpt-4-1106-preview"
 ```
 - `functions (optional)`: functions for older versions of openai,
 ```python
-functions: [
+functions=[
   {
     "name": "get_current_weather",
     "description": "Get the current weather in a given location",
@@ -151,18 +187,18 @@ functions: [
 ```
 - `environment (optional)`: Environment your app is running in (ex: production, staging, etc). This is useful for segmenting inference calls by environment
 ```python
-environment: "production"
+environment="production"
 ```
 - `function_call_response (optional)`: function call for older version of openai
 ```python
-function_call_response: {
+function_call_response={
   "name": "get_current_weather",
   "arguments": "{\n  \"location\": \"Boston, MA\"\n}"
 }
 ```
 - `tools (optional)`: tools for new versions of openai
 ```python
-tools: [
+tools=[
   {
     "type": "function",
     "function": {
@@ -193,7 +229,7 @@ tools: [
 ```
 - `tool_calls (optional)`: tool calls for new versions of openai
 ```python
-tool_calls: [
+tool_calls=[
   {
     "id": "call_abc123",
     "type": "function",
@@ -207,39 +243,46 @@ tool_calls: [
 If tool_calls field is not present, we extract it from the openai completion response and log it in our database
 - `external_reference_id (optional)`: is useful if you want to associate your own internal identifier with the inference logged to Athina
 ```python
-external_reference_id: "5e838eaf-7dd0-4b6f-a32c-26110dd54e58"
+external_reference_id="5e838eaf-7dd0-4b6f-a32c-26110dd54e58"
 ```
 - `customer_id (optional)`: is your customer ID. This is useful for segmenting inference calls by customer
 ```python
-customer_id: "stripe"
+customer_id="stripe"
 ```
 - `customer_user_id (optional)`: is the end user ID. This is useful for segmenting inference calls by the end user
 ```python
-customer_user_id: "user@gmail.com"
+customer_user_id="user@gmail.com"
 ```
 - `cost (optional)`: is the cost incurred for this LLM inference call. Tip: If you log an entire OpenAI completion response to us, we'll automatically calculate the cost.
 ```python
-cost: 0.0123
+cost=0.0123
 ```
 - `session_id (optional)`: is the session or conversation ID. This is used for grouping different inferences into a conversation or chain. [Read more](/logging/grouping_inferences)
 ```python
-session_id: "c45g-1234-s6g4-43d3"
+session_id="c45g-1234-s6g4-43d3"
 ```
 - `user_query (optional)`:  is the user's query. For conversational applications, this is the user's last message
 ```python
-user_query: "what is machine learning?"
+user_query="what is machine learning?"
 ```
 - `context (optional)`: is the context used as information for the prompt. For RAG applications, this is the "retrieved" data. 
                         You may log context as a string or as an object (dictionary)
 ```python
-context: {"information": "Machine learning is a branch of artificial intelligence (AI) and computer science which focuses on the use of data and algorithms to imitate the way that humans learn, gradually improving its accuracy"}
-context: "Machine learning is a branch of artificial intelligence (AI) and computer science which focuses on the use of data and algorithms to imitate the way that humans learn, gradually improving its accuracy"
+context={"information": "Machine learning is a branch of artificial intelligence (AI) and computer science which focuses on the use of data and algorithms to imitate the way that humans learn, gradually improving its accuracy"}
+context="Machine learning is a branch of artificial intelligence (AI) and computer science which focuses on the use of data and algorithms to imitate the way that humans learn, gradually improving its accuracy"
 ```
 - `custom_attributes (optional)`: custom_attributes is an object (dictionary) where you can log your own custom attributes as key-value pair with the inference.
 ```python
-custom_attributes: {
+custom_attributes={
                 "name": "John Doe"
                 # Any other custom_attribute
+            } # OPTIONAL; 
+```
+- `custom_eval_metrics (optional)`: custom_eval_metrics is an object (dictionary) where you can log your own custom eval metrics of the llm response as key-value pair with the inference.
+```python
+custom_eval_metrics={
+                "automation_rate": 0.3
+                # Any other custom_eval_metric
             } # OPTIONAL; 
 ```
 <Callout>
@@ -251,10 +294,10 @@ custom_attributes: {
 - `total_tokens (optional)`: prompt_tokens + completion_tokens,
 - `response_time (optional)`:  is the response time in milliseconds. This is useful for segmenting inference calls by response time
 ```python
-prompt_tokens: 50
-completion_tokens: 30
-total_tokens: 80
-response_time: 1208
+prompt_tokens=50
+completion_tokens=30
+total_tokens=80
+response_time=1200
 ```
 <Callout>
     Tip: If you log the entire OpenAI `ChatCompletion` response object to us,
@@ -263,7 +306,7 @@ response_time: 1208
 
 - `expected_response (optional)`: is the reference response to compare against for evaluation purposes. This is useful for segmenting inference calls by expected response
 ```python
-expected_response: "Machine Learning is a branch of artificial intelligence"
+expected_response="Machine Learning is a branch of computer science"
 ```
 <Callout>
     Tip: For grounded evals like [Answer Similarity](/evals/preset_evals/grounded_evals#answer_similarity), you must also log a reference response (string) to compare against.
