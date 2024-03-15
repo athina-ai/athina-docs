@@ -114,6 +114,24 @@ Note:- A prompt run cannot have duplicate attribute names
 }
 ```
 
+##### Custom Eval Metrics
+
+Optionally, you can also log custom eval metrics with your prompt. You can pass metric name and metric value as key-value pair in the `custom_eval_metrics` object.
+
+Note:- A prompt run cannot have duplicate eval metric names
+
+```json
+{
+  // ...otherFields,
+  "custom_eval_metrics": {
+    "throughput": 100,
+    "correctness": 0.5,
+    "latency": 100,
+    //any other eval metric to be logged
+  }
+}
+```
+
 ##### Grounded Evals
 
 For grounded evals like [Answer Similarity](/evals/preset_evals/grounded_evals#answer_similarity), you must also log a reference response (string) to compare against:
