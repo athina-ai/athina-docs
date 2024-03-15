@@ -32,7 +32,7 @@ athina_handler = CallbackHandler(
     customer_id='nike-usa',
     customer_user_id='tim@apple.com',
     external_reference_id='your-reference-id',
-    custom_attributes= {
+    custom_attributes={
         "loggedBy": "John Doe",
         "age": 24,
         "isAdmin": true,
@@ -55,14 +55,14 @@ athina_handler = CallbackHandler(
 
 ```json
 Sample kwargs:
-context1 = "Germany is located in central europe"
-context2 = "Berlin is the capital of Germany"
+document1="Germany is located in central europe"
+document2="Berlin is the capital of Germany"
 
 This will be stored as:
 
 {
-    "context1": "Germany is located in central europe",
-    "context2": "Berlin is the capital of Germany"
+    "document1": "Germany is located in central europe",
+    "document2": "Berlin is the capital of Germany"
 }
 
 This will be perceived as retrieved context

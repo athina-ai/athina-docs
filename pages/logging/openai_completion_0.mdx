@@ -58,7 +58,10 @@ _If you're using OpenAI completions in Python, you can get set up in just **2 mi
     		external_reference_id="5e838eaf-7dd0-4b6f-a32c-26110dd54e58", # OPTIONAL; If passed, should be unique across all inference calls
 			custom_attributes={
                 "name": "John Doe"
-            } # OPTIONAL;  
+            }, # OPTIONAL
+			custom_eval_metrics={
+				"automation_rate": 0.5
+			} # OPTIONAL
     	)
 
     	# Here are 2 ways to log openai chat streams
@@ -114,7 +117,10 @@ _If you're using OpenAI completions in Python, you can get set up in just **2 mi
     		external_reference_id="5e838eaf-7dd0-4b6f-a32c-26110dd54e58", # OPTIONAL; If passed, should be unique across all inference calls
 			custom_attributes={
                 "name": "John Doe"
-            } # OPTIONAL;  
+            }, # OPTIONAL; 
+			custom_eval_metrics={
+				"automation_rate": 0.5
+			} # OPTIONAL 
     	)
     	client = sseclient.SSEClient(request)
     	try:
