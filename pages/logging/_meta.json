@@ -12,5 +12,6 @@
   "misc": "All other models",
   "grouping_inferences": "Grouped Inferences (Conversations)",
   "user_feedback": "Logging User Feedback",
-  "faq": "FAQs"
+  "faq": "FAQs",
+  "tracing": "Tracing"
 }
