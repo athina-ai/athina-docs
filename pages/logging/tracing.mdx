@@ -79,3 +79,74 @@ trace.end()
 <Callout>
     This call will run a async call in the background and will not block the main thread.
 </Callout>
+
+### Constructor arguments
+
+For trace you can pass the following arguments:
+* `name`: A required string to specify the name of the trace.
+* `start_time`: The start time of the trace. Default is the current time.
+* `end_time`: Optional end time of the trace. Default is None. When the trace is ended, this will be set to the current time if nothing is passed as the end time in the end method.
+* `status`: An optional string to specify the status of the trace.
+* `attributes`: An optional dictionary of key-value pairs to be associated with the trace.
+* `duration`: An optional int to specify the duration of the trace. If not passed it will be calculated when the trace is ended.
+* `version`: An optional string to specify the version of the trace.
+
+```python
+trace = Trace(name="trace_1", start_time=datetime.datetime.utcnow(), attributes={"key1": "value1"}, version="1.0")
+```
+
+For span you can pass the following arguments:
+
+* `name`: A required string to specify the name of the span.
+* `span_type`: A string to specify the type of the span. Default is `span`. Other possible values are `generation` and any other custom type.
+* `start_time`: The start time of the span. Default is the current time.
+* `end_time`: Optional end time of the span. Default is None. When the span is ended, this will be set to the current time if nothing is passed as the end time in the end method.
+* `status`: An optional string to specify the status of the span.
+* `attributes`: An optional dictionary of key-value pairs to be associated with the span.
+* `input`: An optional dictionary of key-value pairs to be associated with the input of the span.
+* `output`: An optional dictionary of key-value pairs to be associated with the output of the span.
+* `duration`: An optional int to specify the duration of the span. If not passed it will be calculated when the span is ended.
+* `version`: An optional string to specify the version of the span.
+
+```python
+span = trace.create_span(name="span_1", span_type="span", start_time=datetime.datetime.utcnow(), input={"key1": "value1"}, output={"key1": "value1"}, attributes={"key1": "value1"}, version="1.0")
+```
+
+For generation you can pass the following arguments:
+
+* `name`: A required string to specify the name of the generation.
+* `start_time`: The start time of the generation. Default is the current time.
+* `end_time`: Optional end time of the generation. Default is None. When the generation is ended, this will be set to the current time if nothing is passed as the end time in the end method.
+* `span_type`: A string to specify the type of the generation. Default is `generation`.
+* `status`: An optional string to specify the status of the generation.
+* `attributes`: An optional dictionary of key-value pairs to be associated with the generation.
+* `input`: An optional dictionary of key-value pairs to be associated with the input of the generation.
+* `output`: An optional dictionary of key-value pairs to be associated with the output of the generation.
+* `duration`: An optional int to specify the duration of the generation. If not passed it will be calculated when the generation is ended.
+* `version`: An optional string to specify the version of the generation.
+* `prompt`: An optional dictionary or list of dictionaries to specify the prompt of the generation.
+* `response`: An optional value to specify the response of the generation. If you are using OpenAI then the response you get from the API can be passed here.
+* `prompt_slug`: An optional string to specify the prompt slug of the generation.
+* `language_model_id`: An optional string to specify the language model id of the generation.
+* `environment`: An optional string to specify the environment of the generation.
+* `functions`: An optional list of dictionaries to specify the functions of the generation.
+* `function_call_response`: An optional value to specify the function call response of the generation.
+* `tools`: An optional value to specify the tools of the generation.
+* `tool_calls`: An optional value to specify the tool calls of the generation.
+* `external_reference_id`: An optional string to specify the external reference id of the generation.
+* `customer_id`: An optional string to specify the customer id of the generation.
+* `customer_user_id`: An optional string to specify the customer user id of the generation.
+* `session_id`: An optional string to specify the session id of the generation.
+* `user_query`: An optional string to specify the user query of the generation.
+* `prompt_tokens`: An optional int to specify the prompt tokens of the generation.
+* `completion_tokens`: An optional int to specify the completion tokens of the generation.
+* `total_tokens`: An optional int to specify the total tokens of the generation.
+* `response_time`: An optional int to specify the response time of the generation.
+* `context`: An optional dictionary to specify the context of the generation.
+* `expected_response`: An optional string to specify the expected response of the generation.
+* `custom_attributes`: An optional dictionary to specify the custom attributes of the generation.
+* `cost`: An optional float to specify the cost of the generation.
+
+```python
+generation = span.create_generation(name="generation_1", user_query="user_query_1", response="response_1", prompt_slug="prompt_slug_1", language_model_id="language_model_id_1", environment="environment_1", functions=[{"name": "function_1", "response": "response_1"}], function_call_response="function_call_response_1", tools="tools_1", tool_calls="tool_calls_1", external_reference_id="external_reference_id_1", customer_id="customer_id_1", customer_user_id="customer_user_id_1", session_id="session_id_1", prompt_tokens=10, completion_tokens=20, total_tokens=30, response_time=40, context={"key1": "value1"}, expected_response="expected_response_1", custom_attributes={"key1": "value1"}, cost=0.001)
+```
