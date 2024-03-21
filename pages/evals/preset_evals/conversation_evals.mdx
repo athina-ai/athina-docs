@@ -1,0 +1,75 @@
+import { Callout } from "nextra/components";
+
+## Conversation Evaluators
+
+[Github](https://github.com/athina-ai/athina-evals/tree/main/athina/evals/conversation)
+
+### ❊ Info
+
+Conversation evaluators are designed to assess entire chat histories, instead of individual messages in a conversation.
+
+**What are the different types of conversation evaluators?**
+
+- **Conversation Resolution**: Checks each message in a conversation history to identify it was resolved by the LLM generated response.
+- **Conversation Coherence**: Checks each LLM generated response in a conversation history to see if it was coherent w.r.t the previous messages in the chat.
+
+
+**Required Args**
+
+Your dataset must contain these fields:
+
+- `messages`: An array of string messages in the conversation.
+
+For example:
+```python
+messages = [
+    "Alice: Hi, I'm looking for a new smartphone with a good camera.",
+    "AI: Hi Alice! Sure, I can help with that. Are you interested in any specific brand?",
+    "Alice: I like Samsung and Apple, but I'm open to other brands if the camera is really good.",
+    "AI: Both Samsung and Apple have excellent options. The Samsung Galaxy S21 and the iPhone 12 are known for their outstanding cameras.",
+    "Alice: I've heard the iPhone 12 camera is great. How does it compare to others?",
+    "AI: I'm happy to make some recommendations about cameras. Are you looking for a portable camera or a professional one?",
+    "Alice: I was asking about the iPhone 12 camera vs other smartphone cameras.",
+    "AI: My apologies for the confusion. To continue about the iPhone 12, it also offers Smart HDR 3 for improved photo quality in various lighting conditions.",
+    "Alice: That sounds good. What's the battery life like?",
+    "AI: The iPhone 12 offers up to 17 hours of video playback. Its A14 Bionic chip ensures efficient performance without compromising battery life.",
+    "Alice: And what about the price?",
+    "AI: The iPhone 12 starts at $799 for the base model. However, prices may vary depending on storage options and any promotions available.",
+    "AI: Speaking of storage, would you also be interested in external hard drives? We have some that are compatible with smartphones.",
+    "Alice: No, I'm just looking for information on the iPhone 12 right now.",
+    "AI: Understood, let's keep our focus on the iPhone 12. If you have any more questions or need further details, feel free to ask.",
+]
+```
+
+### ▷ Run Conversation Evals on a dataset
+
+**Load Raw Data**
+```python
+from athina.evals import ConversationCoherence, ConversationResolution
+
+conversations = [
+    {
+        "messages": [
+            "User: I'd like to buy a smartphone.",
+            "AI: What kind of smartphone?",
+            "User: An iPhone 14 Pro",
+            "AI: How much storage do you need?",
+            "User: 256GB",
+            "AI: What color?",
+            "User: White"
+            "AI: Sounds good - I've loaded the item into your cart."
+        ]
+    },
+    {
+        "messages": [
+            "User: ...",
+            "AI: ...",
+            "User: ...",
+            "AI: ...",
+        ]
+    }
+]
+
+ConversationCoherence().run_batch(data=conversations)
+ConversationResolution().run_batch(data=conversations)
+```
