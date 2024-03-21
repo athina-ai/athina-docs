@@ -13,5 +13,6 @@
   "grouping_inferences": "Grouped Inferences (Conversations)",
   "user_feedback": "Logging User Feedback",
   "faq": "FAQs",
-  "tracing": "Tracing"
+  "tracing": "Tracing",
+  "tracing_for_langchain":"Tracing for Langchain"
 }
