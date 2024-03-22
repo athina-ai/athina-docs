@@ -1,0 +1,63 @@
+# OpenAI Assistant
+
+To log your OpenAI Assistant chats, you can log the messages using the [API logging](./log_via_api) method.
+
+When you log to Athina, each chat message should be logged using a separate POST request. 
+
+You can group messages into a single conversation by using the `session_id` field. This is equivalent to the thread ID from OpenAI.
+
+- **Method**: `POST`
+
+- **Endpoint**: `https://log.athina.ai/api/v1/log/inference`
+
+- **Headers**: 
+  - `athina-api-key`: YOUR_ATHINA_API_KEY
+  - `Content-Type`: `application/json`
+
+##### Request Body
+
+Here's a simple logging request:
+
+```json
+{
+    // Required fields for logging
+    "language_model_id": "gpt-4",
+    "prompt": [
+        { "role": "system", "content": "System Instructions for the assistant" },
+        { "role": "user", "content": "Individual message level instructions" },
+    ],
+    "response": "Response message from the assistant (as a string)",
+    "session_id": "session-123",
+    
+    // Required fields for most evaluations
+    "user_query": "The message from the user you are responding to",
+    "context": "Your retrieved documents as a string or object", // Can be a string or object
+    
+    // Token usage logs (optional, but recommended). These can be found in the "Run" object from OpenAI Assistants API.
+    "prompt_tokens": 123,
+    "completion": 100,
+    "total_tokens": 223,
+    "cost": 0.12314, // if you provide tokens, we will calculate the cost for you automatically.
+    
+    // Optional fields for better segmentation and analytics (recommended)
+    "prompt_slug": "customer-support/v1", // any string
+    "environment": "production", // any string
+    "customer_id": "disney-usa-2314832", // any string, this is your internal customer identifier
+    "customer_user_id": "michaelmouse@gmail.com", // any string, this is the end user identifier,
+    "external_reference_id": "239ej92-r24-4838-45663", // any string, this is your internal reference ID for the message,
+
+    // Tool calls
+    "tool_call": tool_calls, // can be any JSON object
+    "tools": tools, // can be any JSON object
+
+    // Ground truth data - used for some evaluations
+    "expected_response": "If you have a ground truth response, you can send this here",
+
+}
+```
+
+**Note:**
+_OpenAI Assistant's API doesn't provide the actual prompt that was sent._
+_So, the prompt you are logging might not be the complete prompt that was actually sent to the model._
+
+_However, the prompt field is not currently used for evaluations so it will not affect the ability to run evals_

@@ -1,9 +1,9 @@
 {
   "index": "Introduction",
   "quick_start": "Quick Start",
-  "monitoring": "Monitoring",
-  "evals": "Evals",
   "logging": "Logging",
+  "evals": "Evals",
+  "monitoring": "Monitoring",
   "datasets": "Datasets",
   "integrations": "Integrations",
   "graphql_api": "GraphQL API",

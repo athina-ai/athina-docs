@@ -3,6 +3,15 @@ import { Callout } from "nextra/components";
 
 ## Log via API Request
 
+<Callout type='info'>
+**Using OpenAI with Python?**
+Just follow our [quick start](/quick_start) guide to get started in just a few lines of code.
+</Callout>
+<Callout type='info'>
+**Using LiteLLM?**
+Follow [this guide](https://docs.litellm.ai/docs/observability/athina_integration) to get set up in just a few lines of code.
+</Callout>
+
 You can log your inference calls to Athina via a simple API request. The logging request should be made just after you receive a response from the LLM.
 
 - **Method**: `POST`
@@ -60,7 +69,7 @@ You should also add the following fields so that we can track and display analyt
   "prompt_tokens": 50, // tokens in the prompt
   "completion_tokens": 30, // tokens in the completion response
   "total_tokens": 80, // prompt_tokens + completion_tokens
-  "response_time": 1208 // in milliseconds
+  "response_time": 1208, // in milliseconds
   "cost": 0.0123,
 }
 ```
@@ -139,7 +148,7 @@ For function calling, you must also log the following fields:
 }
 ```
 
-#### Tools
+##### Tools
 
 For tools, you must log the following field
 
