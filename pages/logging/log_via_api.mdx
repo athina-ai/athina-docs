@@ -166,3 +166,50 @@ If tool_calls field is not present, we extract it from the openai completion res
   Tip: To avoid adding any latency to your application, log your inference as a
   fire-and-forget request.
 </Callout>
+
+## Log reconciliation
+
+If you're logging inference calls to Athina, you can update the logs with additional information or any missing data. You can do this by sending a patch request with `prompt_run_id` as the original inference log.
+
+- **Method**: `PATCH`
+
+- **Endpoint**: `https://log.athina.ai/api/v1/log/inference/{prompt_run_id}`
+
+- **Headers**: 
+  - `athina-api-key`: YOUR_ATHINA_API_KEY
+  - `Content-Type`: `application/json`
+
+##### Request Body
+
+```json
+{
+  // ...Fields you want to update,
+  "prompt_slug": "new_prompt_slug"
+}
+```
+
+#### Allowed fields to update
+
+* `prompt_slug`
+* `language_model_id`
+* `prompt_sent`
+* `functions`
+* `prompt_response`
+* `function_call_response`
+* `response_time`
+* `prompt_tokens`
+* `completion_tokens`
+* `total_tokens`
+* `cost`
+* `context`
+* `environment`
+* `customer_id`
+* `customer_user_id`
+* `session_id`
+* `user_query`
+* `external_reference_id`
+* `expected_respons`
+
+<Callout>
+  Note: You can only update the above fields. You cannot update the `prompt_run_id` or `created_at` fields.
+</Callout>
