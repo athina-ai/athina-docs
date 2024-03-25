@@ -1,3 +1,4 @@
+import { Callout } from "nextra/components";
 import { Tabs } from "nextra/components";
 
 # OpenAI Chat Completion
@@ -61,6 +62,9 @@ _If you're using OpenAI chat completions in Python, you can get set up in just *
         ),
     )
     ```
+    <Callout>
+    Note: We support both `stream=True` and `stream=False` for OpenAI chat completions. OpenAI doesn’t provide usage statistics such as prompt and completion tokens when streaming. However, We overcomes this limitation by getting these with the help of the tiktoken package, which is designed to work with all tokenized OpenAI GPT models.
+    </Callout>
 
     ---
 
