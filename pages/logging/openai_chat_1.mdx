@@ -36,7 +36,7 @@ _If you're using OpenAI chat completions in Python, you can get set up in just *
     ```
 
     ##### 4. Use OpenAI chat completions request as you do normally
-
+    Non streaming example:
     ```python
     # Use client.chat.completions.create just as you would normally
     # Add fields to AthinaMeta for better segmentation of your data
@@ -54,12 +54,38 @@ _If you're using OpenAI chat completions in Python, you can get set up in just *
             environment=environment, # Environment (production, staging, dev, etc)
             external_reference_id="ext_ref_123456",
             custom_attributes={
-                            "name": "John",
-                            "age": 30,
-                            "city": "New York"
-                        } # Your custom-attributes
+                "name": "John",
+                "age": 30,
+                "city": "New York"
+            } # Your custom-attributes
         ),
     )
+    ```
+    Streaming example:
+    ```python
+    stream = client.chat.completions.create(
+        model="gpt-4",
+        messages=messages,
+        stream=True,
+        athina_meta=AthinaMeta(
+            prompt_slug="yc_rag_v1",
+            user_query="How much funding does Y Combinator provide?", # For RAG Q&A systems, log the user's query
+            context={"information": retrieved_documents} # Your retrieved documents
+            session_id=session_id, # Conversation ID
+            customer_id=customer_id, # Your Customer's ID
+            customer_user_id=customer_id, # Your End User's ID
+            environment=environment, # Environment (production, staging, dev, etc)
+            external_reference_id="ext_ref_123456",
+            custom_attributes={
+                "name": "John",
+                "age": 30,
+                "city": "New York"
+            } # Your custom-attributes
+        ),
+    )
+    for chunk in stream:
+        if chunk.choices[0].delta.content is not None:
+            print(chunk.choices[0].delta.content, end="")
     ```
     <Callout>
     Note: We support both `stream=True` and `stream=False` for OpenAI chat completions. OpenAI doesn’t provide usage statistics such as prompt and completion tokens when streaming. However, We overcomes this limitation by getting these with the help of the tiktoken package, which is designed to work with all tokenized OpenAI GPT models.
