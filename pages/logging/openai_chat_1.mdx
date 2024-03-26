@@ -1,16 +1,11 @@
-import { Tabs } from "nextra/components";
+import { Callout, Tabs } from "nextra/components";
 
 # OpenAI Chat Completion
 
 _If you're using OpenAI chat completions in Python, you can get set up in just **2 minutes**_
 
-<Tabs items={["API Request (Recommended)", "Python Wrapper (Easy)", "Python (Streaming)", "Python (Non-Streaming)"]}>
-  <Tabs.Tab>
-    ### Log via API Request
-
-    See instructions [here](/logging/log_via_api).
-
-  </Tabs.Tab>
+<Tabs items={["OpenAI Wrapper (Easy)", "API Request", "Python SDK"]}>
+  
   <Tabs.Tab>
     ##### 1. Install the Python SDK
 
@@ -36,7 +31,7 @@ _If you're using OpenAI chat completions in Python, you can get set up in just *
     ```
 
     ##### 4. Use OpenAI chat completions request as you do normally
-
+    Non streaming example:
     ```python
     # Use client.chat.completions.create just as you would normally
     # Add fields to AthinaMeta for better segmentation of your data
@@ -54,13 +49,42 @@ _If you're using OpenAI chat completions in Python, you can get set up in just *
             environment=environment, # Environment (production, staging, dev, etc)
             external_reference_id="ext_ref_123456",
             custom_attributes={
-                            "name": "John",
-                            "age": 30,
-                            "city": "New York"
-                        } # Your custom-attributes
+                "name": "John",
+                "age": 30,
+                "city": "New York"
+            } # Your custom-attributes
         ),
     )
     ```
+    Streaming example:
+    ```python
+    stream = client.chat.completions.create(
+        model="gpt-4",
+        messages=messages,
+        stream=True,
+        athina_meta=AthinaMeta(
+            prompt_slug="yc_rag_v1",
+            user_query="How much funding does Y Combinator provide?", # For RAG Q&A systems, log the user's query
+            context={"information": retrieved_documents} # Your retrieved documents
+            session_id=session_id, # Conversation ID
+            customer_id=customer_id, # Your Customer's ID
+            customer_user_id=customer_id, # Your End User's ID
+            environment=environment, # Environment (production, staging, dev, etc)
+            external_reference_id="ext_ref_123456",
+            custom_attributes={
+                "name": "John",
+                "age": 30,
+                "city": "New York"
+            } # Your custom-attributes
+        ),
+    )
+    for chunk in stream:
+        if chunk.choices[0].delta.content is not None:
+            print(chunk.choices[0].delta.content, end="")
+    ```
+    <Callout>
+    Note: We support both `stream=True` and `stream=False` for OpenAI chat completions. OpenAI doesn’t provide usage statistics such as prompt and completion tokens when streaming. However, We overcomes this limitation by getting these with the help of the tiktoken package, which is designed to work with all tokenized OpenAI GPT models.
+    </Callout>
 
     ---
 
@@ -100,77 +124,9 @@ _If you're using OpenAI chat completions in Python, you can get set up in just *
   </Tabs.Tab>
   
   <Tabs.Tab>
-    ##### 1. Install the Python SDK
+    ### Log via API Request
 
-    Run `pip install athina-logger`
-
-     ##### 2. Import Athina Logger and openai package
-
-    ```python
-    from athina_logger.api_key import AthinaApiKey
-    from openai import OpenAI
-
-    client = OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
-    ```
-
-    ##### 3. Set Athina API key
-
-    ```python
-    # Initialize the Athina API key somewhere in your code
-    AthinaApiKey.set_api_key(os.getenv('ATHINA_API_KEY'))
-    ```
-
-    ##### 4. Call the logging function
-
-    ```python
-    from athina_logger.log_stream_inference.openai_chat_completion_stream import LogOpenAiChatCompletionStreamInference
-
-    # Using python openai SDK
-    def stream_openai_chat_response(user_query, content):
-        response = client.chat.completions.create(
-            model='gpt-3.5-turbo',
-            messages=[{"role": "user", "content": content}],
-            stream=True,
-        )
-        logger = LogOpenAiChatCompletionStreamInference(
-            prompt=[{"role": "user", "content": content}],
-            language_model_id="gpt-3.5-turbo",
-            prompt_slug="test",
-            context=context, # OPTIONAL
-            response_time=response_time_ms, # OPTIONAL
-            customer_id="stripe", # OPTIONAL
-            customer_user_id="shiv@athina.ai", # OPTIONAL
-            session_id="c45g-1234-s6g4-43d3", # OPTIONAL
-            user_query=user_query, # OPTIONAL
-            environment="production", # OPTIONAL
-            external_reference_id="5e838eaf-7dd0-4b6f-a32c-26110dd54e58", # OPTIONAL; If passed, should be unique across all inference calls
-            custom_attributes={
-                "name": "John Doe"
-            } # OPTIONAL;  
-        )
-    ```
-
-    ##### 5. Collect the streaming responses
-    There are 2 ways to collect openai chat streams
-
-    **Option 1: Collect automatically from response**
-    ```python
-    try:
-        logger.collect_stream_inference(response)
-        logger.log_stream_inference()
-    except Exception as e:
-        print(e)
-    ```
-
-    **Option 2: Collect individually by chunk**
-    ```python
-    try:
-        for chunk in response:
-            logger.collect_stream_inference_by_chunk(chunk)
-        logger.log_stream_inference()
-    except Exception as e:
-        print(e)
-    ```
+    See instructions [here](/logging/log_via_api).
 
   </Tabs.Tab>
 
@@ -178,7 +134,6 @@ _If you're using OpenAI chat completions in Python, you can get set up in just *
     ### Log via Python SDK
 
     See instructions [here](/logging/log_via_python_sdk).
-
   </Tabs.Tab>
 
 </Tabs>
