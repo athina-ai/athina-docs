@@ -286,22 +286,26 @@ Performs an API call to a specified endpoint and picks up the evaluation result 
 - `url`: string - API endpoint to call. Note that this API should accept POST request.
 - `headers`: dict - Headers to include in the API call.
 - `payload`: dict - Body to send with the API call. This payload will have the Response added to it.
-- `query`: Optional[str] - If passed this will be added to the payload.
-- `context`: Optional[str] - If passed this will be added to the payload.
-- `expected_response`: Optional[str] - If passed this will be added to the payload.
 
 **Sample Code:**
 
 ```python
 from athina.evals import ApiCall
+from athina.loaders import ResponseLoader
+
+# Raw data must contain response and optionally the query, context and expected_response to be passed to the API
+raw_data = [
+    {
+        "response": "Response to be sent to the your own API based evaluator",
+        "query": "Query to be sent to the your own API based evaluator"
+    }
+]
+dataset = ResponseLoader().load_dict(raw_data)
 
 ApiCall(
     url="https://8e714940905f4022b43267e348b8a713.api.mockbin.io/",
     payload={"evaluator": "custom_api_based_evaluator"},
-    headers={"Authorization": "Bearer token"},
-    query="How much equity does YC take?",
-    context="YC is a well-known startup accelerator based in Silicon Valley, California. Y Combinator is one of the most influential and successful startup accelerators globally. YC has invested in over 2,000 companies, including Dropbox, Airbnb, Stripe, Reddit, and Instacart.",
-    expected_response="YC takes 7% equity."
+    headers={"Authorization": "Bearer token"}
 ).run_batch(data=dataset).to_df()
 ```
 
@@ -309,6 +313,7 @@ ApiCall(
 - We expect the API response to be in JSON format with two keys namely `result` and `reason`.
 - The `result` key should contain the evaluation result which should be a boolean value.
 - The `reason` key should contain the reason for the evaluation result which should be a string.
+- The dataset should contain the `response` and optionally the `query`, `context` and `expected_response` to be passed to the API.
 </Callout>
 
 #### Equals
