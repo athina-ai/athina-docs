@@ -3,13 +3,14 @@ import { Callout } from "nextra/components";
 
 ## Log via API Request
 
-<Callout type='info'>
-**Using OpenAI with Python?**
-Just follow our [quick start](/quick_start) guide to get started in just a few lines of code.
+<Callout type="info">
+  **Using OpenAI with Python?** Just follow our [quick start](/quick_start)
+  guide to get started in just a few lines of code.
 </Callout>
-<Callout type='info'>
-**Using LiteLLM?**
-Follow [this guide](https://docs.litellm.ai/docs/observability/athina_integration) to get set up in just a few lines of code.
+<Callout type="info">
+  **Using LiteLLM?** Follow [this
+  guide](https://docs.litellm.ai/docs/observability/athina_integration) to get
+  set up in just a few lines of code.
 </Callout>
 
 You can log your inference calls to Athina via a simple API request. The logging request should be made just after you receive a response from the LLM.
@@ -18,7 +19,7 @@ You can log your inference calls to Athina via a simple API request. The logging
 
 - **Endpoint**: `https://log.athina.ai/api/v1/log/inference`
 
-- **Headers**: 
+- **Headers**:
   - `athina-api-key`: YOUR_ATHINA_API_KEY
   - `Content-Type`: `application/json`
 
@@ -70,14 +71,15 @@ You should also add the following fields so that we can track and display analyt
   "completion_tokens": 30, // tokens in the completion response
   "total_tokens": 80, // prompt_tokens + completion_tokens
   "response_time": 1208, // in milliseconds
-  "cost": 0.0123,
+  "cost": 0.0123
 }
 ```
 
 - `response_time` (integer) is the response time in milliseconds. This is useful for segmenting inference calls by response time.
 
 <Callout>
-  Tip: If you log the entire OpenAI `ChatCompletion` response object to us, we'll automatically extract the token counts and cost.
+  Tip: If you log the entire OpenAI `ChatCompletion` response object to us,
+  we'll automatically extract the token counts and cost.
 </Callout>
 
 ##### Segmentation Fields
@@ -92,7 +94,7 @@ Optionally, you can also add the following fields for better segmentation on the
   "customer_id": "stripe",
   "customer_user_id": "shiv@athina.ai",
   "session_id": "c45g-1234-s6g4-43d3",
-  "external_reference_id": "5e838eaf-7dd0-4b6f-a32c-26110dd54e58",
+  "external_reference_id": "5e838eaf-7dd0-4b6f-a32c-26110dd54e58"
 }
 ```
 
@@ -165,51 +167,4 @@ If tool_calls field is not present, we extract it from the openai completion res
 <Callout>
   Tip: To avoid adding any latency to your application, log your inference as a
   fire-and-forget request.
-</Callout>
-
-## Log reconciliation
-
-If you're logging inference calls to Athina, you can update the logs with additional information or any missing data. You can do this by sending a patch request with `prompt_run_id` of the original inference log.
-
-- **Method**: `PATCH`
-
-- **Endpoint**: `https://log.athina.ai/api/v1/log/inference/{prompt_run_id}`
-
-- **Headers**: 
-  - `athina-api-key`: YOUR_ATHINA_API_KEY
-  - `Content-Type`: `application/json`
-
-##### Request Body
-
-```json
-{
-  // ...Fields you want to update,
-  "prompt_slug": "new_prompt_slug"
-}
-```
-
-#### Allowed fields to update
-
-* `prompt_slug`
-* `language_model_id`
-* `prompt_sent`
-* `functions`
-* `prompt_response`
-* `function_call_response`
-* `response_time`
-* `prompt_tokens`
-* `completion_tokens`
-* `total_tokens`
-* `cost`
-* `context`
-* `environment`
-* `customer_id`
-* `customer_user_id`
-* `session_id`
-* `user_query`
-* `external_reference_id`
-* `expected_respons`
-
-<Callout>
-  Note: You can only update the above fields. You cannot update the `prompt_run_id` or `created_at` fields.
 </Callout>
