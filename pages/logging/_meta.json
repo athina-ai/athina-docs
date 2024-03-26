@@ -14,5 +14,7 @@
   "update_logs": "How to Update Logged Inferences",
   "grouping_inferences": "How to log Conversations / Chats",
   "user_feedback": "Logging User Feedback",
-  "faq": "FAQs"
+  "faq": "FAQs",
+  "tracing": "Tracing",
+  "tracing_for_langchain":"Tracing for Langchain"
 }
