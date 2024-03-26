@@ -1,0 +1,96 @@
+import { useAmp } from "next/amp";
+import { Callout } from "nextra/components";
+
+## Tracing for Langchain (Python)
+Athina Tracing integrates with Langchain using Langchain Callbacks (Python). Thereby, our SDK automatically creates a nested trace for every run of your Langchain application.
+
+### Installation
+
+```python
+#pip install athina-logger langchain langchain_openai --upgrade
+```
+
+Setup AthinaApiKey
+
+```python
+from athina_logger.api_key import AthinaApiKey
+AthinaApiKey.set_api_key(os.getenv('ATHINA_API_KEY'))
+```
+Use the `LangchainCallbackHandler` to create a trace for every run of your Langchain application.
+
+```python
+from athina_logger.tracing.callback.langchain import LangchainCallbackHandler
+athina_handler = LangchainCallbackHandler()
+
+# Add the handler as callback
+# chain.invoke({"input": "<user_input>"}, config={"callbacks": [athina_handler]})
+```
+
+### Getting Started
+Following is an example of how to use the tracing library in your langchain application.
+
+```python
+from langchain.chains.llm import LLMChain
+from langchain_openai import ChatOpenAI
+from langchain.prompts.chat import (
+    ChatPromptTemplate,
+    SystemMessagePromptTemplate,
+    HumanMessagePromptTemplate,
+)
+from athina_logger.tracing.callback.langchain import LangchainCallbackHandler
+from athina_logger.api_key import AthinaApiKey
+import os
+AthinaApiKey.set_api_key(os.getenv('ATHINA_API_KEY'))
+ 
+system_template = '''You are a helpful assistant who generates lines about a particular topic'''
+system_message_prompt = SystemMessagePromptTemplate.from_template(system_template)
+template = '''Write a line on the following topic: {text} Your response:'''
+chat_prompt = ChatPromptTemplate.from_messages([system_message_prompt, HumanMessagePromptTemplate.from_template(template)])
+chain1 = LLMChain(
+    llm=ChatOpenAI(openai_api_key= os.getenv('OPENAI_API_KEY')),
+    prompt=chat_prompt,
+)
+response = chain1.invoke('AI', {"callbacks":[LangchainCallbackHandler()]})
+print("Response:", response)
+```
+
+## Retrival QA Example
+
+```python
+from athina_logger.tracing.callback.langchain import LangchainCallbackHandler
+from athina_logger.api_key import AthinaApiKey
+import os
+from dotenv import load_dotenv
+load_dotenv()
+AthinaApiKey.set_api_key(os.getenv('ATHINA_API_KEY'))
+from langchain_openai import OpenAI
+from langchain.llms import OpenAI
+from langchain.chains import LLMChain
+from langchain.prompts import PromptTemplate
+
+# Define the retrieval process
+def retrieve_document(topic):
+    # Mock retrieval process; in a real scenario, this might query a database or perform a web search
+    documents = {
+        "history": "The history of Rome is long and complex...",
+        "science": "Science is a systematic enterprise that builds and organizes knowledge...",
+        "technology": "Technology is the sum of techniques, skills, methods..."
+    }
+    return documents.get(topic, "Document not found.")
+    
+question = "What are the major branches of science?"
+topic = "science"
+
+llm = OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
+qa_template = PromptTemplate(
+    input_variables=["document", "question"],
+    template="""Based on the document: {document}, answer the question: {question}"""
+)
+qa_chain = LLMChain(llm=llm, prompt=qa_template)
+retrieved_document = retrieve_document(topic)
+answer = qa_chain.invoke({"document": retrieved_document, "question": question}, config={"callbacks":[LangchainCallbackHandler()]})
+print("Answer:", answer)
+```
+
+## Not using Python?
+Reach out to us at hello@athina.ai - we're happy to add support for other stacks as well if we hear from you.
