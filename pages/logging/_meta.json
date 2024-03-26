@@ -3,6 +3,7 @@
   "openai_chat_1": "OpenAI Chat (1.x)",
   "openai_chat_0": "OpenAI Chat (0.x)",
   "openai_assistant": "OpenAI Assistant",
+  "litellm": "LiteLLM",
   "langchain": "Langchain",
   "misc": "All other models",
   "log_via_api": "Log via API Request",
