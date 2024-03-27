@@ -2,11 +2,32 @@ import { Callout } from "nextra/components";
 
 # Running Evals
 
-## Automatic Evals
+There are a few ways to run evals using Athina:
 
-Automatic evals can be configured on the dashboard at https://app.athina.ai/evals/config.
+## Run an Eval manually from the Inference Page
+
+1. Open the inference you want to evaluate, and click the "Run Eval" button (located towards the top-right).
+2. Choose the evaluation you want to run (Note: function evals cannot be run from the inference page).
+3. Choose the LLM engine for your evaluation.
+
+Eval results will appear shortly in the Evals tab on the right.
+
+<br />
+
+<img
+  src="/run-eval-manually.gif"
+  alt="Run an eval manually from the inference page"
+/>
+
+## Continuous Evaluation
+
+If you configure evaluations in the dashboard at https://app.athina.ai/evals/config, they will run automatically against all logged inferences that meet your filters.
 
 - [How to configure automatic evals](/evals/automatic_evals)
+
+**Note:** Logs may be sampled to ensure that evaluations run within your configured limits. You can adjust these limits in the [Settings](https://app.athina.ai/settings) page.
+
+**Note: Continuous evaluation is only available for paid plans. Contact hello@athina.ai to upgrade your plan.**
 
 ---
 
@@ -29,3 +50,7 @@ For more detailed guides, you can follow the links below to get started running 
 - [Customize an eval](/evals/custom_evals)
 - [View Results on Athina Dashboard](/evals/develop_dashboard)
 - [Loading Data for Evals](/evals/loading_data)
+
+## Running Evals as Realtime Guardrails
+
+Follow this [example notebook](https://github.com/athina-ai/athina-evals/blob/main/examples/guard.ipynb)

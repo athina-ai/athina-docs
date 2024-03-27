@@ -1,0 +1,53 @@
+# Measuring retrieval and response quality in RAG-based LLMs
+
+### Common Failures in RAG-based LLM apps
+
+RAG-based LLM apps are great, but there are always a lot of kinks and imperfections to iron out.
+
+Here are some common ones:
+
+<img src="/rag-eval-suite.png" width="100%" />
+
+#### Bad retrieval
+
+- Retrieved information is not aligned with ground truth ([Context Recall](/evals/preset_evals/ragas_evals#context-recall))
+- Retrievals are present but they are not ranked high ([Context Precision](/evals/preset_evals/ragas_evals#context-precision))
+- Retrieved information doesn't have enough information to answer query ([Context Sufficiency](/evals/preset_evals/ccei))
+- Retrieved information is not relevant to the query ([Context Relevancy](/evals/preset_evals/ragas_evals#context-relevancy))
+
+#### Bad outputs
+
+- Response says something that cannot be inferred from context ([Faithfulness](/evals/preset_evals/faithfulness))
+- Response has many sentences that were not grounded to context. ([Groundedness](/evals/preset_evals/groundedness))
+- Conversation / chat has messages that are not coherent given the previous messages. ([Conversation Coherence)](/evals/preset_evals/conversation_evals))
+- Some other criteria... ([Custom Evaluation](/evals/custom_evals))
+
+## How to detect such issues
+
+Just plug in the evaluators you need and run the evals on your dataset.from athina.evals import RagasContextPrecision, RagasAnswerCorrectness, RagasContextRelevancy, RagasContextRecall, RagasFaithfulness, Groundedness
+
+```python
+model = "gpt-4-turbo-preview"
+eval_suite = [
+    RagasAnswerCorrectness(model=model),
+    RagasContextPrecision(model=model),
+    RagasContextRelevancy(model=model),
+    RagasContextRecall(model=model),
+    ContextContainsEnoughInformation(model=model),
+    RagasFaithfulness(model=model),
+    Faithfulness(model=model),
+    Groundedness(model=model),
+    DoesResponseAnswerQuery(model=model)
+]
+
+# Run the evaluation suite
+batch_eval_result = EvalRunner.run_suite(
+    evals=eval_suite,
+    data=dataset,
+    max_parallel_evals=8
+)
+batch_eval_result
+```
+
+You can run these evaluations in a python notebook, and view results in a dataframe like this:
+[Example Notebook on Github](https://github.com/athina-ai/athina-evals/blob/main/examples/run_eval_suite.ipynb)
