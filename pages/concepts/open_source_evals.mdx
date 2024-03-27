@@ -1,0 +1,81 @@
+# Open Source Evaluation: Philosophy
+
+There are hosts of challenges around running preset evaluations for different data formats.
+
+We had to iterate through dozens of different ideas (it took a lot longer than we thought), but eventually we figured out a setup that works.
+
+Here is the guiding philosophy behind our [open-source evaluation library](https://github.com/athina-ai/athina-evals).
+
+### Preset evals must be plug and play
+
+`pip install athina`
+
+```python
+# Evaluate a dataset across a suite of eval criteria
+EvalRunner.run_suite(
+    evals=[
+        RagasAnswerCorrectness(),
+        RagasContextPrecision(),
+        RagasContextRelevancy(),
+        RagasContextRecall(),
+        RagasFaithfulness(),
+        ResponseFaithfulness(),
+        Groundedness(),
+        ContextSufficiency(),
+    ],
+    data=dataset,
+    max_parallel_evals=10
+)
+```
+
+All the code you need to run a suite of 9 evals on your RAG pipeline.
+
+### Evals must be modular and extensible
+
+- Simply import and use.
+- Evals usually shouldn't require any constructor arguments
+- Evals should be easy to extend
+- Evals should be customizable
+- Should have easy to use wrappers for custom evals:
+  - Grading Criteria: For very simple "If X, then fail. Otherwise pass" style evaluations
+  - Custom Prompt: Plug in your own evaluation prompt
+  - API Call: If you need complete control of your evals, you can define the eval functions on your own API server.
+
+### Evals should run locally wherever possible
+
+By design, we want most of the evaluations themselves to be open source and to run locally wherever possible.
+
+We wanted to ensure that evaluations run independently of Athina platform, so as to respect the privacy of the data.
+
+### Evals should not be tightly coupled to a single model / provider
+
+Most of our evaluations can easily run on different models and providers (including OpenAI, Gemini, Anthropic, and Cohere)
+
+### Evals should be able to run in parallel
+
+Evals should be able to run in parallel, and users should be able to control the number of parallel evals.
+
+```python
+# Evaluate a dataset across a suite of eval criteria
+EvalRunner.run_suite(
+    evals=eval_suite,
+    data=dataset,
+    max_parallel_evals=10
+)
+```
+
+### Athina API key must not be required to run the evaluations.
+
+There is no requirement to use an Athina API key to run evaluations locally.
+
+But, if you add your AthinaApiKey, you will also get access to a full development SDK with a history of runs, search, sort, filter, compare, re-run, etc.
+
+---
+
+### Separate Orchestration Layer for Continuous Evaluation and Production Monitoring.
+
+Athina's eval [orchestration](/concepts/orchestration) platform manages eval configurations, sampling, filtering, deduping, rate limiting, switching between different model providers, alerting, and calculating granular analytics to provide a complete evaluation platform.
+
+You can run Evals during [development](/evals/running_evals), in [CI / CD](/evals/ci_cd_pipeline), as [real-time guardrails](/evals/running_evals), or in [production](/evals/running_evals).
+
+Or ideally, all of the above :)
