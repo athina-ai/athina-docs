@@ -1,3 +1,4 @@
 {
-    "rag_evals": "Measure retrieval and response quality in RAG"
+    "rag_evals": "Measure retrieval and response quality in RAG",
+    "prompt_injection": "Prompt Injection: Attacks and Defenses"
 }
