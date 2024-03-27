@@ -1,10 +1,10 @@
 {
   "index": "Introduction",
   "quick_start": "Quick Start",
-  "guides": "Guides",
   "concepts": "Concepts",
   "logging": "Logging",
   "evals": "Evals",
+  "guides": "Guides",
   "monitoring": "Monitoring",
   "datasets": "Datasets",
   "integrations": "Integrations",
