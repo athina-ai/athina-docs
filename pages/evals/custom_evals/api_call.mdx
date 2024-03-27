@@ -1,0 +1,62 @@
+import { Callout } from "nextra/components";
+
+# API Call
+
+If you want to use your own evaluation functions, you can do so by using the `ApiCall` evaluator.
+
+**Description:**  
+Performs an API call to a specified endpoint and picks up the evaluation result from the response.
+
+This evaluator is useful if you:
+
+- Want to run some complex or custom logic
+- Need to run evaluations on your own servers
+- Want to use an evaluation metric that we don't support currently
+  _(Send us an email at hello@athina.ai to request a new metric - we can integrate pretty fast)._
+
+**Info:**
+
+- Input: `response`, `query`, `context`, `response`
+- Type: `boolean`
+- Metrics: `passed` (0 or 1)
+
+**Arguments:**
+
+- `url`: string - API endpoint to call. Note that this API should accept POST request.
+- `headers`: dict - Headers to include in the API call.
+- `payload`: dict - Body to send with the API call. This payload will have the Response added to it.
+
+**Sample Code:**
+
+```python
+from athina.evals import ApiCall
+from athina.loaders import ResponseLoader
+
+# Raw data must contain response and optionally the query, context and expected_response to be passed to the API
+raw_data = [
+    {
+        "response": "Response to be sent to the your own API based evaluator",
+        "query": "Query to be sent to the your own API based evaluator"
+    }
+]
+dataset = ResponseLoader().load_dict(raw_data)
+
+ApiCall(
+    url="https://8e714940905f4022b43267e348b8a713.api.mockbin.io/",
+    payload={"evaluator": "custom_api_based_evaluator"},
+    headers={"Authorization": "Bearer token"}
+).run_batch(data=dataset).to_df()
+```
+
+The dataset should contain the `response` and optionally the `query`, `context` and `expected_response` to be passed to the API.
+
+<Callout>
+**Endpoint Result Format**
+
+We expect the API response to be in JSON format with two keys namely `result` and `reason`.
+
+- `result` (boolean): should contain the evaluation result (true / false)
+
+- `reason` (string): should contain an explanation for the evaluation result
+
+</Callout>

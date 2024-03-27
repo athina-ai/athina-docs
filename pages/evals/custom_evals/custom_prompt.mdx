@@ -1,0 +1,62 @@
+import { Callout, Tabs } from "nextra/components";
+
+# LLM Evaluation with Custom Prompt
+
+Uses your evaluation prompt
+
+If you have a more complex evaluation prompt that you would like to run within Athina's framework, we can support that with our `CustomPrompt` class.
+
+- Input: `response`, `query`, `context`, `expected_response` (whichever you specify in your prompt).
+- Type: `boolean`
+- Metrics: `passed` (0 or 1)
+
+**Example:**
+
+<Callout type="infos">
+**Evaluation Inputs:**
+
+- **eval_prompt**: "Think step-by-step. Based on the provided user query and refund policy, determine if the response adheres to the refund policy. User Query: \{query\} Refund policy: \{context\} Response: \{response\}"
+- **query**: "How many vacation days are we allowed?"
+- **context**: "Employees are allowed 15 holidays per year, and 5 days of paid leave."
+- **response**: "Employees are allowed 20 vacation days per year, and 5 days of paid leave."
+
+</Callout>
+
+<Callout type="error">
+**Evaluation Results:**
+
+- **result:** Fail
+- **explanation**: The response does not adhere to the refund policy provided. The refund policy is that employees are allowed 15
+  holidays per year, and 5 days of paid leave.
+
+</Callout>
+
+### How to use it in the SDK
+
+Simply use the `CustomPrompt` class and specify your own `eval_prompt`.
+
+```python
+eval_prompt = """
+Think step-by-step.
+
+Based on the provided user query and refund policy, determine if the response adheres to the refund policy.
+
+User Query: {query}
+Refund policy: {context}
+Response: {response}
+"""
+
+batch_run_result = CustomPrompt(
+    display_name="Response must follow refund policy",
+    required_args=["query", "context", "response"],
+    model="gpt-4-1106-preview",
+    eval_prompt=eval_prompt,
+).run_batch(data=dataset)
+```
+
+[See an example notebook →](https://github.com/athina-ai/athina-evals).
+
+<Callout type="default" emoji="💡">
+  Note: Any variables you use in the prompt (for example: `query`, `context`,
+  `response`) will be interpolated from your `dataset`.
+</Callout>

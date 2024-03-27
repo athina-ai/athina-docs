@@ -1,0 +1,62 @@
+import { Callout } from "nextra/components";
+
+# Write your own LLM Eval class
+
+<Callout>
+  Have you seen our [custom evaluation](/evals/custom_evals) wrappers? They are
+  a great way to quickly create your own evaluation class.
+</Callout>
+
+If you want to write your own evaluation class, you can do so by extending the `BaseEvaluator` class.
+
+You can extend the `BaseEvaluator` class. See this [example](https://github.com/athina-ai/athina-evals/blob/main/athina/evals/base_evaluator.py)
+
+You need to implement the following methods:
+
+```python
+@property
+def _model(self):
+    # Which model was used for this evaluation
+    pass
+
+@property
+def name(self):
+    return "UpperCamelCaseName"
+
+@property
+def display_name(self):
+    return "Evaluation Display Name"
+
+@property
+def metric_ids(self) -> List[str]:
+    return [MetricType.PASSED.value]
+
+@property
+def default_function_arguments(self):
+    return {}
+
+@property
+def required_args(self):
+    # expects an array of strings from ["query", "context", "response", "expected_response", "text"]
+    pass
+
+@property
+def examples(self):
+    pass
+
+def is_failure(self) -> Optional[bool]:
+    pass
+
+
+def _evaluate(self, **kwargs) -> EvalResult:
+    pass
+
+
+```
+
+<Callout>
+### Contribute!
+
+If you write an evaluator that could be useful for others, please consider raising a PR at https://github.com/athina-ai/athina-evals.
+
+</Callout>

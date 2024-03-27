@@ -2,79 +2,21 @@ import { Callout } from "nextra/components";
 
 ## Custom Evals
 
-_How can you write your own evals?_
+_Need to use your own custom evals?_
 
-### Custom Grading Criteria (Easy)
+There are a number of ways to use custom evals in Athina.
 
-It's very easy to write a custom grading criteria (just 2 lines of code).
+- [`GradingCriteria`](/evals/custom_evals/api_call): Pass / fail based on a custom criterion. _"If X, then fail. Otherwise pass."_
+- [`CustomPrompt`](/evals/custom_evals/custom_prompt): Use a completely custom prompt for evaluation.
+- [`ApiCall`](/evals/custom_evals/api_call): Use the `ApiCall` evaluator to make a call to a custom endpoint where you are hosting your evaluation logic.
+- [Create your own evaluator](/evals/custom_evals/write_your_own): Create your own evaluator by extending the [`BaseEvaluator`](https://github.com/athina-ai/athina-evals/blob/main/athina/evals/base_evaluator.py) class.
 
-```python
-from athina.evals import GradingCriteria
+### Contribute your evals!
 
-grading_criteria="If the response says to contact customer support, then fail. Otherwise pass."
-GradingCriteria(grading_criteria=grading_criteria).run_batch(data=dataset)
-```
+<Callout type="infos">
 
-[See an example notebook →](https://github.com/athina-ai/athina-evals).
+This library is open source and we welcome contributions.
 
-<Callout type="default" emoji="💡">
-  Note: This format works pretty well for the grading_criteria: _"If X, then
-  fail. Otherwise, pass"_
-</Callout>
-
-<Callout type="info">
-**What's happening under the hood?**
-
-We do a few things behind the scenes to make LLM evaluators work effectively:
-
-- We wrap this prompt inside some [chain-of-thought prompting](https://www.promptingguide.ai/techniques/cot)
-- We ensure the response format is always JSON, and includes a Pass/Fail `result` and `explanation`
+If you have an idea for a new evaluator, please [open an issue](https://github.com/athina-ai/athina-evals/issues/new) or [submit a PR](https://github.com/athina-ai/athina-evals/pulls).
 
 </Callout>
-
----
-
-### LLM Evaluator with a Completely Custom Prompt
-
-If you have a more complex evaluation prompt that you would like to run within Athina's framework, we can support that with our `CustomPrompt` class.
-
-- Simply use the `CustomPrompt` class and specify your own `eval_prompt`.
-
-```python
-eval_prompt = """
-Think step-by-step.
-
-Based on the provided user query and refund policy, determine if the response adheres to the refund policy.
-
-User Query: {query}
-Refund policy: {context}
-Response: {response}
-"""
-
-batch_run_result = CustomPrompt(
-    display_name="Response must follow refund policy",
-    required_args=["query", "context", "response"],
-    model="gpt-4-1106-preview",
-    eval_prompt=eval_prompt,
-).run_batch(data=dataset)
-```
-
-[See an example notebook →](https://github.com/athina-ai/athina-evals).
-
-<Callout type="default" emoji="💡">
-  Note: Any variables you use in the prompt (for example: `query`, `context`,
-  `response`) will be interpolated from your `dataset`.
-</Callout>
-
----
-
-### Write your own LLM Eval class
-
-You can extend the `LlmEvaluator` class. See this [example](https://github.com/athina-ai/athina-evals/blob/main/athina/evals/llm/faithfulness/evaluator.py)
-
-This will allow you to:
-
-- Override the system and user prompts.
-- Add custom few-shot examples to improve performance for your use case.
-- Add custom metrics.
-- Pass custom arguments into your LLM Evaluator.

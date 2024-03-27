@@ -1,0 +1,40 @@
+import { Callout } from "nextra/components";
+
+## Custom Grading Criteria
+
+Checks if the response matches some user defined grading criteria.
+
+- Input: `response`
+- Type: `boolean`
+- Metrics: `passed` (0 or 1)
+
+**Example:**
+
+- Grading Criteria: "If the response contain profanity, fail. Otherwise pass."
+- Response: "You are a moron."
+
+It's very easy to write a custom grading criteria (just 2 lines of code).
+
+```python
+from athina.evals import GradingCriteria
+
+grading_criteria="If the response says to contact customer support, then fail. Otherwise pass."
+GradingCriteria(grading_criteria=grading_criteria).run_batch(data=dataset)
+```
+
+[See an example notebook →](https://github.com/athina-ai/athina-evals/blob/main/examples/custom_grading_criteria.ipynb).
+
+<Callout type="default" emoji="💡">
+  Note: This format works pretty well for the grading_criteria: _"If X, then
+  fail. Otherwise, pass"_
+</Callout>
+
+<Callout type="info">
+**What's happening under the hood?**
+
+We do a few things behind the scenes to make LLM evaluators work effectively:
+
+- We wrap this prompt inside some [chain-of-thought prompting](https://www.promptingguide.ai/techniques/cot)
+- We ensure the response format is always JSON, and includes a Pass/Fail `result` and `explanation`
+
+</Callout>

@@ -5,9 +5,8 @@
     "running_evals": "Running Evals",
     "preset_evals": "Preset Evals",
     "custom_evals": "Custom Evals",
-    "loading_data": "Loading Data for Evals",
-    "llm_dev_workflows": "LLM Eval Workflows",
-    "improving_eval_performance": "Improving Eval Performance",
-    "faq": "FAQs",
-    "ci_cd_pipeline": "CI/CD Pipeline"
+    "create_your_own_own": "Bring your own eval",
+    "loading_data": "Loading Data for Evaluation",
+    "ci_cd_pipeline": "Running Evals in CI/CD",
+    "faq": "FAQs"
 }

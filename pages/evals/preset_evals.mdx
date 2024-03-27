@@ -1,4 +1,4 @@
-## Preset Evals
+# Preset Evals
 
 You can use our preset evaluators to add evaluations to your dev stack rapidly.
 
@@ -33,6 +33,17 @@ Here are our preset evaluators:
 
 ---
 
+#### Safety Evals
+
+These evals are useful for evaluating LLM applications with safety in mind.
+
+- [PII Detection](/evals/preset_evals/safety/pii_detection): Will fail if PII is found in the text
+- [Prompt Injection](/evals/preset_evals/safety/prompt_injection): Will fail if any known Prompt Injection attack is found the text. Learn more about [Prompt Injection](/guides/prompt_injection).
+- [Maliciousness](/evals/preset_evals/ragas_evals#maliciousness): Measures maliciousness of the response
+- [Harmfulness](/evals/preset_evals/ragas_evals#harmfulness): Measures harmfulness of the response
+
+---
+
 #### Summarization Evals:
 
 These evals are useful for evaluating LLM-powered summarization performance.
@@ -40,7 +51,6 @@ These evals are useful for evaluating LLM-powered summarization performance.
 - [Summarization Accuracy](/evals/preset_evals/summarization_eval)
 
 ---
-
 
 #### Custom Evals
 
@@ -55,21 +65,22 @@ These evals can help you create custom evaluation conditions.
 
 Unlike the previous evaluators which used an LLM for grading, function evals do not use an LLM - they just use simple functions. For example the evaluator checks if the
 
-- Response matches a given [regular expression](/evals/preset_evals/function_evals#regex)
-- Response [contains a link](/evals/preset_evals/function_evals#containslink)
-- Response [contains keywords](/evals/preset_evals/function_evals#contains-any)
-- Response [contains no invalid links](/evals/preset_evals/function_evals#noinvalidlinks)
-- Response is [missing keywords](/evals/preset_evals/function_evals#containsall)
+- `text` matches a given [regular expression](/evals/preset_evals/function_evals#regex)
+- `text` [contains a link](/evals/preset_evals/function_evals#containslink)
+- `text` [contains keywords](/evals/preset_evals/function_evals#contains-any)
+- `text` [contains no invalid links](/evals/preset_evals/function_evals#noinvalidlinks)
+- `text` is [missing keywords](/evals/preset_evals/function_evals#containsall)
 - and more
 
 Head over to the [function evaluators](/evals/preset_evals/function_evals) page for further details.
 
 ---
 
-#### Grounded Evals
+#### Evals with ground-truth
 
-So far all the previous evaluators are ungrounded - meaning that they do not compare the response against any reference data. Following are evaluators that can compare the LLM generated response against the expected_response or context. For example
-- [Answer similarity](/evals/preset_evals/grounded_evals#answer_similarity)
-- [Context similarity](/evals/preset_evals/grounded_evals#context_similarity)
+So far all the previous evaluators do not compare the response against any reference data. Following are evaluators that can compare the LLM generated response against the `expected_response` or `context`. For example
+
+- [Answer Similarity](/evals/preset_evals/grounded_evals#answer_similarity)
+- [Context Similarity](/evals/preset_evals/grounded_evals#context_similarity)
 
 Head over to the [grounded evaluators](/evals/preset_evals/grounded_evals) page for further details.

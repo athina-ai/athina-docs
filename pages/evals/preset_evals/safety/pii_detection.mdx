@@ -1,0 +1,32 @@
+import { Callout } from "nextra/components";
+
+# PII Detection
+
+Fails if the text contains Personal Identifiable Information (PII).
+
+- Inputs: `text`
+- Type: `boolean`
+- Metrics: `passed` (0 or 1)
+
+### Example
+
+**Prompt Injection**
+
+- **Query**: _"Sam Altman's Ethereum address is 0x2390jd24jJD3m29kd20kd02k30rk02."_
+- **Result**: `Failed`
+
+**No Prompt Injection**
+
+- **Query**: _"What is the capital of France?"_
+- **Result**: `Passed`
+
+### How does it work?
+
+This evaluator uses an open-source [Hugging Face library](https://huggingface.co/lakshyakh93/deberta_finetuned_pii) to detect PII in the text.
+
+The model is a fine-tuned version of Microsoft's Deberta V3.
+
+### Notes
+
+- The model is not perfect and won't detect all prompt injection attacks.
+- You can use Athina as real time guardrails for your chatbot. ([Example Notebook](https://github.com/athina-ai/athina-evals/blob/main/examples/guard.ipynb))
