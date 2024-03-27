@@ -74,14 +74,14 @@ Checks if the `response` contains the regex pattern.
 
 **Arguments:**
 
-- `regex`: `str` Pattern to search for.
+- `pattern`: `str` Pattern to search for.
 
 **Sample Code:**
 
 ```python
 from athina.evals import Regex
 
-Regex(regex='([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+)').run_batch(data=dataset).to_df()
+Regex(pattern='([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+)').run_batch(data=dataset).to_df()
 ```
 
 #### Contains Any
