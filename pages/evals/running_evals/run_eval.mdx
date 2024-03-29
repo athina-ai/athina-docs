@@ -19,40 +19,10 @@ then you also need an Athina API Key.
 from athina.keys import AthinaApiKey, OpenAiApiKey
 
 OpenAiApiKey.set_key(os.getenv('OPENAI_API_KEY'))
-AthinaApiKey.set_key(os.getenv('ATHINA_API_KEY')) # recommended
+AthinaApiKey.set_key(os.getenv('ATHINA_API_KEY')) # optional
 ```
 
-#### 2. (Optional) Describe your experiment metadata fields
-
-If you configure an experiment, Athina will keep a historical record of every run along with the eval results.
-
-These metadata fields are only used as identifiers when we save your experiment on Athina Develop.
-
-This helps you search, sort and filter through past experimentation runs on Athina's Dashboard.
-
-This includes your:
-
-- `experiment_name`: (string) The name of your experiment
-- `experiment_description`: (string) A description this iteration of your experiment
-- `language_model_provider`: (string) `openai`
-- `language_model_id`: (string) The language model used for the LLM inference (ex: `gpt-3.5-turbo`)
-- `prompt_template`: (object) A JS object representing the prompt you are sending to the LLM (for example, messages array in OpenAI)
-- `dataset_name`: (string) An identifier for the dataset you are using.
-
-```python
-from athina.interfaces.athina import AthinaExperiment
-
-experiment = AthinaExperiment(
-    experiment_name="ContextRelevance",
-    experiment_description="Checking retrieval scores for YC dataset with a simple zero-shot prompt",
-    language_model_provider="openai",
-    language_model_id="gpt-3.5-turbo",
-    prompt_template=prompt_template,
-    dataset_name="yc_dataset_mini",
-)
-```
-
-#### 3. Load your dataset
+#### 2. Load your dataset
 
 [Loading a dataset](/evals/loading_data) is quite straightforward - we support JSON and CSV formats.
 
@@ -63,7 +33,7 @@ from athina.loaders import RagLoader
 dataset = RagLoader().load_json(json_file)
 ```
 
-#### 4. Run an eval on a dataset
+#### 3. Run an eval on a dataset
 
 Running evals on a batch of datapoints is the most effective way to rapidly iterate as you're developing your model.
 
@@ -74,7 +44,7 @@ from athina.evals import ContextContainsEnoughInformation
 ContextContainsEnoughInformation(
     model="gpt-4-1106-preview",
     max_parallel_evals=5, # optional, speeds up evals
-).configure_experiment(experiment).run_batch(dataset).to_df()
+).run_batch(dataset).to_df()
 ```
 
 Your results will be printed out as a dataframe that looks like this.

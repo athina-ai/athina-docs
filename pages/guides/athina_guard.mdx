@@ -1,0 +1,81 @@
+import { Callout } from "nextra/components";
+
+# Running evals as real-time guardrails
+
+`athina.guard()` is a simple function that allows you to run evals as guardrails around your AI application.
+
+It's a simple function that takes in a suite (list) of evals to run, and an input `text`.
+
+`guard` will run all the evals in parallel on the given input. If any eval fails, it will raise an `AthinaGuardException` which you can catch and handle in your application.
+
+### Guarding User Queries
+
+Here's a simple example of using guard to detect Prompt Injection attacks in a user query:
+
+```python
+import athina
+import os
+
+def safeguard_query(query: str):
+
+    try:
+        # GUARD YOUR USER QUERY
+        athina.guard(
+            suite=[
+                athina.evals.PromptInjection()
+            ],
+            text=query,
+        )
+    except athina.AthinaGuardException as e:
+        print("ERROR: Detected a prompt injection attack. Using fallback message.")
+        # YOUR FALLBACK STRATEGY
+
+```
+
+In this example, we're using `PromptInjection` eval to detect prompt injection attacks in the user query.
+
+If the eval fails, we catch the `AthinaGuardException` and handle it by using a fallback message.
+
+### Guarding LLM Responses
+
+You can also use `athina.guard()` to guard LLM responses. Here's an example:
+
+```python
+def guard_response(response: str) -> str:
+    # If evals pass, return the original response
+    final_response = response
+
+    # Guard your response
+    try:
+        # Eval suite to guard the response
+        competitor_names = ["intercom", "drift"]
+        eval_suite = [
+            athina.evals.ContainsNone(display_name="Response should not mention competitors", keywords=competitor_names),
+            athina.evals.PiiDetection(),
+        ]
+
+        # Run guard
+        athina.guard(
+            suite=eval_suite,
+            text=response,
+        )
+    except athina.AthinaGuardException as e:
+        print("\nERROR: Detected a bad response. Fallback strategy initiated.")
+        # Fallback strategy if the original response is not safe
+        final_response = "I'm sorry, I can't help with that."
+
+    return final_response
+```
+
+In this example, we're guarding the AI response by checking if it contains any of our competitor names or if it contains any PII.
+
+If either eval fails, we catch the `AthinaGuardException` and handle it by using a fallback message.
+
+### How does `athina.guard()` impact latency?
+
+To minimize latency impact, we recommend only running the following evals using `athina.guard()`
+
+- [Function Evals](/evals/preset_evals/function_evals)
+- [Prompt Injection](/evals/preset_evals/safety/prompt_injection)
+
+Evaluations will automatically run in parallel to minimize latency impact.

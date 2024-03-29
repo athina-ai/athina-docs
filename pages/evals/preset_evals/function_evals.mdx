@@ -1,6 +1,6 @@
 import { Callout } from "nextra/components";
 
-## Function Based Evaluators
+# Function Based Evaluators
 
 [Github](https://github.com/athina-ai/athina-evals/blob/main/athina/evals/function/wrapper.py)
 
@@ -279,7 +279,7 @@ NoInvalidLinks().run_batch(data=dataset).to_df()
 #### `ApiCall`
 
 **Description:**  
-Performs an API call to a specified endpoint and picks up the evaluation result from the response. This evaluator is useful when you want to run some complex or custom logic on the response. 
+Performs an API call to a specified endpoint and picks up the evaluation result from the response. This evaluator is useful when you want to run some complex or custom logic on the response.
 
 **Arguments:**
 
@@ -310,10 +310,12 @@ ApiCall(
 ```
 
 <Callout>
-- We expect the API response to be in JSON format with two keys namely `result` and `reason`.
-- The `result` key should contain the evaluation result which should be a boolean value.
-- The `reason` key should contain the reason for the evaluation result which should be a string.
-- The dataset should contain the `response` and optionally the `query`, `context` and `expected_response` to be passed to the API.
+  - We expect the API response to be in JSON format with two keys namely
+  `result` and `reason`. - The `result` key should contain the evaluation result
+  which should be a boolean value. - The `reason` key should contain the reason
+  for the evaluation result which should be a string. - The dataset should
+  contain the `response` and optionally the `query`, `context` and
+  `expected_response` to be passed to the API.
 </Callout>
 
 #### Equals

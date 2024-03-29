@@ -27,17 +27,38 @@ Here are some common ones:
 Just plug in the evaluators you need and run the evals on your dataset.from athina.evals import RagasContextPrecision, RagasAnswerCorrectness, RagasContextRelevancy, RagasContextRecall, RagasFaithfulness, Groundedness
 
 ```python
+import os
+from athina import evals
+from athina.loaders import Loader
+from athina.keys import OpenAiApiKey
+from athina.runner.run import EvalRunner
+from athina.datasets import yc_query_mini
+import pandas as pd
+
+from dotenv import load_dotenv
+load_dotenv()
+
+OpenAiApiKey.set_key(os.getenv('OPENAI_API_KEY'))
+
+# Load a dataset from list of dicts
+raw_data = yc_query_mini.data
+dataset = Loader().load_dict(raw_data)
+
+# View dataset in a dataframe
+pd.DataFrame(dataset)
+
+# Define evaluation suite
 model = "gpt-4-turbo-preview"
 eval_suite = [
-    RagasAnswerCorrectness(model=model),
-    RagasContextPrecision(model=model),
-    RagasContextRelevancy(model=model),
-    RagasContextRecall(model=model),
-    ContextContainsEnoughInformation(model=model),
-    RagasFaithfulness(model=model),
-    Faithfulness(model=model),
-    Groundedness(model=model),
-    DoesResponseAnswerQuery(model=model)
+    evals.RagasAnswerCorrectness(model=model),
+    evals.RagasContextPrecision(model=model),
+    evals.RagasContextRelevancy(model=model),
+    evals.RagasContextRecall(model=model),
+    evals.ContextContainsEnoughInformation(model=model),
+    evals.RagasFaithfulness(model=model),
+    evals.Faithfulness(model=model),
+    evals.Groundedness(model=model),
+    evals.DoesResponseAnswerQuery(model=model)
 ]
 
 # Run the evaluation suite

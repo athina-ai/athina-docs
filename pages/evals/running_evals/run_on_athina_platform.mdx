@@ -1,0 +1,48 @@
+# Run evals on a dataset on Athina Platform
+
+This [tutorial](/evals/running_evals/run_on_athina_platform) shows how to create a dataset, add rows, configure and run a suite of evals on Athina in 3 mins.
+(_without writing any code_)
+
+## Concepts
+
+**Datasets** contain rows of data that you want to evaluate.
+
+You can add rows to a dataset by uploading a JSONL file, sampling from production logs, or logging rows using our API or SDK.
+
+Each row may contain any or all of the following fields:
+
+- `query`: string - this contains the user's input query
+- `context`: string[] – this contains string chunks from your retrieval
+- `response`: string - this contains the LLM generated response
+- `expected_response`: string - this contains a ground truth response to compare against (not required for most evals)
+
+Different evals use different combinations of the above fields to evaluate the quality of your model.
+
+For example, the [ResponseFaithfulness](/evals/preset_evals/faithfulness) eval requires `response` and `context` fields, while [AnswerCompleteness](/evals/preset_evals/draq) eval requires `query` and `response`.
+
+## Steps
+
+### 1. Create a new dataset
+
+- Open the [datasets](https://app.athina.ai/datasets) page.
+- Click the `Create Dataset` button.
+- Give your dataset a name and description.
+
+### 2. Add rows to your dataset
+
+You may add rows to your dataset by:
+
+- [Uploading a JSON file](/datasets/create_dataset#upload-from-jsonl-file)
+- [Import from production logs](/datasets/create_dataset#import-from-existing-inference-logs)
+- Logging rows to a dataset using our API or SDK (_coming soon_)
+
+### 3. Run evals on your dataset
+
+- Click the `Evaluate` button (located on the top right).
+- A sidebar will open, where you can configure a suite of evals to run on your dataset.
+
+### 4. View eval results
+
+Evaluation metrics will automatically show up as new columns in your dataset.
+
+<img src="/dataset-evals.png" />

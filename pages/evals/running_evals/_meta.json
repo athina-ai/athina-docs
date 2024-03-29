@@ -1,5 +1,6 @@
 {
-    "run_eval": "Run an eval",
-    "run_eval_suite": "Run an eval suite",
-    "cli": "Run evals using CLI"
+    "run_eval": "Python: Run a single eval",
+    "run_eval_suite": "Python: Run an eval suite",
+    "run_on_athina_platform": "UI: Run evals on a dataset",
+    "continuous_eval_in_production": "Continuous Evaluation in Production"
 }
